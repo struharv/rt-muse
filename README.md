@@ -82,7 +82,8 @@ is necessary for the compilation, together with the pthread library.
 
 Once compiled, it is recommended to execute the application with:
 ```
-sudo trace-cmd record -e 'sched_wakeup*' -e sched_switch -e 'sched_migrate*' ./bin/application ./input/taskset.json
+sudo trace-cmd record -e 'sched_wakeup*' -e sched_switch -e 'sched_migrate*'
+  ./bin/application ./input/taskset.json
 ```
 The resulting trace.dat file can be analyzed using
 ```
