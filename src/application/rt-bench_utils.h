@@ -56,19 +56,24 @@ do { \
 do { \
     rtbench_log_to(stderr, LOG_LEVEL_CRITICAL, "<crit> ", msg, ##args); \
 } while (0);
+void log_timing(FILE *handler, timing_point_t *t);
+void ftrace_write(int mark_fd, const char *fmt, ...);
 
 struct timespec usec_to_timespec(unsigned long usec);
 unsigned long timespec_to_usec(struct timespec *ts);
+__u64 timespec_to_nsec(struct timespec *ts);
+long timespec_to_lusec(struct timespec *ts);
+struct timespec msec_to_timespec(unsigned int msec);
+unsigned int timespec_to_msec(struct timespec *ts);
+struct timespec timespec_add(struct timespec *t1, struct timespec *t2);
+struct timespec timespec_sub(struct timespec *t1, struct timespec *t2);
+int timespec_lower(struct timespec *what, struct timespec *than);
 
 int string_to_policy(const char *policy_name, policy_t *policy);
 int policy_to_string(policy_t policy, char *policy_name);
-
 int string_to_phase(const char *phase_name, phase_t *phase);
 
-struct timespec timespec_add(struct timespec *t1, struct timespec *t2);
-int timespec_lower(struct timespec *what, struct timespec *than);
-
-void ftrace_write(int mark_fd, const char *fmt, ...);
+pid_t gettid(void);
 
 void sleep_for (int ind, ...);
 void compute (int ind, ...);

@@ -82,4 +82,18 @@ typedef struct _rtbench_options_t {
   int ftrace;
 } rtbench_options_t;
 
+typedef struct _timing_point_t {
+  int ind;
+  unsigned long period;
+  unsigned long min_et;
+  unsigned long max_et;
+  unsigned long rel_start_time;
+  unsigned long abs_start_time;
+  unsigned long end_time;
+  unsigned long deadline;
+  unsigned long duration;
+  unsigned long resp_time;
+  long slack;
+} timing_point_t;
+
 #endif /* _RT_BENCH_TYPES_H_ */
