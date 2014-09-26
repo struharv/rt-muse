@@ -24,6 +24,8 @@
 #define LOG_LEVEL_ERROR 10
 #define LOG_LEVEL_CRITICAL 10
 
+#define BUF_SIZE 100
+
 #define rtbench_log_to(where, level, level_pfx, msg, args...) \
 do { \
     if (level <= LOG_LEVEL) { \
@@ -64,6 +66,9 @@ int policy_to_string(policy_t policy, char *policy_name);
 int string_to_phase(const char *phase_name, phase_t *phase);
 
 struct timespec timespec_add(struct timespec *t1, struct timespec *t2);
+int timespec_lower(struct timespec *what, struct timespec *than);
+
+void ftrace_write(int mark_fd, const char *fmt, ...);
 
 void sleep_for (int ind, ...);
 void compute (int ind, ...);

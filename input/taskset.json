@@ -30,7 +30,7 @@
     "default_policy" : "SCHED_FIFO",
     "duration" : 10,
     "logdir" : "./",
-    "logbasename" : "rtbench.log",
+    "logbasename" : "rtbench",
     "lock_pages" : true,
     "ftrace" : true
   }
