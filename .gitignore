@@ -1,2 +1,4 @@
 bin
+*.log
+*.dat
 .DS_Store
