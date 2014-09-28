@@ -38,6 +38,7 @@
     } \
   } \
 } while (0)
+
 /* END MACROS */
 
 void usage(const char* msg, int ex_code) {

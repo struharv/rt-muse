@@ -9,7 +9,6 @@
 #include <dl_syscalls.h>
 
 #define RTBENCH_POLICY_DESCR_LENGTH 16
-#define RTBENCH_FTRACE_PATH_LENGTH 256
 
 /* exit codes */
 #define EXIT_SUCCESS 0
@@ -36,9 +35,9 @@ typedef struct _rtbench_resource_t {
 
 /* Task phases */
 typedef enum phase_t { 
+  COMPUTE,
   LOCK,
-  SLEEP,
-  COMPUTE
+  SLEEP
 } phase_t;
 
 typedef struct _rtbench_tasks_phase_list_t {
