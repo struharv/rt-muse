@@ -76,6 +76,14 @@ static void shutdown(int sig) {
     close(ft_data.trace_fd);
     close(ft_data.marker_fd);
   }
+  /* free things that have been allocated */
+  for (i = 0; i < nthreads; i++) {
+  	free(opts.threads_data[i].cpuset);
+  	free(opts.threads_data[i].phases);
+  }
+  free(opts.resources);
+  free(opts.threads_data);
+  free(threads);
   exit(EXIT_SUCCESS);
 }
 
@@ -280,6 +288,7 @@ void *thread_body(void *arg) {
     i++;
   }
 
+  free(timings);
 }
 
 int main(int argc, char* argv[]) {
