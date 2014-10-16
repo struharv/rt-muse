@@ -50,19 +50,24 @@ void compute (int ind, ...) {
 
 void lock(int ind, ...) {
   int resource_id;
-  struct timespec t_start, now, t_exec, t_totexec;
+  unsigned int loops, i, counter = 0;
+  //struct timespec t_start, now, t_exec, t_totexec;
   struct timespec *t_spec;
   va_list argp;
   va_start(argp, ind);
   t_spec = va_arg(argp, struct timespec*);
   resource_id = va_arg(argp, int);
   va_end(argp);
-  clock_gettime(CLOCK_THREAD_CPUTIME_ID, &t_start);
+  //clock_gettime(CLOCK_THREAD_CPUTIME_ID, &t_start);
+  loops = timespec_to_usec(t_spec);
   log_ftrace(ft_data.marker_fd, "[%d] begins lock", ind+1);
   pthread_mutex_lock(&opts.resources[resource_id].mtx);
-  clock_gettime(CLOCK_THREAD_CPUTIME_ID, &now);
-  t_exec = timespec_add(&now, t_spec);
-  busywait(&t_exec);
+  log_ftrace(ft_data.marker_fd, "[%d] lock acquired", ind+1);
+  //clock_gettime(CLOCK_THREAD_CPUTIME_ID, &now);
+  for (i = 0; i < loops; i++)
+    counter = (++counter) * i;
+  //t_exec = timespec_add(&now, t_spec);
+  //busywait(&t_exec);
   pthread_mutex_unlock(&opts.resources[resource_id].mtx);
 }
 

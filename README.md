@@ -52,23 +52,23 @@ The tasks section contains an array of tasks, an example follows:
       "priority" : 10,
       "cpus" : [1,3],
       "phases" : {
-        "c0" : { "duration" : 1000 },
-        "l0" : { "duration" : 2000, "resource_id" : 0 },
+        "c0" : { "iterations" : 1000 },
+        "l0" : { "iterations" : 2000, "resource_id" : 0 },
         "s1" : { "duration" : 1000, },
-        "l1" : { "duration" : 3000, "resource_id" : 1 },
-        "c1" : { "duration" : 5000 },
-        "l2" : { "duration" : 1000, "resource_id" : 0 },
+        "l1" : { "iterations" : 3000, "resource_id" : 1 },
+        "c1" : { "iterations" : 5000 },
+        "l2" : { "iterations" : 1000, "resource_id" : 0 },
       }
     }
 }
 ``` 
 The task repeats in loop a certain number of phases. There are three
 types of implemented phases. The **compute** phase executes mathematical
-operations for a certain number of loop (indicated by the duration option).
+operations for a certain number of loop (indicated by the iterations option).
 The **sleep_for** phase sleeps for a certian number of microseconds
 (indicated by the duration option). The **lock** phase locks a
-resource (indicated by the resource_id option) and does a busy wait
-for a certian number of microseconds (indicated by the duration option).
+resource (indicated by the resource_id option) and computes
+for a certian number of iterations (indicated by the iterations option).
 
 ### _Compilation and Execution_ ###
 

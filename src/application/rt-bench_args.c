@@ -164,8 +164,14 @@ static void parse_thread_phases(struct json_object *task_phases, thread_data_t *
     }
 
     phase = get_in_object(task_phases, key, FALSE);
-    duration = get_in_object(phase, "duration", FALSE);
-    data->phases[idx].usage = usec_to_timespec(get_int_value_from(phase, "duration", FALSE, 0));
+    if (ph == SLEEP) {
+      duration = get_in_object(phase, "duration", FALSE);
+      data->phases[idx].usage = usec_to_timespec(get_int_value_from(phase, "duration", FALSE, 0));
+    }
+    else {
+      duration = get_in_object(phase, "iterations", FALSE);
+      data->phases[idx].usage = usec_to_timespec(get_int_value_from(phase, "iterations", FALSE, 0));
+    }
     if (ph == LOCK) { /* if lock, find resource id */
       resource_id = get_in_object(phase, "resource_id", FALSE);
       data->phases[idx].resource_id = get_int_value_from(phase, "resource_id", FALSE, 0);
