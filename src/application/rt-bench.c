@@ -1,5 +1,6 @@
 #include "rt-bench.h"
 #include "rt-bench_utils.h"
+#include "math.h"
 
 rtbench_options_t opts;
 static int errno;
@@ -36,7 +37,9 @@ void sleep_for (int ind, ...) {
 }
 
 void compute (int ind, ...) {
-  unsigned int loops, i, counter = 0;
+  //  unsigned int loops, i, counter = 0;
+  unsigned int loops, i;
+  double accumulator=0.25;
   struct timespec *t_spec;
   va_list argp;
   va_start(argp, ind);
@@ -44,13 +47,18 @@ void compute (int ind, ...) {
   va_end(argp);
   loops = timespec_to_usec(t_spec);
   log_ftrace(ft_data.marker_fd, "[%d] begins compute", ind+1);
-  for (i = 0; i < loops; i++)
-    counter = (++counter) * i;
+  for (i = 0; i < loops; i++) {
+    printf("[%d] loop\n", i);
+    //    counter = (++counter) * i;
+    accumulator += 0.5;
+    accumulator -= floor(accumulator);
+  }
 }
 
 void lock(int ind, ...) {
   int resource_id;
-  unsigned int loops, i, counter = 0;
+  unsigned int loops, i;
+  double accumulator=0.25;
   //struct timespec t_start, now, t_exec, t_totexec;
   struct timespec *t_spec;
   va_list argp;
@@ -64,8 +72,11 @@ void lock(int ind, ...) {
   pthread_mutex_lock(&opts.resources[resource_id].mtx);
   log_ftrace(ft_data.marker_fd, "[%d] lock acquired", ind+1);
   //clock_gettime(CLOCK_THREAD_CPUTIME_ID, &now);
-  for (i = 0; i < loops; i++)
-    counter = (++counter) * i;
+  for (i = 0; i < loops; i++) {
+    accumulator += 0.5;
+    accumulator -= floor(accumulator);
+  }
+    //    counter = (++counter) * i;
   //t_exec = timespec_add(&now, t_spec);
   //busywait(&t_exec);
   pthread_mutex_unlock(&opts.resources[resource_id].mtx);
