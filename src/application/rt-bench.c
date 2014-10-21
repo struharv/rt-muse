@@ -32,7 +32,9 @@ void sleep_for (int ind, ...) {
   va_end(argp);
   clock_gettime(CLOCK_MONOTONIC, &t_now);
   t_now = timespec_add(&t_now, t_sleep);
+#ifdef TRACE_BEGINS_SLEEP
   log_ftrace(ft_data.marker_fd, "[%d] begins sleep_for", ind+1);
+#endif
   clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &t_now, NULL);
 }
 
@@ -46,7 +48,9 @@ void compute (int ind, ...) {
   t_spec = va_arg(argp, struct timespec*);
   va_end(argp);
   loops = timespec_to_usec(t_spec);
+#ifdef TRACE_BEGINS_COMPUTE
   log_ftrace(ft_data.marker_fd, "[%d] begins compute", ind+1);
+#endif
   for (i = 0; i < loops; i++) {
     printf("[%d] loop\n", i);
     //    counter = (++counter) * i;
@@ -68,9 +72,13 @@ void lock(int ind, ...) {
   va_end(argp);
   //clock_gettime(CLOCK_THREAD_CPUTIME_ID, &t_start);
   loops = timespec_to_usec(t_spec);
+#ifdef TRACE_BEGINS_LOCK
   log_ftrace(ft_data.marker_fd, "[%d] begins lock", ind+1);
+#endif
   pthread_mutex_lock(&opts.resources[resource_id].mtx);
+#ifdef TRACE_LOCK_ACQUIRED
   log_ftrace(ft_data.marker_fd, "[%d] lock acquired", ind+1);
+#endif
   //clock_gettime(CLOCK_THREAD_CPUTIME_ID, &now);
   for (i = 0; i < loops; i++) {
     accumulator += 0.5;
@@ -216,10 +224,12 @@ void *thread_body(void *arg) {
 
   if (data->ind == 0) {
     clock_gettime(CLOCK_MONOTONIC, &t_zero);
+#ifdef TRACE_SETS_ZERO_TIME
     if (opts.ftrace)
       log_ftrace(ft_data.marker_fd,
            "[%d] sets zero time",
            data->ind);
+#endif
   }
 
   pthread_barrier_wait(&threads_barrier);
@@ -254,8 +264,10 @@ void *thread_body(void *arg) {
     struct timespec t_start, t_end, t_diff, t_slack, t_resp;
 
     /* Thread numeration reported starts with 1 */
+#ifdef TRACE_BEGINS_LOOP
     if (opts.ftrace)
       log_ftrace(ft_data.marker_fd, "[%d] begins loop %d", data->ind+1, i);
+#endif
     clock_gettime(CLOCK_MONOTONIC, &t_start);
     if (data->nphases == 0) {
       compute(data->ind, &data->min_et, NULL, 0);
@@ -297,8 +309,10 @@ void *thread_body(void *arg) {
 
     t_next = timespec_add(&t_next, &data->period);
     data->deadline = timespec_add(&data->deadline, &data->period);
+#ifdef TRACE_END_LOOP
     if (opts.ftrace)
       log_ftrace(ft_data.marker_fd, "[%d] end loop %d", data->ind, i);
+#endif
     if (curr_timing->slack < 0)
       log_notice("[%d] DEADLINE MISS !!!", data->ind+1);
     i++;
