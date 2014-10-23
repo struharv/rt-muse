@@ -12,9 +12,7 @@
 APP_binary="./bin/application"
 RESULT_dir="./results"
 REFERENCE_run=$1
-REFERENCE_trace="reference"
-SIMULATION_run=$2
-SIMULATION_trace="simulation"
+REFERENCE_trace=$2
 
 if [ "$TRACE_CMD_COMMAND" = "" ]
 then
@@ -28,23 +26,25 @@ function launch_simulation {
   # -e sched_switch # monitoring switch 
 	sudo $TRACE_CMD_COMMAND record -e 'sched_migrate*' \
 	  $APP_binary $1 \
-	  &> $RESULT_dir/output_$2.txt
-	mv -f trace.dat $RESULT_dir/$2.dat 
+	  &> ${RESULT_dir}/$2/output_$2.txt
+	mv -f trace.dat $RESULT_dir/$2/$2.dat 
 	printf " done\n"
 
 	printf "[LAUNCH] Extracting data for $1 ..."
-	$TRACE_CMD_COMMAND report $RESULT_dir/$2.dat \
-	  > $RESULT_dir/$2.txt
-	grep "begins loop" $RESULT_dir/$2.txt | \
+	$TRACE_CMD_COMMAND report $RESULT_dir/$2/$2.dat \
+	  > ${RESULT_dir}/$2/$2.txt
+	grep "begins loop" $RESULT_dir/$2/$2.txt | \
 	  awk 'BEGIN {OFS = ",";} { gsub(":", "", $3); print $3}' \
-	  > $RESULT_dir/$2.csv
+	  > $RESULT_dir/$2/$2.csv
 	printf " done\n" 
 }
 
 # --------------------------------------------------------------------
 NUM_args=$#
 if [ "$#" -ne 2 ]; then
-    echo "[LAUNCH] Two parameters needed: reference and simulation"
+    echo "[LAUNCH] Two parameters needed:"
+    echo "         #1: json configuration file"
+    echo "         #2: experiment name"
     exit
 fi
 
@@ -55,5 +55,5 @@ if [ ! -f $APP_binary ]; then
 fi
 
 mkdir -p $RESULT_dir
+mkdir -p $RESULT_dir/${REFERENCE_trace}
 launch_simulation ${REFERENCE_run} ${REFERENCE_trace}
-launch_simulation ${SIMULATION_run} ${SIMULATION_trace}
