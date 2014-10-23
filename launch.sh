@@ -29,7 +29,7 @@ function launch_simulation {
 
 	printf "[LAUNCH] Extracting data for $1 ..."
 	mv $2.dat $RESULT_dir
-	trace-cmd report $RESULT_dir/$2.dat \
+	sudo trace-cmd report $RESULT_dir/$2.dat \
 	  > $RESULT_dir/$2.txt &> /dev/null
 	grep "begins loop" $RESULT_dir/$2.txt | \
 	  awk 'BEGIN {OFS = ",";} { gsub(":", "", $3); print $3}' \
