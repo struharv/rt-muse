@@ -16,19 +16,24 @@ REFERENCE_trace="reference"
 SIMULATION_run=$2
 SIMULATION_trace="simulation"
 
+if [ "$TRACE_CMD_COMMAND" = "" ]
+then
+  TRACE_CMD_COMMAND="trace-cmd"
+fi
+
 function launch_simulation {
   printf "[LAUNCH] Running for $1 ..."
   # -e 'sched_migrate*' # monitor migrations
   # -e 'sched_wakeup*' # monitor scheduling wakeups
   # -e sched_switch # monitoring switch 
-	sudo trace-cmd record -e 'sched_migrate*' \
+	sudo $TRACE_CMD_COMMAND record -e 'sched_migrate*' \
 	  $APP_binary $1 \
 	  &> $RESULT_dir/output_$2.txt
 	mv -f trace.dat $RESULT_dir/$2.dat 
 	printf " done\n"
 
 	printf "[LAUNCH] Extracting data for $1 ..."
-	trace-cmd report $RESULT_dir/$2.dat \
+	$TRACE_CMD_COMMAND report $RESULT_dir/$2.dat \
 	  > $RESULT_dir/$2.txt
 	grep "begins loop" $RESULT_dir/$2.txt | \
 	  awk 'BEGIN {OFS = ",";} { gsub(":", "", $3); print $3}' \
