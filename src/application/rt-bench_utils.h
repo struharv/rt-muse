@@ -36,6 +36,13 @@ do { \
 do {                  \
     ftrace_write(mark_fd, msg, ##args); \
 } while (0);
+#ifdef NO_LOGS
+#define log_notice(msg, args...)
+#define log_info(msg, args...)
+#define log_debug(msg, args...)
+#define log_error(msg, args...)
+#define log_critical(msg, args...)
+#else
 #define log_notice(msg, args...) \
 do { \
     rtbench_log_to(stderr, LOG_LEVEL_NOTICE, "<notice> ", msg, ##args); \
@@ -56,6 +63,7 @@ do { \
 do { \
     rtbench_log_to(stderr, LOG_LEVEL_CRITICAL, "<crit> ", msg, ##args); \
 } while (0);
+#endif
 void log_timing(FILE *handler, timing_point_t *t);
 void ftrace_write(int mark_fd, const char *fmt, ...);
 
