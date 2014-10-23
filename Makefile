@@ -9,5 +9,5 @@ clean:
 	rm -rf bin
 
 clean-log:
-	rm -rf results
+	sudo rm -rf results
 	rm -f *.log
