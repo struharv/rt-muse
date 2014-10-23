@@ -94,3 +94,29 @@ or with the report tool, eventually filtering the results
 trace-cmd report trace.dat
 trace-cmd report trace.dat | grep tracing_mark_write
 ```
+
+The launch script (launch.sh) automates the procedure of running two
+different tests and saving their results in the results directory. It
+also compiles the application if it does not find the corresponding
+binary files. It can be executed with
+```
+sudo ./launch.sh ./input/taskset.json ./input/taskset.json
+```
+where the first parameter of the script is the first json file to be
+used and the second parameter is the second file. It generates the
+following output
+```
+[martina] ~/rt-bench : ls -l results/
+-rw-r--r-- 1 root root 144432576 ott 23 09:37 output_reference.txt
+-rw-r--r-- 1 root root 148403031 ott 23 09:38 output_simulation.txt
+-rw-r--r-- 1 root root     31528 ott 23 09:37 reference.csv
+-rw-r--r-- 1 root root   4509696 ott 23 09:37 reference.dat
+-rw-r--r-- 1 root root    344920 ott 23 09:37 reference.txt
+-rw-r--r-- 1 root root     32382 ott 23 09:38 simulation.csv
+-rw-r--r-- 1 root root   4521984 ott 23 09:38 simulation.dat
+-rw-r--r-- 1 root root    369461 ott 23 09:38 simulation.txt 
+```
+The files output_*.txt contain the output of the application itself
+and of the tracer. The csv files contain the time instant of points
+where the function was starting the loops, the dat files contains the
+tracer outputs and the txt files the readable form of the tracer output.
