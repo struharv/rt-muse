@@ -7,3 +7,7 @@ compile: clean
 
 clean:
 	rm -rf bin
+
+clean-log:
+	rm -rf results
+	rm -f *.log
