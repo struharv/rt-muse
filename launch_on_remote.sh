@@ -19,7 +19,7 @@ REMOTE_username=$3
 REFERENCE_run=$4
 REFERENCE_trace=$5
 REMOTE_SCRIPT_FILE="remote.sh"
-LISTENING_PORT="22070"
+LISTENING_PORT="23958"
 LISTENER_IP=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')
 TRACE_CMD_COMMAND="trace-cmd"
 
@@ -46,7 +46,7 @@ fi
 # ------------------------------------------------------------
 printf "[LAUNCH] Checking rt-bench presence on remote host ..."
 ssh -p ${REMOTE_port} ${REMOTE_username}@${REMOTE_ip} \
-  "if [ ! -d 'rt-bench' ]; then 'git clone https://github.com/martinamaggio/rt-bench.git >/dev/null'; fi"
+  'if [ ! -d "rt-bench" ]; then git clone https://github.com/martinamaggio/rt-bench.git &>/dev/null; fi'
 printf " done\n"
 
 printf "[LAUNCH] Checking rt-bench compilation on remote host ..."
@@ -80,28 +80,32 @@ ssh -p ${REMOTE_port} ${REMOTE_username}@${REMOTE_ip} \
 printf " done\n"
 
 printf "[LAUNCH] Starting listener ..."
-trace-cmd listen -p ${LISTENING_PORT} \
-  -D -d ${RESULT_dir}/${REFERENCE_trace} -o ${REFERENCE_trace}.dat
+trace-cmd listen -p ${LISTENING_PORT} &>/dev/null &
+LISTENER_PID=$!
 printf " done\n"
 
-printf "[LAUNCH] Executing on remote machine ..."
+echo "[LAUNCH] Connecting to remote machine and executing ..."
   # -e 'sched_migrate*' # monitor migrations
   # -e 'sched_wakeup*' # monitor scheduling wakeups
   # -e sched_switch # monitoring switch 
-ssh -p ${REMOTE_port} ${REMOTE_username}@${REMOTE_ip} \
+ssh -t -p ${REMOTE_port} ${REMOTE_username}@${REMOTE_ip} \
   "cd rt-bench && \
   sudo $TRACE_CMD_COMMAND record -N ${LISTENER_IP}:${LISTENING_PORT} \
   -e 'sched_migrate*' \
-	$APP_binary $1 \
+	~/rt-bench/$APP_binary ~/rt-bench/input/${REFERENCE_trace}.json \
 	&> ${RESULT_dir}/${REFERENCE_trace}/output_${REFERENCE_trace}.txt"
-printf " done\n"
+kill -2 $LISTENER_PID
+wait $LISTENER_PID
 
-printf '[LAUNCH] Extracting data for $1 ...'
-$TRACE_CMD_COMMAND report $RESULT_dir/$5/$5.dat \
-	> ${RESULT_dir}/$5/$5.txt
-grep 'begins loop' $RESULT_dir/$5/$5.txt | \
-	awk 'BEGIN {OFS = \",\";} { gsub(\":\", \"\", $1); print $1}' \
-	  > $RESULT_dir/$5/$5.csv
+printf "[LAUNCH] Extracting data for ${REFERENCE_run} ..."
+FILENAME=`ls trace*.dat`
+cp $FILENAME \
+  ${RESULT_dir}/${REFERENCE_trace}/${REFERENCE_trace}.dat
+sudo $TRACE_CMD_COMMAND report $FILENAME > ${RESULT_dir}/${REFERENCE_trace}/${REFERENCE_trace}.txt
+rm $FILENAME
+grep 'begins loop' $RESULT_dir/${REFERENCE_trace}/${REFERENCE_trace}.txt | \
+	awk 'BEGIN {OFS = ",";} { gsub(":", "", $1); print $1}' \
+	  > $RESULT_dir/${REFERENCE_trace}/${REFERENCE_trace}.csv
 printf ' done\n'
 
 printf "[LAUNCH] Removing unnecessary files ..."
