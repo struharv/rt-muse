@@ -52,8 +52,6 @@ void compute (int ind, ...) {
   log_ftrace(ft_data.marker_fd, "[%d] begins compute", ind+1);
 #endif
   for (i = 0; i < loops; i++) {
-    //  printf("[%d] loop\n", i);    EB: AAAARRRGGHHHHH!!!
-    //    counter = (++counter) * i;
     accumulator += 0.5;
     accumulator -= floor(accumulator);
   }
