@@ -57,3 +57,4 @@ fi
 mkdir -p $RESULT_dir
 mkdir -p $RESULT_dir/${REFERENCE_trace}
 launch_simulation ${REFERENCE_run} ${REFERENCE_trace}
+rm -f *.log
