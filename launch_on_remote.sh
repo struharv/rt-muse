@@ -100,10 +100,10 @@ printf "[LAUNCH] Extracting data for ${REFERENCE_run} ..."
 FILENAME=`ls trace*.dat`
 cp $FILENAME \
   ${RESULT_dir}/${REFERENCE_trace}/${REFERENCE_trace}.dat
-sudo $TRACE_CMD_COMMAND report $FILENAME > ${RESULT_dir}/${REFERENCE_trace}/${REFERENCE_trace}.txt
+$TRACE_CMD_COMMAND report $FILENAME > ${RESULT_dir}/${REFERENCE_trace}/${REFERENCE_trace}.txt
 rm $FILENAME
 grep 'begins loop' $RESULT_dir/${REFERENCE_trace}/${REFERENCE_trace}.txt | \
-	awk 'BEGIN {OFS = ",";} { gsub(":", "", $1); print $1}' \
+	awk 'BEGIN {OFS = ",";} { gsub(":", "", $3); print $3}' \
 	  > $RESULT_dir/${REFERENCE_trace}/${REFERENCE_trace}.csv
 printf ' done\n'
 
