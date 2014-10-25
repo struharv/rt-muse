@@ -6,7 +6,7 @@ developed by [Juri Lelli](https://github.com/jlelli) and [Giacomo
 Bagnoli](https://github.com/gbagnoli). It is intended to be used as a
 scheduler benchmarking tool.
 
-### _Configuration_ ### 
+### _Configuration_
 rt-bench expects to receive a json file with the configuration to be
 tested. An example of configuration file is contained in the folder
 input/taskset.json. The json file contains three entries: _resources_,
