@@ -114,12 +114,14 @@ where the first parameter is the IP of the remote machine, localhost
 works as well, the second parameter is the ssh port for the
 connection, the third parameter is the json file to be used, that will
 be sent to the remote machine and the last parameter is the name given
-to the experiment.  It generates the following output
+to the experiment. It copies the json used in the result folder for
+reference and generates the following output
 
 ```
 [martina] ~/rt-bench : ls -l results/experiment-name
 -rw-r--r-- 1 root root     31528 ott 23 09:37 experiment-name.csv
 -rw-r--r-- 1 root root   4509696 ott 23 09:37 experiment-name.dat
+-rw-r--r-- 1 root root       315 ott 23 09:37 experiment-name.json
 -rw-r--r-- 1 root root    344920 ott 23 09:37 experiment-name.txt
 ```
 
