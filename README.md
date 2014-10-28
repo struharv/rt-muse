@@ -137,3 +137,13 @@ output of the application itself and of the tracer. In the local
 machine, the csv file contains the time instant of points where the
 function was starting the loops, the dat file contains the tracer
 outputs and the txt file the readable form of the tracer output.
+
+Each line of the csv file has the form
+```
+Time, Thread number, Job number, CPU
+```
+where time is the timestamp of the instant in which the application
+printed the _begins loop_ statement, thread number refers to the
+thread in the json file (numbers start from 1), job number is the
+number associated with the loop (numbers start from 1) and CPU number
+is the CPU that executed the print statement (numbers start from 0).
