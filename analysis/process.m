@@ -8,9 +8,11 @@ function process(resultdir, name_reference, name_test)
 
 log_reference  = strcat(resultdir, name_reference, '/', name_reference, '.csv');
 log_test       = strcat(resultdir, name_test, '/', name_test, '.csv');
-max_samples = 10;
-time_reference = csvread(log_reference)'; % reference time
-time_test      = csvread(log_test)'; % test time
+max_samples = 1000;
+content_reference = csvread(log_reference);
+content_test      = csvread(log_test);
+time_reference = content_reference(:,1)'; % reference time
+time_test  = content_test(:,1)'; % test time
 
 % Analyzing the reference sequence
 [reference_min, reference_idx_min, ...
