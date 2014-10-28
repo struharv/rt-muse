@@ -107,7 +107,7 @@ if it does not find it (it looks for the repository and the binary
 files in the home of the remote host). It can be executed with
 
 ```
-./launch.sh 127.0.0.1 22 martina input/taskset.json reference
+./launch.sh 127.0.0.1 22 martina input/taskset.json experiment-name
 ```
 
 where the first parameter is the IP of the remote machine, localhost
