@@ -2,9 +2,9 @@
   "resources" : 3,
   "tasks" : {
     "thread1" : {
-      "exec" : 50000,
+      "budget" : 50000,
       "period" : 100000,
-      "hard_rsv" : false, 
+      "priority" : 10,
       "cpus" : [1],
       "phases" : {
         "c0" : { "iterations" : 1000 },
@@ -16,9 +16,9 @@
       }
     },
     "thread2" : { 
-      "exec" : 10000,  
-      "period" : 100000,
-      "hard_rsv" : false, 
+      "budget" : 10000,  
+      "period" : 100000, 
+      "priority" : 10,
       "cpus" : [2],
       "phases" : {
          "c0" : { "iterations" : 5000 },

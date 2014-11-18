@@ -208,9 +208,9 @@ static void parse_thread_data(char *name, struct json_object *obj,
   data->period = usec_to_timespec(period);
 
   /* exec time */
-  exec = get_int_value_from(obj, "exec", FALSE, 0);
+  exec = get_int_value_from(obj, "budget", FALSE, 0);
   if (exec > period) {
-    log_critical(PFX "Exec must be greather than period");
+    log_critical(PFX "Budget must be greather than period");
     exit(EXIT_FAILURE);
   }
   if (exec < 0) {
@@ -247,7 +247,7 @@ static void parse_thread_data(char *name, struct json_object *obj,
   data->deadline = usec_to_timespec(dline);
 
   /* reservation type */
-  if (!get_bool_value_from(obj, "hard_rsv", TRUE, 1))
+  if (!get_bool_value_from(obj, "hard_rsv", TRUE, 0))
     data->sched_flags |= SCHED_FLAG_SOFT_RSV;
   
   /* cpu set */
