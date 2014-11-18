@@ -103,7 +103,6 @@ cp $FILENAME \
   ${RESULT_dir}/${REFERENCE_trace}/${REFERENCE_trace}.dat
 $TRACE_CMD_COMMAND report $FILENAME > ${RESULT_dir}/${REFERENCE_trace}/${REFERENCE_trace}.txt
 rm $FILENAME
-# EB2MM: header removed because Matlab has problems (although Octave hasn't)
 #echo "# Time, Thread number, Job number, CPU" > $RESULT_dir/${REFERENCE_trace}/${REFERENCE_trace}.csv
 grep 'begins loop' $RESULT_dir/${REFERENCE_trace}/${REFERENCE_trace}.txt | \
 	awk 'BEGIN {OFS = ", ";} { gsub(":", "", $3); gsub("\\[", "",$6); gsub("\\]", "",$6); gsub("\\[", "",$2); gsub("\\]", "",$2); print $3,$6,$9,$2}' \
@@ -127,7 +126,6 @@ echo "experiment_name     = '$REFERENCE_trace';" >> $GENERATED_OCTAVE_SCRIPT
 echo "% ----------------------------------------" >> $GENERATED_OCTAVE_SCRIPT
 echo "addpath('$ANALYSIS_DIR');" >> $GENERATED_OCTAVE_SCRIPT
 echo "process(experiment_name);" >> $GENERATED_OCTAVE_SCRIPT
-#echo "pause" >> $GENERATED_OCTAVE_SCRIPT
 
 octave $GENERATED_OCTAVE_SCRIPT
 #rm -f $GENERATED_OCTAVE_SCRIPT
