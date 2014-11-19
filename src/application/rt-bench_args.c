@@ -169,12 +169,12 @@ static void parse_thread_phases(struct json_object *task_phases, thread_data_t *
       data->phases[idx].usage = usec_to_timespec(get_int_value_from(phase, "duration", FALSE, 0));
     }
     else {
-      duration = get_in_object(phase, "iterations", FALSE);
-      data->phases[idx].usage = usec_to_timespec(get_int_value_from(phase, "iterations", FALSE, 0));
+      duration = get_in_object(phase, "loops", FALSE);
+      data->phases[idx].usage = usec_to_timespec(get_int_value_from(phase, "loops", FALSE, 0));
     }
     if (ph == LOCK) { /* if lock, find resource id */
-      resource_id = get_in_object(phase, "resource_id", FALSE);
-      data->phases[idx].resource_id = get_int_value_from(phase, "resource_id", FALSE, 0);
+      resource_id = get_in_object(phase, "res", FALSE);
+      data->phases[idx].resource_id = get_int_value_from(phase, "res", FALSE, 0);
     }
     else
       data->phases[idx].resource_id = -1; /* Set to -1 if not lock phase */
@@ -300,7 +300,7 @@ static void parse_global(struct json_object *global, rtbench_options_t *opts) {
   opts->logdir = get_string_value_from(global, "logdir", TRUE, "./");
   opts->logbasename = get_string_value_from(global, "logbasename", TRUE, "rt-bench.log");
   opts->lock_pages = get_bool_value_from(global, "lock_pages", TRUE, 1);
-  opts->ftrace = get_bool_value_from(global, "ftrace", TRUE, 0);
+  opts->ftrace = get_bool_value_from(global, "ftrace", TRUE, 1);
 }
 
 static void get_opts_from_json_object(struct json_object *root, rtbench_options_t *opts) {

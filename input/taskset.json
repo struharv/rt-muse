@@ -7,22 +7,22 @@
       "priority" : 10,
       "cpus" : [1],
       "phases" : {
-        "c0" : { "iterations" : 1000 },
-        "l0" : { "iterations" : 2000, "resource_id" : 0 },
-        "l1" : { "iterations" : 1000, "resource_id" : 2 },
-        "l2" : { "iterations" : 3000, "resource_id" : 1 },
-        "l3" : { "iterations" : 1000, "resource_id" : 0 },
-        "c1" : { "iterations" : 5000 },
+        "c0" : { "loops" : 1000 },
+        "l0" : { "loops" : 2000, "res" : 0 },
+        "l1" : { "loops" : 1000, "res" : 2 },
+        "l2" : { "loops" : 3000, "res" : 1 },
+        "l3" : { "loops" : 1000, "res" : 0 },
+        "c1" : { "loops" : 5000 },
       }
     },
     "thread2" : { 
       "budget" : 10000,  
       "period" : 100000, 
       "priority" : 10,
-      "cpus" : [2],
+      "cpus" : [0,1],
       "phases" : {
-         "c0" : { "iterations" : 5000 },
-         "l0" : { "iterations" : 10000, "resource_id" : 2 },
+         "c0" : { "loops" : 5000 },
+         "l0" : { "loops" : 10000, "res" : 2 },
       }
     }
   },
