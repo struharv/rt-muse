@@ -200,7 +200,7 @@ static void parse_thread_data(char *name, struct json_object *obj,
   data->sched_flags = 0;
 
   /* period */
-  period = get_int_value_from(obj, "period", FALSE, 0);
+  period = get_int_value_from(obj, "period", TRUE, 10000);
   if (period <= 0) {
     log_critical(PFX "Cannot set negative period");
     exit(EXIT_FAILURE);
@@ -208,7 +208,7 @@ static void parse_thread_data(char *name, struct json_object *obj,
   data->period = usec_to_timespec(period);
 
   /* exec time */
-  exec = get_int_value_from(obj, "budget", FALSE, 0);
+  exec = get_int_value_from(obj, "budget", TRUE, 5000);
   if (exec > period) {
     log_critical(PFX "Budget must be greather than period");
     exit(EXIT_FAILURE);

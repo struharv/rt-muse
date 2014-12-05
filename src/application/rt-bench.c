@@ -237,7 +237,9 @@ void *thread_body(void *arg) {
    * budget as little as possible for the first iteration.
    */
   if (data->sched_policy == SCHED_DEADLINE) {
+  	printf("\nCiao\n");
     ret = sched_setattr(tid, &attr, flags);
+    printf("\nMe ne vado %d\n",ret);
     if (ret != 0) {
       log_critical("[%d] sched_setattr "
         "returned %d", data->ind, ret);
