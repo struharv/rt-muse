@@ -8,28 +8,6 @@ function [sequence_min, index_min, sequence_max, index_max] = minmaxseq(sequence
 
   num_marks = length(sequence);
   intervals = diff(sequence);
-
-  % ----------------------------------------------------------------------------
-  % the traces have been generated with ftrace, and ftrace sometimes has bugs,
-  % in particular, it sometimes fails at writing the timestamp in the correct
-  % format; the formatting error is easy to detect and can be fixed
-%  while 1
-%    intervals = diff(sequence); % finding time intervals
-%    [value, index] = min(intervals);
-%    if (value >= 0) % all the times are strictly increasing --> correct vector
-%      break;
-%    end
-%    if abs(sequence(index + 1) - floor(sequence(index + 1)) - 0.1) < 0.0000001
-%      sequence(index+1) = floor(sequence(index+1)) + 1;
-%      disp('[MINMAXSEQ] Fixed known problem with ftrace tracer.');
-%    else
-%      disp('[MINMAXSEQ] Some jobs have negative execution times.');
-%      disp('[MINMAXSEQ] No further analysis is possible.')
-%      return;
-%    end
-%  end
-  % ----------------------------------------------------------------------------
-
   temporary_intervals = zeros(num_marks,1);
 
   % initializations

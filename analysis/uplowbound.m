@@ -1,10 +1,13 @@
+function uplowbound(experiment_name)
+
 % ----------------------------------------------------------
 % INPUT to the script are listed below
 % ----------------------------------------------------------
 
 % filename from which read the duration of jobs
 %   assuming format "min_seq, idx_min, max_seq, idx_max"
-ref_infile = '../results/ref/ref.all.csv';
+ref_infile = strcat('../results/',experiment_name,'/',experiment_name,'.all.csv');
+
 
 % The number of the jobs used to compute the minimum job lenght is the
 % minimum between
@@ -14,8 +17,7 @@ portion_ref = .01;
 
 % filename containing the simulation data
 %   assuming format "min_seq, idx_min, max_seq, idx_max"
-sim_infile = '../results/part3on3/part3on3.all.csv';
-%sim_infile = '../results/migr6on3/migr6on3.all.csv';
+sim_infile = strcat('../results/',experiment_name,'/',experiment_name,'.all.csv');
 
 % Maximum istantaneous slope. Tipically equal to the number of cores
 max_slope = 3;
@@ -149,3 +151,5 @@ end
 
 best_alpha
 best_delta
+
+end

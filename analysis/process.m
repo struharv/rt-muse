@@ -1,12 +1,8 @@
 function process(experiment_name)
 
-% Assumes that a CSV file with the following name is in current
-% directory
+% Assumes that a CSV file with the following name is in current directory
 input_file  = strcat(experiment_name,'.csv');
 full_data = csvread(input_file);
-
-% It seems that the ".1000000" bug is now fixed. Assuming then there
-% is no such a bug
 thread_set = unique(full_data(:,2));
 
 all_data = [];
@@ -44,7 +40,6 @@ for k=1:length(thread_set),
     fid = fopen(output_file,'w+');
     fprintf(fid,'%11.6f, %7u, %11.6f, %7u\n', [seq_min, seq_idx_min, seq_max, seq_idx_max]');
     fclose(fid);
-    %dlmwrite(output_file, [seq_min, seq_idx_min, seq_max, seq_idx_max],'precision','%.6f %d %.6f %d');
 end
 
 % Analyzing the thread sequence
@@ -54,35 +49,5 @@ output_file = strcat(experiment_name,'.all.csv');
 fid = fopen(output_file,'w+');
 fprintf(fid,'%11.6f, %7u, %11.6f, %7u\n', [seq_min, seq_idx_min, seq_max, seq_idx_max]');
 fclose(fid);
-%dlmwrite(output_file, [seq_min, seq_idx_min, seq_max, seq_idx_max],'precision','%.6f %d %.6f %d');
 
 end
-
-	  
-    
-%     fprintf('[PROCESS.M] The test sequence has alpha %.4f and Delta %.4f.\n', alpha, Delta);
-%       
-% 
-%   content_test      = csvread(log_test);
-%   time_reference = content_reference(:,1)'; % reference time
-%   time_test  = content_test(:,1)'; % test time
-% 
-% spaced_reference = linspace(reference_min(1), reference_min(end), length(reference_min));
-% 
-% % Analyzing the test sequence
-% [test_min, test_idx_min, ...
-%   test_max, test_idx_max] = ...
-%   minmaxseq(time_test, max_samples);
-% 
-% % Computation of alpha and Delta
-% alpha = spaced_reference(max_samples) / test_max(max_samples);
-% [Delta, indexDelta] = max(test_max - spaced_reference * (1/alpha));
-% fprintf('[PROCESS.M] The test sequence has alpha %.4f and Delta %.4f.\n', alpha, Delta);
-% 
-% % Displaying figure
-% figure(1);
-% hold on;
-% plot(test_max, spaced_reference, 'bx-'); % lower bound
-% plot(test_min, spaced_reference, 'rx-'); % upper bound
-% 
-% end

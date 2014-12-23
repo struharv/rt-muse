@@ -126,8 +126,8 @@ echo "experiment_name     = '$REFERENCE_trace';" >> $GENERATED_OCTAVE_SCRIPT
 echo "% ----------------------------------------" >> $GENERATED_OCTAVE_SCRIPT
 echo "addpath('$ANALYSIS_DIR');" >> $GENERATED_OCTAVE_SCRIPT
 echo "process(experiment_name);" >> $GENERATED_OCTAVE_SCRIPT
+echo "uplowbound(experiment_name);" >> $GENERATED_OCTAVE_SCRIPT
 
 octave $GENERATED_OCTAVE_SCRIPT
-#rm -f $GENERATED_OCTAVE_SCRIPT
 
 cd ../..
