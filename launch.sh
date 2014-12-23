@@ -25,7 +25,7 @@ TRACE_CMD_COMMAND="trace-cmd"
 # --------------------------------------------------------------------
 NUM_args=$#
 if [ "$#" -ne 5 ]; then
-    echo "[LAUNCH] Two parameters needed:"
+    echo "[LAUNCH] parameters needed:"
     echo "         #1: remote ip"
     echo "         #2: remote port"
     echo "         #3: remote username"
@@ -126,7 +126,7 @@ echo "experiment_name     = '$REFERENCE_trace';" >> $GENERATED_OCTAVE_SCRIPT
 echo "% ----------------------------------------" >> $GENERATED_OCTAVE_SCRIPT
 echo "addpath('$ANALYSIS_DIR');" >> $GENERATED_OCTAVE_SCRIPT
 echo "process(experiment_name);" >> $GENERATED_OCTAVE_SCRIPT
-echo "uplowbound(experiment_name);" >> $GENERATED_OCTAVE_SCRIPT
+echo "uplowbound(experiment_name)" >> $GENERATED_OCTAVE_SCRIPT
 
 octave $GENERATED_OCTAVE_SCRIPT
 

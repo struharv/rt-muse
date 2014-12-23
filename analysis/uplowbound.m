@@ -6,7 +6,7 @@ function uplowbound(experiment_name)
 
 % filename from which read the duration of jobs
 %   assuming format "min_seq, idx_min, max_seq, idx_max"
-ref_infile = strcat('../results/',experiment_name,'/',experiment_name,'.all.csv');
+ref_infile = strcat('results/',experiment_name,'/',experiment_name,'.all.csv');
 
 
 % The number of the jobs used to compute the minimum job lenght is the
@@ -17,7 +17,7 @@ portion_ref = .01;
 
 % filename containing the simulation data
 %   assuming format "min_seq, idx_min, max_seq, idx_max"
-sim_infile = strcat('../results/',experiment_name,'/',experiment_name,'.all.csv');
+sim_infile = strcat('results/',experiment_name,'/',experiment_name,'.all.csv');
 
 % Maximum istantaneous slope. Tipically equal to the number of cores
 max_slope = 3;
