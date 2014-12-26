@@ -12,7 +12,7 @@ function process(experiment_name)
   interpolated = 0;
 
   % loop on threads
-  fprintf('[PROCESS] Processing thread data ...\n');
+  fprintf('[PROCESS] Processing thread data ... ');
   for k = 1:length(thread_set),
 
     % extracting timestamp of event (column 1) and job id (column 3) for each
