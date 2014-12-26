@@ -140,6 +140,6 @@ function uplowbound(experiment_name)
     end
 	end
 
-  fprintf('[UPLOWBOUND] best alpha %d and delta %d', best_alpha, best_delta);
+  fprintf('[UPLOWBOUND] best alpha %11.6f and delta %11.6f\n', best_alpha, best_delta);
 	
 end

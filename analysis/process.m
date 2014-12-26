@@ -13,8 +13,8 @@ function process(experiment_name)
 	% loop on threads
 	for k = 1:length(thread_set),
 
-		% extracting timestamp of event (column 1) and job id (column 3) for each
-		% thread id (column 2), CPU (column 4) is not used for the analysis
+	% extracting timestamp of event (column 1) and job id (column 3) for each
+	% thread id (column 2), CPU (column 4) is not used for the analysis
     thread_id = thread_set(k);
     thread_data = full_data((full_data(:,2) == thread_id),[1 3]);
     num_rows = size(thread_data,1);
