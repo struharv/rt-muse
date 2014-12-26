@@ -2,9 +2,9 @@ function [sequence_min, index_min, sequence_max, index_max] = minmaxseq(sequence
 % MINMAXSEQ  Analyze the sequence of points given as input.
 %   [SEQUENCE_MIN, INDEX_MIN, SEQUENCE_MAX, INDEX_MAX] 
 %     = minmaxseq(SEQUENCE)
-%   SEQUENCE is a column vector with increasing values. The values are supposed to be times at which
-%   events have happened.
-
+%   SEQUENCE is a column vector with increasing values. 
+%   The values are supposed to be times at which events have 
+%   happened.
 
   num_marks = length(sequence);
   intervals = diff(sequence);
