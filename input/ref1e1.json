@@ -1,0 +1,21 @@
+{
+  "resources": 0,
+  "tasks": {
+    "t1": {
+      "policy": "SCHED_FIFO",
+      "cpus": [
+        1
+      ],
+      "phases": {
+        "c0": {
+          "loops": 10
+        }
+      }
+    }
+  },
+  "global": {
+    "default_policy": "SCHED_FIFO",
+    "duration": 0.01,
+    "ftrace": true
+  }
+}
