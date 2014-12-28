@@ -72,9 +72,10 @@ function process(experiment_name)
     thread_window(thread_id,1) = min(thread_data(:,1));
     thread_window(thread_id,2) = max(thread_data(:,1));
   end
-  % interval in which all threads have at least one pending job
-  win_a = max(thread_window(:,1));
-  win_b = min(thread_window(:,2));
+  % interval in which all threads, which started once, have at least one
+  % pending job 
+  win_a = max(thread_window(thread_run,1));
+  win_b = min(thread_window(thread_run,2));
   
   %% Loop on threads to process each trace
   for k = 1:length(thread_run),
@@ -88,6 +89,10 @@ function process(experiment_name)
     % keeping data only when all threads have at least one pending job
     thread_data = thread_data((thread_data(:,1) >= win_a) & (thread_data(:,1) <= win_b),:);
     num_rows = size(thread_data,1);
+    if (num_rows <= 0)
+        fprintf('[PROCESS] No job execution of thread ''%s'' in [%f,%f]\n',thread_names{thread_id},win_a,win_b);
+        continue;
+    end
     
     %% Checking whether some mark was lost
     num_marks = thread_data(num_rows,2) - thread_data(1,2) + 1;
