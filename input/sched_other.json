@@ -15,7 +15,7 @@
     },
     "t2": {
       "cpus": [
-        1,
+        4,
         2,
         3
       ],
@@ -53,7 +53,7 @@
       "cpus": [
         1,
         2,
-        3
+        7
       ],
       "phases": {
         "c0": {
@@ -76,7 +76,7 @@
   },
   "global": {
     "default_policy": "SCHED_OTHER",
-    "duration": 10,
+    "duration": 20,
     "ftrace": true
   }
 }
