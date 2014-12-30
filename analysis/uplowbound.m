@@ -1,8 +1,8 @@
 function uplowbound(experiment_name)
-  % UPLOWBOUND  Process the data for the experiment_name given.
-  %   The function assumes that a CSV file named 
-  %   'experiment_name.all.csv', generated with the PROCESS
-  %   function is in the current directory.
+% UPLOWBOUND  Process the data for the experiment_name given.
+%   The function assumes that a CSV file named 
+%   'experiment_name.all.csv', generated with the PROCESS
+%   function is in the current directory.
 	 
   ref_infile = strcat(experiment_name,'.all.csv');
   sim_infile = strcat(experiment_name,'.all.csv');
@@ -59,9 +59,9 @@ function uplowbound(experiment_name)
   
   num_inner_corners = length(lowb_inner_x);
   if (num_inner_corners <= 1)
-    disp('[UPLOWBOUND] Too few points. Try the following:');
-    disp('[UPLOWBOUND] - reducing tol_cut, possibly to zero');
-    disp('[UPLOWBOUND] - reducing portion_ref (and the length of reference job)');
+    fprintf('[UPLOWBOUND] Too few points. Try the following:\n');
+    fprintf('[UPLOWBOUND] - reducing tol_cut, possibly to zero\n');
+    fprintf('[UPLOWBOUND] - reducing portion_ref (and the length of reference job)\n');
     break;
   end
   
@@ -90,13 +90,13 @@ function uplowbound(experiment_name)
   % always add the last point
   sel_conv = [sel_conv; 2*num_inner_corners-1];
   if (length(sel_conv) <= 2)
-    disp('[UPLOWBOUND] The points over the convex envelope are less than 3');
-    disp('[UPLOWBOUND]   This is bad!!');
+    fprintf('[UPLOWBOUND] The points over the convex envelope are less than 3\n');
+    fprintf('[UPLOWBOUND]   This is bad!!\n');
   end
   
   if (lowb_inout_y(sel_conv(2)) ~= lowb_inout_y(sel_conv(1)))
-    disp('[UPLOWBOUND] The first two points over the convex envelope have not the same Y');
-    disp('[UPLOWBOUND]   This is unexpected!!');
+    fprintf('[UPLOWBOUND] The first two points over the convex envelope have not the same Y\n');
+    fprintf('[UPLOWBOUND]   This is unexpected!!\n');
   end
   
   % searching for the (alpha, Delta) which maximize the area below the
@@ -111,7 +111,7 @@ function uplowbound(experiment_name)
     y_at_horizon = cur_alpha*(time_horizon-cur_delta);
     if ((y_at_horizon/2 >= lowb_inout_y(sel_conv(i))) &&
     	(y_at_horizon*.5 <= lowb_inout_y(sel_conv(i+1))))
-      disp('[UPLOWBOUND] Found one local max of line through TWO points');
+      fprintf('[UPLOWBOUND] Found one local max of line through TWO points\n');
       cur_area = y_at_horizon*(time_horizon-cur_delta)*.5;
       if (cur_area > max_area)
         best_alpha = cur_alpha;
@@ -130,7 +130,7 @@ function uplowbound(experiment_name)
     prev_y = cur_alpha*(lowb_inout_x(sel_conv(i-1))-cur_delta);
     next_y = cur_alpha*(lowb_inout_x(sel_conv(i+1))-cur_delta);
     if ((lowb_inout_y(sel_conv(i-1)) >= prev_y) && (lowb_inout_y(i+1) >= next_y))
-      disp('[UPLOWBOUND] Found one local max of line through ONE point (rare)');
+      fprintf('[UPLOWBOUND] Found one local max of line through ONE point (rare)\n');
       cur_area = cur_y*cur_y/cur_alpha*2;
       if (cur_area > max_area)
         best_alpha = cur_alpha;
