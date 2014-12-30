@@ -266,7 +266,7 @@ void *thread_body(void *arg) {
     /* Thread numeration reported starts with 1 */
 #ifdef TRACE_BEGINS_LOOP
     if (opts.ftrace)
-      log_ftrace(ft_data.marker_fd, "[%d] begins loop %d", data->ind+1, i);
+      log_ftrace(ft_data.marker_fd, "[%d] begins job %d", data->ind+1, i);
 #endif
     clock_gettime(CLOCK_MONOTONIC, &t_start);
     if (data->nphases == 0) {

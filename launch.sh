@@ -104,7 +104,7 @@ cp $FILENAME \
 $TRACE_CMD_COMMAND report $FILENAME > ${RESULT_dir}/${REFERENCE_trace}/${REFERENCE_trace}.txt
 rm $FILENAME
 #echo "# Time, Thread number, Job number, CPU" > $RESULT_dir/${REFERENCE_trace}/${REFERENCE_trace}.csv
-grep 'begins loop' $RESULT_dir/${REFERENCE_trace}/${REFERENCE_trace}.txt | \
+grep 'begins job' $RESULT_dir/${REFERENCE_trace}/${REFERENCE_trace}.txt | \
 	awk 'BEGIN {OFS = ", ";} { gsub(":", "", $3); gsub("\\[", "",$6); gsub("\\]", "",$6); gsub("\\[", "",$2); gsub("\\]", "",$2); print $3,$6,$9,$2}' \
 	  > $RESULT_dir/${REFERENCE_trace}/${REFERENCE_trace}.csv
 cp ${REFERENCE_run} ${RESULT_dir}/${REFERENCE_trace}/${REFERENCE_trace}.json
