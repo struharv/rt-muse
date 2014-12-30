@@ -155,4 +155,8 @@ statement (numbers start from 0).
 
 After the experiment is launched, the tool performs some analysis using
 octave. The result of the analysis is saved in the result directory on the
-local machine, in the form of csv files.
+local machine, in the form of csv files. The analysis uses 
+[jsonlab](http://iso2mesh.sourceforge.net/cgi-bin/index.cgi?jsonlab) to
+read and extract information from the JSON experiment file. The necessary files
+have been added to the repository and there is no need of installation, but
+we would like to thank the authors of jsonlab for their contribution.
