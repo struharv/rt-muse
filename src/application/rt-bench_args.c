@@ -169,8 +169,8 @@ static void parse_thread_phases(struct json_object *task_phases, thread_data_t *
       data->phases[idx].usage = usec_to_timespec(get_int_value_from(phase, "duration", FALSE, 0));
     }
     else {
-      duration = get_in_object(phase, "jobs", FALSE);
-      data->phases[idx].usage = usec_to_timespec(get_int_value_from(phase, "jobs", FALSE, 0));
+      duration = get_in_object(phase, "loops", FALSE);
+      data->phases[idx].usage = usec_to_timespec(get_int_value_from(phase, "loops", FALSE, 0));
     }
     if (ph == LOCK) { /* if lock, find resource id */
       resource_id = get_in_object(phase, "res", FALSE);
