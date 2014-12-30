@@ -43,7 +43,7 @@ for i = 1:length(thread_run),
   % (tol_cut=0) vs. efficiency (larger tol_cut). Set it to zero, unless
   % (lowb_x_clean, lowb_y_clean) are too big
   tol_cut = 0;
-  [lowb_x_clean, lowb_y_clean, sel_conv] =
+  [lowb_x_clean, lowb_y_clean, sel_conv] = ...
     cleanlowb(lowb_x,lowb_y,seq_slope, tol_cut);
     
   % computing the (alpha, Delta) pair maximizing the area below

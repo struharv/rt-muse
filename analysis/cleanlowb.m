@@ -45,7 +45,7 @@ function [x_clean, y_clean, sel_conv] = cleanlowb(x,y,max_slope, tol_cut)
   if (N_UL <= 1)
     fprintf('[CLEANLOWB] Too few points. Try the following:\n');
     fprintf('[CLEANLOWB]   (1) reducing ''tol_cut'', currently set to %f\n', tol_cut);
-    fprintf('[CLEANLOWB]   (2) reducing the length of reference job)\n');
+    fprintf('[CLEANLOWB]   (2) reducing the length of reference job\n');
     return;
   end
     

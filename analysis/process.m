@@ -92,7 +92,7 @@ function process(experiment_name)
     thread_data = full_data((full_data(:,2) == thread_id),[1 3]);
     
     % keeping data only when all threads have at least one pending job
-    thread_data = 
+    thread_data = ...
       thread_data((thread_data(:,1) >= win_a) & (thread_data(:,1) <= win_b),:);
     num_rows = size(thread_data,1);
     if (num_rows <= 0)
