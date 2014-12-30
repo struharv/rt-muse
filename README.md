@@ -54,12 +54,12 @@ The tasks section contains an array of tasks, an example follows:
       "priority" : 10,
       "cpus" : [1,3],
       "phases" : {
-        "c0" : { "loops" : 1000 },
-        "l0" : { "loops" : 2000, "resource_id" : 0 },
+        "c0" : { "jobs" : 1000 },
+        "l0" : { "jobs" : 2000, "resource_id" : 0 },
         "s1" : { "duration" : 1000, },
-        "l1" : { "loops" : 3000, "resource_id" : 1 },
-        "c1" : { "loops" : 5000 },
-        "l2" : { "loops" : 1000, "resource_id" : 0 },
+        "l1" : { "jobs" : 3000, "resource_id" : 1 },
+        "c1" : { "jobs" : 5000 },
+        "l2" : { "jobs" : 1000, "resource_id" : 0 },
       }
     }
 }
@@ -67,11 +67,11 @@ The tasks section contains an array of tasks, an example follows:
 
 The task repeats in loop a certain number of phases. There are three types of
 implemented phases. The **compute** phase executes mathematical operations for
-a certain number of loop (indicated by the loops option).  The **sleep_for**
+a certain number of jobs (indicated by the jobs option).  The **sleep_for**
 phase sleeps for a certian number of microseconds (indicated by the duration
 option). The **lock** phase locks a resource (indicated by the resource_id
 option) and computes for a certian number of iterations (indicated by the
-loops option).
+jobs option).
 
 ### _Compilation and Execution_ ###
 
@@ -137,7 +137,7 @@ On the remote machine it generates the following file
 The file output_experiment-name.txt in the remote machine contain the output
 of the application itself and of the tracer. In the local machine, the csv
 file contains the time instant of points where the function was starting the
-loops, the dat file contains the tracer outputs and the txt file the readable
+jobs, the dat file contains the tracer outputs and the txt file the readable
 form of the tracer output.
 
 Each line of the csv file has the form
@@ -146,7 +146,7 @@ Time, Thread number, Job number, CPU
 ```
 where time is the timestamp of the instant in which the application printed
 the _begins loop_ statement, thread number refers to the thread in the json
-file (numbers start from 1), job number is the number associated with the loop
+file (numbers start from 1), job number is the number associated with the job
 (numbers start from 1) and CPU number is the CPU that executed the print
 statement (numbers start from 0).
 
