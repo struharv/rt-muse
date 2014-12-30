@@ -65,6 +65,9 @@ The tasks section contains an array of tasks, an example follows:
 }
 ``` 
 
+The example defines one task named "thread1". The name of a task should contain
+only literals and numbers and should start with a literal. Spaces and special
+characters are not supported.
 The task repeats in loop a certain number of phases. There are three types of
 implemented phases. The **compute** phase executes mathematical operations for
 a certain number of loops (indicated by the loops option).  The **sleep_for**
