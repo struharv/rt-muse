@@ -247,7 +247,7 @@ static void parse_thread_data(char *name, struct json_object *obj,
   data->deadline = usec_to_timespec(dline);
 
   /* reservation type */
-  if (!get_bool_value_from(obj, "hard_rsv", TRUE, 0))
+  if (!get_bool_value_from(obj, "hard_rsv", TRUE, 1))
     data->sched_flags |= SCHED_FLAG_SOFT_RSV;
   
   /* cpu set */
