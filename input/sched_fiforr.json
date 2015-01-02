@@ -3,94 +3,51 @@
   "tasks": {
     "t1": {
       "policy": "SCHED_FIFO",
-      "cpus": [
-        1,
-        2,
-        3
-      ],
+      "cpus": [1,2,3],
       "phases": {
-        "c0": {
-          "loops": 100000
-        }
+        "c0": { "loops": 100000 }
       }
     },
     "t2": {
-      "policy": "SCHED_FIFO",
-      "cpus": [
-        1,
-        2,
-        3
-      ],
+      "cpus": [1,2,3],
       "phases": {
-        "c0": {
-          "loops": 100000
-        }
+        "c0": { "loops": 100000 }
       }
     },
     "t3": {
-      "cpus": [
-        1,
-        2,
-        3
-      ],
+      "cpus": [1,2,3],
       "phases": {
-        "c0": {
-          "loops": 100000
-        }
+        "c0": { "loops": 100000 }
       }
     },
     "t4": {
-      "cpus": [
-        1,
-        2,
-        3
-      ],
+      "cpus": [1,2,3],
       "phases": {
-        "c0": {
-          "loops": 100000
-        }
+        "c0": { "loops": 100000 }
       }
     },
     "t5": {
-      "cpus": [
-        1,
-        2,
-        3
-      ],
+      "cpus": [1,2,3],
       "phases": {
-        "c0": {
-          "loops": 100000
-        }
+        "c0": { "loops": 100000 }
       }
     },
     "t6": {
-      "cpus": [
-        1,
-        2,
-        3
-      ],
+     "cpus": [1,2,3],
       "phases": {
-        "c0": {
-          "loops": 100000
-        }
+        "c0": { "loops": 100000 }
       }
     },
     "t7": {
-      "cpus": [
-        1,
-        2,
-        3
-      ],
+      "cpus": [1,2,3],
       "phases": {
-        "c0": {
-          "loops": 100000
-        }
+        "c0": { "loops": 100000 }
       }
     }
   },
   "global": {
     "default_policy": "SCHED_RR",
-    "duration": 10,
+    "duration": 20,
     "ftrace": true
   }
 }

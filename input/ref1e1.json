@@ -3,13 +3,9 @@
   "tasks": {
     "t1": {
       "policy": "SCHED_FIFO",
-      "cpus": [
-        1
-      ],
+      "cpus": [1],
       "phases": {
-        "c0": {
-          "loops": 10
-        }
+        "c0": { "loops": 10 }
       }
     }
   },
