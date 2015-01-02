@@ -68,7 +68,7 @@ function process(experiment_name)
   cpu_run = unique(full_data(:,4));
   all_marks = [];
   interpolated = 0;
-  thread_window = zeros(thread_num,2);
+  thread_window = zeros(thread_num,2);    % timw window of thread execution
   thread_nJobs = zeros(thread_num,1);
 
   % loop on threads to compute the time windows only
@@ -161,6 +161,8 @@ function process(experiment_name)
   fprintf(fid_analysis,'%%   re-run ''analysis/process.m''\n');
   fprintf(fid_analysis,'%% -------- WARNING --------\n');
   fprintf(fid_analysis,'\n');
+  fprintf(fid_analysis,'experiment_name = ''%s'';\n',experiment_name);
+  fprintf(fid_analysis,'\n');  
   fprintf(fid_analysis,'%%%% Experiment source data\n');
   fprintf(fid_analysis,'%% File with original input data in the format\n');
   fprintf(fid_analysis,'%%    #Time, #Thread-number, #Job-number, #CPU\n');
