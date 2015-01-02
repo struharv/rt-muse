@@ -29,7 +29,7 @@
       "phases": {
         "c0": { "loops": 100000 }
       }
-    },
+    }
   },
   "global": {
     "default_policy": "SCHED_DEADLINE",
