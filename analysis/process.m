@@ -48,12 +48,12 @@ function process(experiment_name)
   %   affinity_map(i,k) = 1   <==> thread i may execute over CPU k
   affinity_map = zeros(thread_num,cpu_num);
   for i=1:thread_num,
-      cpu_cur = affinities{i,1};
-      for k=1:cpu_num,
-          if (ismember(cpu_set(k),cpu_cur))
-              affinity_map(i,k) = 1;
-          end
+    cpu_cur = affinities{i,1};
+    for k=1:cpu_num,
+      if (ismember(cpu_set(k),cpu_cur))
+        affinity_map(i,k) = 1;
       end
+    end
   end
   
   %% Importing data from 'experiment_name.csv'
@@ -62,8 +62,8 @@ function process(experiment_name)
   thread_run = unique(full_data(:,2));
   thread_not_run = setdiff((1:thread_num)',thread_run);
   if (~isempty(thread_not_run))
-      fprintf('[PROCESS] WARNING: Threads %s did not ever start!\n',...
-          mat2str(thread_not_run'));
+    fprintf('[PROCESS] WARNING: Threads %s did not ever start!\n', ...
+      mat2str(thread_not_run'));
   end
   cpu_run = unique(full_data(:,4));
   all_marks = [];
@@ -90,8 +90,8 @@ function process(experiment_name)
     % extracting timestamps of thread k
     %  #CPU is not used for the analysis, still can be used for other analysis
     thread_id = thread_run(k);
-    fprintf('[PROCESS] Processing data of thread ''%s''\n',...
-        thread_names{thread_id});
+    fprintf('[PROCESS] Processing data of thread ''%s''\n', ...
+      thread_names{thread_id});
     thread_data = full_data((full_data(:,2) == thread_id),[1 3]);
     
     % keeping data only when all threads have at least one pending job
@@ -99,9 +99,9 @@ function process(experiment_name)
       thread_data((thread_data(:,1) >= win_a) & (thread_data(:,1) <= win_b),:);
     num_rows = size(thread_data,1);
     if (num_rows <= 0)
-        fprintf('[PROCESS] No job execution of thread ''%s'' in [%f,%f]\n',...
-            thread_names{thread_id},win_a,win_b);
-        continue;
+      fprintf('[PROCESS] No job execution of thread ''%s'' in [%f,%f]\n', ...
+        thread_names{thread_id},win_a,win_b);
+      continue;
     end
     
     % checking whether some mark was lost
@@ -119,8 +119,8 @@ function process(experiment_name)
         aux = linspace(thread_data(i-1,1),thread_data(i,1),sep_job+1)';
         thread_marks(i+num_lost:i+num_lost+sep_job-1) = aux(2:end);
         for j=1:sep_job-1,
-            fprintf('[PROCESS] Lost mark of job %d of thread %d, interpolated\n',...
-                thread_data(i-1,2)+j, thread_id);
+          fprintf('[PROCESS] Lost mark of job %d of thread %d, interpolated\n', ...
+            thread_data(i-1,2)+j, thread_id);
         end
         num_lost= num_lost+sep_job-1;
       end
@@ -132,8 +132,8 @@ function process(experiment_name)
     [seq_min, seq_idx_min, seq_max, seq_idx_max] = minmaxseq(thread_marks);
     output_file = strcat(experiment_name,'.',num2str(thread_id,'%d'),'.csv');
     fid = fopen(output_file,'w+');
-    fprintf(fid,'%11.6f, %7u, %11.6f, %7u\n',...
-        [seq_min, seq_idx_min, seq_max, seq_idx_max]');
+    fprintf(fid,'%11.6f, %7u, %11.6f, %7u\n', ...
+      [seq_min, seq_idx_min, seq_max, seq_idx_max]');
     fclose(fid);
 
   end
@@ -171,7 +171,7 @@ function process(experiment_name)
   fprintf(fid_analysis,'%%%% Thread data\n');
   fprintf(fid_analysis,'thread_names = {');
   for i=1:thread_num,
-      fprintf(fid_analysis,'''%s''; ',thread_names{i});
+    fprintf(fid_analysis,'''%s''; ',thread_names{i});
   end
   fprintf(fid_analysis,'};\n');
   fprintf(fid_analysis,'thread_run = %s;\n',mat2str(thread_run));
