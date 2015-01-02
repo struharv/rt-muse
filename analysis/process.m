@@ -62,8 +62,9 @@ function process(experiment_name)
   thread_run = unique(full_data(:,2));
   thread_not_run = setdiff((1:thread_num)',thread_run);
   if (~isempty(thread_not_run))
-    fprintf('[PROCESS] WARNING: Threads %s did not ever start!\n', ...
-      mat2str(thread_not_run'));
+      for i=1:length(thread_not_run),
+          fprintf('[PROCESS] %s, %s, ZERORUN\n', experiment_name, thread_names{thread_not_run(i)});
+      end
   end
   cpu_run = unique(full_data(:,4));
   all_marks = [];
@@ -78,6 +79,15 @@ function process(experiment_name)
     thread_window(thread_id,1) = min(thread_data(:,1));
     thread_window(thread_id,2) = max(thread_data(:,1));
   end
+  
+  thread_short_exec = (1:thread_num)';     % init
+  thread_short_exec = thread_short_exec((thread_window(:,2)-thread_window(:,1)) <= sim_duration/10);
+  if (~isempty(thread_short_exec))
+      for i=1:length(thread_short_exec),
+          fprintf('[PROCESS] %s, %s, SHORTRUN\n', experiment_name, thread_names{thread_short_exec(i)});
+      end
+  end
+  thread_run = setdiff(thread_run,thread_short_exec);
   
   % interval in which all threads, which started once, have at least one
   % pending job 
