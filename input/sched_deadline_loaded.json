@@ -1,0 +1,39 @@
+{
+  "resources": 0,
+  "tasks": {
+    "t1": {
+    	"budget" : 50000,
+    	"period" : 100000,
+      "cpus": [1,2,3],
+      "phases": {
+        "c0": { "loops": 100000 }
+      }
+    },
+    "t2": {
+      "policy": "SCHED_FIFO",
+      "cpus": [1,2,3],
+      "phases": {
+        "c0": { "loops": 100000 }
+      }
+    },
+    "t3": {
+      "policy": "SCHED_FIFO",
+      "cpus": [1,2,3],
+      "phases": {
+        "c0": { "loops": 100000 }
+      }
+    },
+    "t4": {
+      "policy": "SCHED_FIFO",
+      "cpus": [1,2,3],
+      "phases": {
+        "c0": { "loops": 100000 }
+      }
+    },
+  },
+  "global": {
+    "default_policy": "SCHED_DEADLINE",
+    "duration": 20,
+    "ftrace": true
+  }
+}
