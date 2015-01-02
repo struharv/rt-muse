@@ -10,21 +10,21 @@
       }
     },
     "t2": {
-      "policy": "SCHED_FIFO",
+      "policy": "SCHED_RR",
       "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
       }
     },
     "t3": {
-      "policy": "SCHED_FIFO",
+      "policy": "SCHED_RR",
       "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
       }
     },
     "t4": {
-      "policy": "SCHED_FIFO",
+      "policy": "SCHED_RR",
       "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
