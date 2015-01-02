@@ -62,8 +62,8 @@ function process(experiment_name)
   thread_run = unique(full_data(:,2));
   thread_not_run = setdiff((1:thread_num)',thread_run);
   if (~isempty(thread_not_run))
-      fprintf('[PROCESS] WARNING: Threads %s did not ever start!\n',...
-          mat2str(thread_not_run'));
+    fprintf('[PROCESS] WARNING: Threads %s did not ever start!\n', ...
+      mat2str(thread_not_run'));
   end
   cpu_run = unique(full_data(:,4));
   all_marks = [];
