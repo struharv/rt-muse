@@ -2,8 +2,8 @@
   "resources": 0,
   "tasks": {
     "t1": {
-    	"budget" : 50000,
-    	"period" : 100000,
+    	"budget" : 50,
+    	"period" : 100,
       "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
