@@ -1,4 +1,5 @@
 addpath('../../analysis/');
+warning ("off", "Octave:undefined-return-values");
 
 % loading experiment dependent data from file
 experiment_data;
@@ -49,8 +50,13 @@ for i = 1:length(thread_run),
   % computing the (alpha, Delta) pair maximizing the area below
   %   alpha*(t-Delta) over [Delta, time_horizon]
   [alpha, delta] = bestAlphaDelta(lowb_x_clean(sel_conv), lowb_y_clean(sel_conv));
-  fprintf('[ANALYSIS] %s, %s, LOWBALPHADELTA, %f, %f\n', ...
-    experiment_name, thread_names{thread_id}, alpha, delta);
+  if (alpha)
+    fprintf('[ANALYSIS] %s, %s, LOWBALPHADELTA, %f, %f \n', ...
+      experiment_name, thread_names{thread_id}, alpha, delta);
+  else
+    fprintf('[ANALYSIS] %s, %s, LOWBALPHADELTA, %f, %f \n', ...
+      experiment_name, thread_names{thread_id}, 0, inf);
+  end
 
   % computing the supply upper bound
   uppb_x = sim_data(:,1); % original data, min separations
