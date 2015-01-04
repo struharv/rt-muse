@@ -6,28 +6,28 @@
     	"period" : 100,
       "cpus": [1,2,3],
       "phases": {
-        "c0": { "loops": 1000 }
+        "c0": { "loops": 10000 }
       }
     },
     "t2": {
       "policy": "SCHED_RR",
       "cpus": [1,2,3],
       "phases": {
-        "c0": { "loops": 1000 }
+        "c0": { "loops": 10000 }
       }
     },
     "t3": {
       "policy": "SCHED_RR",
       "cpus": [1,2,3],
       "phases": {
-        "c0": { "loops": 1000 }
+        "c0": { "loops": 10000 }
       }
     },
     "t4": {
       "policy": "SCHED_RR",
       "cpus": [1,2,3],
       "phases": {
-        "c0": { "loops": 1000 }
+        "c0": { "loops": 10000 }
       }
     }
   },
