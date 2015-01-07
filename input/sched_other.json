@@ -40,7 +40,7 @@
   },
   "global": {
     "default_policy": "SCHED_OTHER",
-    "duration": 20,
+    "duration": 100,
     "ftrace": true
   }
 }
