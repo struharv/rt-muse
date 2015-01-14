@@ -2,42 +2,49 @@
   "resources": 0,
   "tasks": {
     "t1": {
+      "priority" : 50,
       "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
       }
     },
     "t2": {
+      "priority" : 50,
       "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
       }
     },
     "t3": {
+      "priority" : 50,
       "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
       }
     },
     "t4": {
+      "priority" : 50,
       "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
       }
     },
     "t5": {
+      "priority" : 50,
       "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
       }
     },
     "t6": {
+      "priority" : 50,
       "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
       }
     },
     "t7": {
+      "priority" : 50,
       "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
