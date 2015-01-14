@@ -1,5 +1,5 @@
 addpath('../../analysis/');
-warning ("off", "Octave:undefined-return-values");
+% warning ("off", "Octave:undefined-return-values");   % Matlab incompatible
 
 % loading experiment dependent data from file
 experiment_data;
