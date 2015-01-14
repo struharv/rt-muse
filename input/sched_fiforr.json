@@ -55,7 +55,7 @@
   },
   "global": {
     "default_policy": "SCHED_RR",
-    "duration": 100,
+    "duration": 20,
     "ftrace": true
   }
 }
