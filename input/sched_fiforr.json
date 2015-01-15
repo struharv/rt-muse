@@ -3,42 +3,50 @@
   "tasks": {
     "t1": {
       "policy": "SCHED_FIFO",
+      "priority" : 50,
       "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
       }
     },
     "t2": {
+      "policy": "SCHED_FIFO",
+      "priority" : 50,
       "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
       }
     },
     "t3": {
+      "priority" : 50,
       "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
       }
     },
     "t4": {
+      "priority" : 50,
       "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
       }
     },
     "t5": {
+      "priority" : 50,
       "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
       }
     },
     "t6": {
-     "cpus": [1,2,3],
+      "priority" : 50,
+      "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
       }
     },
     "t7": {
+      "priority" : 50,
       "cpus": [1,2,3],
       "phases": {
         "c0": { "loops": 100000 }
