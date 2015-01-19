@@ -2,30 +2,33 @@
   "resources": 0,
   "tasks": {
     "t1": {
-    	"budget" : 50,
-    	"period" : 100,
-      "cpus": [1,2,3],
+      "budget" : 100,
+      "period" : 200,
+      "cpus": [1,2],
       "phases": {
         "c0": { "loops": 10000 }
       }
     },
     "t2": {
-      "policy": "SCHED_RR",
-      "cpus": [1,2,3],
+      "budget" : 100,
+      "period" : 200,
+      "cpus": [1,2],
       "phases": {
         "c0": { "loops": 10000 }
       }
     },
     "t3": {
-      "policy": "SCHED_RR",
-      "cpus": [1,2,3],
+      "budget" : 100,
+      "period" : 200,
+      "cpus": [1,2],
       "phases": {
         "c0": { "loops": 10000 }
       }
     },
     "t4": {
-      "policy": "SCHED_RR",
-      "cpus": [1,2,3],
+      "budget" : 100,
+      "period" : 200,
+      "cpus": [1,2],
       "phases": {
         "c0": { "loops": 10000 }
       }
