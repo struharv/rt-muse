@@ -1,0 +1,370 @@
+{
+  "resources": 1,
+  "tasks": {
+    "t1": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t2": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t3": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t4": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t5": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t6": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t7": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t8": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t9": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t10": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t11": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t12": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t13": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t14": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t15": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t16": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t17": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t18": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t19": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t20": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t21": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t22": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t23": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t24": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t25": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t26": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t27": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t28": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t29": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t30": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t31": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t32": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t33": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t34": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t35": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t36": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t37": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t38": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t39": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    },
+    "t40": {
+      "budget" : 750,
+      "period" : 10000,
+      "cpus": [1,2,3],
+      "phases": {
+        "l0": { "loops": 2500, "res": 0 },
+        "c0": { "loops": 7500 }
+      }
+    } 
+  },
+  "global": {
+    "default_policy": "SCHED_DEADLINE",
+    "duration": 20,
+    "ftrace": true
+  }
+}
