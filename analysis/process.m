@@ -72,7 +72,11 @@ function process(experiment_name)
   thread_window = zeros(thread_num,2);    % timw window of thread execution
   thread_nJobs = zeros(thread_num,1);
 
-  % loop on threads to compute the time windows only
+  %% Migration-related data structures
+  run_map = zeros(thread_num,cpu_num);
+  migr_nJobs = zeros(thread_num,1);
+
+  %% Loop on threads to compute the time windows only
   for k = 1:length(thread_run),
     thread_id = thread_run(k);
     thread_data = full_data((full_data(:,2) == thread_id),[1 3]);
@@ -97,12 +101,12 @@ function process(experiment_name)
   % loop on threads to process each trace
   for k = 1:length(thread_run),
 
-    % extracting timestamps of thread k
+    %% Extracting timestamps of thread k
     %  #CPU is not used for the analysis, still can be used for other analysis
     thread_id = thread_run(k);
     fprintf('[PROCESS] Processing data of thread ''%s''\n', ...
       thread_names{thread_id});
-    thread_data = full_data((full_data(:,2) == thread_id),[1 3]);
+    thread_data = full_data((full_data(:,2) == thread_id),[1 3 4]);
     
     % keeping data only when all threads have at least one pending job
     thread_data = ...
@@ -114,9 +118,16 @@ function process(experiment_name)
       continue;
     end
     
-    % checking whether some mark was lost
-    num_marks = thread_data(num_rows,2) - thread_data(1,2) + 1;
-    thread_marks = -ones(num_marks,1); % init
+    %% Computing migration-related data
+    for i=1:cpu_num,
+        num_jobs_cpu = sum(thread_data(:,3) == cpu_set(i));
+        run_map(thread_id,i) = num_jobs_cpu/num_rows;
+    end
+    migr_nJobs(thread_id) = sum(thread_data(1:end-1,3) ~= thread_data(2:end,3));
+    
+    %% Checking whether the mark at the begin of some job was lost
+    num_jobs = thread_data(num_rows,2) - thread_data(1,2) + 1;
+    thread_marks = -ones(num_jobs,1); % init
     thread_marks(1) = thread_data(1,1);
     num_lost = 0;
 
@@ -138,7 +149,7 @@ function process(experiment_name)
     thread_nJobs(thread_id) = length(thread_marks); 
     all_marks = [all_marks; thread_marks];
 
-    % computing min/max separation of consecutive job starts of each thread
+    %% Computing min/max separation of consecutive job starts of each thread
     [seq_min, seq_idx_min, seq_max, seq_idx_max] = minmaxseq(thread_marks);
     output_file = strcat(experiment_name,'.',num2str(thread_id,'%d'),'.csv');
     fid = fopen(output_file,'w+');
@@ -197,10 +208,13 @@ function process(experiment_name)
   fprintf(fid_analysis,'%% thread_window(i,1) = start instant of first job of i-th thread\n');
   fprintf(fid_analysis,'%% thread_window(i,2) = start instant of last job of i-th thread\n');
   fprintf(fid_analysis,'thread_window = %s;\n',mat2str(thread_window));
+  fprintf(fid_analysis,'analysis_window = [%f %f];\n',win_a,win_b);
   fprintf(fid_analysis,'\n');
   fprintf(fid_analysis,'%% thread_nJobs(i) = number of i-th thread''s jobs in interval\n');
   fprintf(fid_analysis,'%%   [thread_window(i,1), thread_window(i,2)]\n');
   fprintf(fid_analysis,'thread_nJobs = %s;\n',mat2str(thread_nJobs));
+  fprintf(fid_analysis,'migr_nJobs = %s;\n',mat2str(migr_nJobs));
+  fprintf(fid_analysis,'run_map = %s;\n',mat2str(run_map));
   fprintf(fid_analysis,'\n');
   fprintf(fid_analysis,'%%%% Analysis data\n');
   fprintf(fid_analysis,'%% Time horizon, in seconds, over which computing the supply function and\n');
@@ -218,7 +232,7 @@ function process(experiment_name)
   fprintf(fid_analysis,'ref_infile = ''%s.1.csv'';\n',experiment_name);
   fprintf(fid_analysis,'%% ref_infile = ''../results/sched_fifo/sched_fifo.1.csv'';\n');
   fprintf(fid_analysis,'ref_data = csvread(ref_infile);\n');
-  fprintf(fid_analysis,'tol_ref = 2e-3;      %% tolerance to compute nominal job length\n');
+  fprintf(fid_analysis,'tol_ref = 0;      %% tolerance to compute nominal job length\n');
   fprintf(fid_analysis,'[ref_seq, ind_last] = uniformYvalues(ref_data(:,1), tol_ref, max(thread_nJobs)+1);\n')
   fprintf(fid_analysis,'\n');
   fclose(fid_analysis);
