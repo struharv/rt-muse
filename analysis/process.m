@@ -233,7 +233,7 @@ function process(experiment_name)
   fprintf(fid_analysis,'%% ref_infile = ''../results/sched_fifo/sched_fifo.1.csv'';\n');
   fprintf(fid_analysis,'ref_data = csvread(ref_infile);\n');
   fprintf(fid_analysis,'tol_ref = 0;      %% tolerance to compute nominal job length\n');
-  fprintf(fid_analysis,'[ref_seq, ind_last] = uniformYvalues(ref_data(:,1), tol_ref, max(thread_nJobs)+1);\n')
+  fprintf(fid_analysis,'[ref_seq, ind_last] = uniformYvalues(ref_data(:,1), tol_ref, sum(thread_nJobs)+thread_num);\n')
   fprintf(fid_analysis,'\n');
   fclose(fid_analysis);
   fprintf('[PROCESS] Octave/Matlab file ''%s'' written\n',analysis_file);
