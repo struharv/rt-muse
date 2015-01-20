@@ -195,5 +195,5 @@ if (0)        % set it to 1 to print, can only be made with display
     % printing XFig (only Octave compatible)
     figure_outfile = strcat(experiment_name,'.',num2str(thread_id),'.supply.fig');
     print(figure_outfile,'-dfig');
-    fprintf('[ANALYSIS] %s, %s, SUPPLYFIGURE, %s\n', experiment_name, thread_names{thread_id}, figure_outfile);
+    fprintf('[ANALYSIS] %s, all, SUPPLYFIGURE, %s\n', experiment_name, figure_outfile);
 end
