@@ -45,8 +45,8 @@ for i=1:length(thread_run),
     [lowb_x_clean, lowb_y_clean, lowb_sel_conv] = cleanlowb(lowb_x,lowb_y,seq_slope, tol_cut);
     % Computing the (alpha,Delta) pair maximizing the area below
     %   alpha*(t-Delta) over [Delta,time_horizon]
-    [lowb_alpha, delta] = bestAlphaDelta_low(lowb_x_clean(lowb_sel_conv),lowb_y_clean(lowb_sel_conv));
-    fprintf('[ANALYSIS] %s, %s, LOWBALPHADELTA, %f, %f\n', experiment_name, thread_names{thread_id}, lowb_alpha, delta);
+    [lowb_alpha, lowb_delta] = bestAlphaDelta_low(lowb_x_clean(lowb_sel_conv),lowb_y_clean(lowb_sel_conv));
+    fprintf('[ANALYSIS] %s, %s, LOWBALPHADELTA, %f, %f\n', experiment_name, thread_names{thread_id}, lowb_alpha, lowb_delta);
     
     %% Computing the supply upper bound delivered to a thread
     % Original data
@@ -71,19 +71,44 @@ for i=1:length(thread_run),
     %   min(seq_slope*t, alpha*t+burst)
     %
     %   with t spanning over [0,time_horizon]
-    [uppb_alpha, burst] = bestAlphaBurst_upp(uppb_x_clean(uppb_sel_conv),uppb_y_clean(uppb_sel_conv),seq_slope);
-    fprintf('[ANALYSIS] %s, %s, UPPBALPHABURST, %f, %f, %f\n', experiment_name, thread_names{thread_id}, uppb_alpha, burst, -burst/uppb_alpha);
+    [uppb_alpha, uppb_burst] = bestAlphaBurst_upp(uppb_x_clean(uppb_sel_conv),uppb_y_clean(uppb_sel_conv),seq_slope);
+    fprintf('[ANALYSIS] %s, %s, UPPBALPHABURST, %f, %f, %f\n', experiment_name, thread_names{thread_id}, uppb_alpha, uppb_burst, -uppb_burst/uppb_alpha);
     if (uppb_alpha < lowb_alpha)
         fprintf('[ANALYSIS] %s, %s, ALPHA_UPP<LOW\n', experiment_name, thread_names{thread_id});
         fprintf('[ANALYSIS]   Try increasing time_horizon and duration of experiment\n');
     end
     
-    %% Plotting
-    %figure(thread_id);
-    %hold on;
-    %    plot(lowb_x,lowb_y,'r');
-    %plot(lowb_x_clean,lowb_y_clean,'b');
-    %    plot(uppb_x,uppb_y,'b');
+    %% Plotting thread supply
+    if (0)        % set it to 1 to print, can only be made with display
+        %figure('visible','off');
+        figure;
+        % supply lower bound
+        plot(lowb_x_clean, lowb_y_clean,'r');
+        hold on;
+        % vertices on the convex hull of the supply lower bound
+        plot(lowb_x_clean(lowb_sel_conv), lowb_y_clean(lowb_sel_conv),'ro');
+        % linear lower bound
+        plot([0;lowb_delta;time_horizon],[0;0;lowb_alpha*(time_horizon-lowb_delta)],'k--');
+        % supply upper bound
+        plot(uppb_x_clean, uppb_y_clean,'b');
+        % vertices on the convex hull of the supply upper bound
+        plot(uppb_x_clean(uppb_sel_conv), uppb_y_clean(uppb_sel_conv),'bo');
+        % linear upper bound
+        plot([0; uppb_burst/(seq_slope-uppb_alpha); time_horizon],[0;uppb_burst/(seq_slope-uppb_alpha)*seq_slope;uppb_alpha*time_horizon+uppb_burst],'k--');
+        set(gca,'xlim',[0 time_horizon]);
+    
+        %% Choose one of the following formats
+        
+        % printing EPS (both Matlab and Octave compatible)
+        %figure_outfile = strcat(experiment_name,'.',num2str(thread_id),'.supply.eps');
+        %print(figure_outfile,'-deps');
+        %fprintf('[ANALYSIS] %s, %s, SUPPLYFIGURE, %s\n', experiment_name, thread_names{thread_id}, figure_outfile);
+        
+        % printing XFig (only Octave compatible)
+        figure_outfile = strcat(experiment_name,'.',num2str(thread_id),'.supply.fig');
+        print(figure_outfile,'-dfig');
+        fprintf('[ANALYSIS] %s, %s, SUPPLYFIGURE, %s\n', experiment_name, thread_names{thread_id}, figure_outfile);
+    end
 end
 
 %% Overall analysis
@@ -108,9 +133,9 @@ tol_cut = 0;
 [lowb_x_clean, lowb_y_clean, lowb_sel_conv] = cleanlowb(lowb_x,lowb_y,max_slope, tol_cut);
 % computing the (alpha,Delta) pair maximizing the area below
 %   alpha*(t-Delta) over [Delta,time_horizon]
-[alpha, delta] = bestAlphaDelta_low(lowb_x_clean(lowb_sel_conv),lowb_y_clean(lowb_sel_conv));
-fprintf('[ANALYSIS] %s, all, LOWBALPHADELTA, %f, %f\n', experiment_name, alpha, delta);
-    
+[lowb_alpha, lowb_delta] = bestAlphaDelta_low(lowb_x_clean(lowb_sel_conv),lowb_y_clean(lowb_sel_conv));
+fprintf('[ANALYSIS] %s, all, LOWBALPHADELTA, %f, %f\n', experiment_name, lowb_alpha, lowb_delta);
+
 %% Computing the supply upper bound  of the entire platform
 % Original data
 uppb_x = sim_data(:,1); % min separations
@@ -134,19 +159,41 @@ end
 %   min(max_slope*t, alpha*t+burst)
 %
 %   with t spanning over [0,time_horizon]
-[uppb_alpha, burst] = bestAlphaBurst_upp(uppb_x_clean(uppb_sel_conv),uppb_y_clean(uppb_sel_conv),max_slope);
-fprintf('[ANALYSIS] %s, all, UPPBALPHABURST, %f, %f, %f\n', experiment_name, uppb_alpha, burst, -burst/uppb_alpha);
+[uppb_alpha, uppb_burst] = bestAlphaBurst_upp(uppb_x_clean(uppb_sel_conv),uppb_y_clean(uppb_sel_conv),max_slope);
+fprintf('[ANALYSIS] %s, all, UPPBALPHABURST, %f, %f, %f\n', experiment_name, uppb_alpha, uppb_burst, -uppb_burst/uppb_alpha);
 if (uppb_alpha < lowb_alpha)
     fprintf('[ANALYSIS] %s, all, ALPHA_UPP<LOW\n', experiment_name);
     fprintf('[ANALYSIS]   Try increasing time_horizon and duration of experiment\n');
 end
     
-
-
-%% Plotting
-%figure(thread_id);
-%hold on;
-%    plot(lowb_x,lowb_y,'r');
-%plot(lowb_x_clean,lowb_y_clean,'b');
-%    plot(uppb_x,uppb_y,'b');
-
+%% Plotting platform supply
+if (0)        % set it to 1 to print, can only be made with display
+    %figure('visible','off');
+    figure;
+    % supply lower bound
+    plot(lowb_x_clean, lowb_y_clean,'r');
+    hold on;
+    % vertices on the convex hull of the supply lower bound
+    plot(lowb_x_clean(lowb_sel_conv), lowb_y_clean(lowb_sel_conv),'ro');
+    % linear lower bound
+    plot([0;lowb_delta;time_horizon],[0;0;lowb_alpha*(time_horizon-lowb_delta)],'k--');
+    % supply upper bound
+    plot(uppb_x_clean, uppb_y_clean,'b');
+    % vertices on the convex hull of the supply upper bound
+    plot(uppb_x_clean(uppb_sel_conv), uppb_y_clean(uppb_sel_conv),'bo');
+    % linear upper bound
+    plot([0; uppb_burst/(max_slope-uppb_alpha); time_horizon],[0;uppb_burst/(max_slope-uppb_alpha)*max_slope;uppb_alpha*time_horizon+uppb_burst],'k--');
+    set(gca,'xlim',[0 time_horizon]);
+    
+    %% Choose one of the following formats
+    
+    % printing EPS (both Matlab and Octave compatible)
+    %figure_outfile = strcat(experiment_name,'.',num2str(thread_id),'.supply.eps');
+    %print(figure_outfile,'-deps');
+    %fprintf('[ANALYSIS] %s, %s, SUPPLYFIGURE, %s\n', experiment_name, thread_names{thread_id}, figure_outfile);
+    
+    % printing XFig (only Octave compatible)
+    figure_outfile = strcat(experiment_name,'.',num2str(thread_id),'.supply.fig');
+    print(figure_outfile,'-dfig');
+    fprintf('[ANALYSIS] %s, %s, SUPPLYFIGURE, %s\n', experiment_name, thread_names{thread_id}, figure_outfile);
+end
