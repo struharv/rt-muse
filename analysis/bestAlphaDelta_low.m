@@ -1,27 +1,27 @@
-function [best_alpha, best_delta] = bestAlphaDelta(x,y)
-% BESTALPHADELTA
+function [best_alpha, best_delta] = bestAlphaDelta_low(x,y)
+% BESTALPHADELTA_LOW
 % Input:
 %   (x,y), coordinates of the convex hull of the supply lower bound (column
 %     vectors) 
 % Output:
 %   best_alpha, bandwidth of the best linear lower bound
 %   best_delta, delay of the best linear lower bound
+% Method:
+%   the returned pair corresponds to a linear lower bound with maximal area
+%     over [0,H], with H = max(x)
 
   if (length(x) ~= length(y))
-    fprintf('[BESTALPHADELTA] Error: vectors ''x'' and ''y'' should have the same size\n');
+    fprintf('[BESTALPHADELTA_LOW] Error: vectors ''x'' and ''y'' should have the same size\n');
     return;
   end
 
+  %% Init
   % time horizon
   H = max(x);
   % number of points
   N = length(x);
 
-  % searching for the (alpha, Delta) which maximize the area below the
-  % linear lower bound over [0, H]
-
-  % serching first among the solutions with the linear bound through TWO
-  % points of the supply function
+  %% Evaluating the linear bound through (x(i),y(i)) and ((x(i+1),y(i+1))
   max_area = 0;
   % starting from i=2, because i=1 should always give cur_area = 0
   for i=2:N-1,
@@ -30,7 +30,7 @@ function [best_alpha, best_delta] = bestAlphaDelta(x,y)
     y_at_H = alpha*(H-delta);
     % if stationary point
     if ((y_at_H*.5 >= y(i)) && (y_at_H*.5 <= y(i+1)))
-      fprintf('[BESTALPHADELTA] Found one local max of line through TWO points\n');
+      fprintf('[BESTALPHADELTA_LOW] Found one local max of line through TWO points\n');
       area = y_at_H*(H-delta)*.5;
       if (area > max_area)
         best_alpha = alpha;
@@ -51,7 +51,7 @@ function [best_alpha, best_delta] = bestAlphaDelta(x,y)
     next_y = alpha*(x(i+1)-delta);
     % if feasible
     if ((y(i-1) >= prev_y) && (y(i+1) >= next_y))
-      fprintf('[BESTALPHADELTA] Found one local max of line through ONE point (rare)\n');
+      fprintf('[BESTALPHADELTA_LOW] Found one local max of line through ONE point (rare)\n');
       area = cur_y*cur_y/alpha*2;
       if (area > max_area)
         best_alpha = alpha;
@@ -62,4 +62,3 @@ function [best_alpha, best_delta] = bestAlphaDelta(x,y)
   end
   
 end
-
