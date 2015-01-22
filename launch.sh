@@ -131,6 +131,7 @@ echo "process(experiment_name);" >> $GENERATED_OCTAVE_SCRIPT
 echo "analysis;" >> $GENERATED_OCTAVE_SCRIPT
 #echo "uplowbound(experiment_name)" >> $GENERATED_OCTAVE_SCRIPT
 
+# Comment the line below to just run the experiments without no analysis
 octave -q --no-window-system $GENERATED_OCTAVE_SCRIPT
 
 cd ../..
