@@ -129,9 +129,18 @@ echo "addpath('$ANALYSIS_DIR');" >> $GENERATED_OCTAVE_SCRIPT
 echo "addpath('${ANALYSIS_DIR}jsonlab/');" >> $GENERATED_OCTAVE_SCRIPT
 echo "process(experiment_name);" >> $GENERATED_OCTAVE_SCRIPT
 echo "analysis;" >> $GENERATED_OCTAVE_SCRIPT
-#echo "uplowbound(experiment_name)" >> $GENERATED_OCTAVE_SCRIPT
 
-# Comment the line below to just run the experiments without no analysis
 octave -q --no-window-system $GENERATED_OCTAVE_SCRIPT
+# Removing the generated script file, as running it again may only
+#   erase data
+rm $GENERATED_OCTAVE_SCRIPT
+
+printf "[LAUNCH] Default analysis completed!\n"
+printf "[LAUNCH] To perform the analysis just run the Octave/Matlab script\n"
+printf "[LAUNCH]   analysis.m in the directory ${RESULT_dir}/${REFERENCE_trace}/\n"
+printf "[LAUNCH] Costumized analysis can be performed by modifying\n"
+printf "[LAUNCH]     experiment_data.m, with experiment dependent data, and\n"
+printf "[LAUNCH]     analysis.m, which performs the actual analysis.\n"
+printf "[LAUNCH]   These files are located in ${RESULT_dir}/${REFERENCE_trace}/\n"
 
 cd ../..
