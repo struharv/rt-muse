@@ -118,6 +118,7 @@ printf " done\n"
 ANALYSIS_DIR="../../analysis/" 
 cd ${RESULT_dir}/${REFERENCE_trace}
 cp ${ANALYSIS_DIR}/analysis.m .
+cp ${ANALYSIS_DIR}/plotSupply.m .
 
 GENERATED_OCTAVE_SCRIPT="${REFERENCE_trace}.m"
 

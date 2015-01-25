@@ -1,8 +1,9 @@
-function [best_alpha, best_burst] = bestAlphaBurst_upp(x,y,max_slope)
+function [best_alpha, best_burst] = bestAlphaBurst_upp(x,y,H,max_slope)
 % BESTALPHABURTS_UPP
 % Input:
 %   (x,y), coordinates of the convex hull of the supply upper bound (column
 %     vectors)
+%   H, time horizon over which computing the minimal area
 %   max_slope, the maximum instantaneous execution rate
 % Output:
 %   best_alpha, bandwidth of the best linear upper bound
@@ -20,7 +21,7 @@ function [best_alpha, best_burst] = bestAlphaBurst_upp(x,y,max_slope)
   
   %% Init
   % time horizon
-  H = max(x);
+  %  H = max(x);
   % number of points
   N = length(x);
 

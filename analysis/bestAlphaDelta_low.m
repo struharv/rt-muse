@@ -1,8 +1,9 @@
-function [best_alpha, best_delta] = bestAlphaDelta_low(x,y)
+function [best_alpha, best_delta] = bestAlphaDelta_low(x,y,H)
 % BESTALPHADELTA_LOW
 % Input:
 %   (x,y), coordinates of the convex hull of the supply lower bound (column
-%     vectors) 
+%     vectors)
+%   H, time horizon over which computing the maximal area
 % Output:
 %   best_alpha, bandwidth of the best linear lower bound
 %   best_delta, delay of the best linear lower bound
@@ -17,7 +18,7 @@ function [best_alpha, best_delta] = bestAlphaDelta_low(x,y)
 
   %% Init
   % time horizon
-  H = max(x);
+%  H = max(x);
   % number of points
   N = length(x);
 
