@@ -52,6 +52,9 @@ for i=1:length(thread_run),
     fprintf(fid,'%s,%s,SLBF_FILE,%s\n', experiment_name, thread_names{thread_id}, slbf_file);
     fprintf(fid,'%s,%s,SLBF_CONV_IDX,%s\n', experiment_name, thread_names{thread_id}, mat2str(lowb_sel_conv));
 
+    % Longest blocking is the sup{t:slbf(t)=0}
+    fprintf(fid,'%s,%s,MAXBLOCK,%f\n', experiment_name, thread_names{thread_id}, lowb_x_clean(2));
+
     % Computing the (alpha,Delta) pair maximizing the area below
     %   alpha*(t-Delta) over [Delta,time_horizon]
     [lowb_alpha, lowb_delta] = bestAlphaDelta_low(lowb_x_clean(lowb_sel_conv),lowb_y_clean(lowb_sel_conv),time_horizon);
@@ -85,6 +88,9 @@ for i=1:length(thread_run),
     %% Computing linear bounds with minimum distance
     [best_alpha, best_delta_low, best_delta_upp] = bestAlphaDelta(lowb_x_clean(lowb_sel_conv),lowb_y_clean(lowb_sel_conv),uppb_x_clean(uppb_sel_conv),uppb_y_clean(uppb_sel_conv));
     fprintf(fid,'%s,%s,ALPHADELTAS,%f,%f,%f\n', experiment_name, thread_names{thread_id}, best_alpha, best_delta_low, best_delta_upp);
+
+    %% Computing a good and quick approximation of alpha_i'
+    fprintf(fid,'%s,%s,JUSTALPHA,%f\n', experiment_name, thread_names{thread_id}, lowb_y(end)/lowb_x(end));
     
     fprintf('[ANALYSIS] Analysis of thread ''%s'' ... Done\n',thread_names{thread_id});
 end
@@ -142,6 +148,9 @@ fprintf(fid,'%s,all,SUBF_ALPHADELTA,%f,%f\n', experiment_name, uppb_alpha, -uppb
 %% Computing linear bounds with minimum distance
 [best_alpha, best_delta_low, best_delta_upp] = bestAlphaDelta(lowb_x_clean(lowb_sel_conv),lowb_y_clean(lowb_sel_conv),uppb_x_clean(uppb_sel_conv),uppb_y_clean(uppb_sel_conv));
 fprintf(fid,'%s,all,ALPHADELTAS,%f,%f,%f\n', experiment_name, best_alpha, best_delta_low, best_delta_upp);
+
+%% Computing a good and quick approximation of alpha_i'
+fprintf(fid,'%s,all,JUSTALPHA,%f\n', experiment_name, lowb_y(end)/lowb_x(end));
 
 fprintf('[ANALYSIS] Analysis of all threads ... Done\n');
 fprintf('[ANALYSIS] All output data written to %s\n',out_file);
