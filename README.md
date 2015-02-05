@@ -162,5 +162,3 @@ have been added to the repository and there is no need of installation, but
 we would like to thank the authors of jsonlab for their contribution.
 
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/martinamaggio/rt-bench/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
