@@ -1,5 +1,15 @@
 %% Template for plotting supply functions
 
+printf('[PLOTSUPPLY] Before plotting, the file plotSupply.m must be edited\n');
+printf('[PLOTSUPPLY]   as follows:\n');
+printf('[PLOTSUPPLY]   (1) add the filenames with the data of the slbf/subf\n');
+printf('[PLOTSUPPLY]       to be plot, as written in ''<experiment>.output.txt''\n');
+printf('[PLOTSUPPLY]   (2) copy any other needed information from ''<experiment>.output.txt''\n');
+printf('[PLOTSUPPLY]   (3) configure it as desired\n');
+printf('[PLOTSUPPLY]   (4) erase this banner.\n');
+
+return;
+
 %% Add input data in section below from <experiment>.output.txt
 % SLBF_FILE
 slbf_file = 'sched_other_long.1.slbf.csv';
