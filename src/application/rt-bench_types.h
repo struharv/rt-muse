@@ -37,7 +37,8 @@ typedef struct _rtbench_resource_t {
 typedef enum phase_t { 
   COMPUTE,
   LOCK,
-  SLEEP
+  SLEEP,
+  MEMORY
 } phase_t;
 
 typedef struct _rtbench_tasks_phase_list_t {

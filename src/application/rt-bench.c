@@ -24,6 +24,24 @@ static inline busywait(struct timespec *to) {
   }
 }
 
+void memory (int ind, ...) {
+  int memory_used, loops, i;
+  double *accumulator;
+  struct timespec *t_spec;
+  va_list argp;
+  va_start(argp, ind);
+  t_spec = va_arg(argp, struct timespec*);
+  memory_used = va_arg(argp, int);
+  va_end(argp); 
+  loops = timespec_to_usec(t_spec);
+  accumulator = malloc(memory_used*sizeof(double));
+  for (i = 0; i < loops; i++) {
+    accumulator[i%loops] += 0.5;
+    accumulator[i%loops] -= floor(accumulator[i%loops]);
+  }
+  free(accumulator);
+}
+
 void sleep_for (int ind, ...) {
   struct timespec *t_sleep, t_now;
   va_list argp;
@@ -77,14 +95,14 @@ void lock(int ind, ...) {
 #ifdef TRACE_LOCK_ACQUIRED
   log_ftrace(ft_data.marker_fd, "[%d] lock acquired", ind+1);
 #endif
-  //clock_gettime(CLOCK_THREAD_CPUTIME_ID, &now);
+  // clock_gettime(CLOCK_THREAD_CPUTIME_ID, &now);
   for (i = 0; i < loops; i++) {
     accumulator += 0.5;
     accumulator -= floor(accumulator);
   }
-    //    counter = (++counter) * i;
-  //t_exec = timespec_add(&now, t_spec);
-  //busywait(&t_exec);
+  // counter = (++counter) * i;
+  // t_exec = timespec_add(&now, t_spec);
+  // busywait(&t_exec);
   pthread_mutex_unlock(&opts.resources[resource_id].mtx);
 }
 

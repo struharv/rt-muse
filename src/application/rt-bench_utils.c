@@ -71,6 +71,8 @@ int string_to_phase(const char *phase_name, phase_t *phase) {
     *phase =  COMPUTE;
   else if (strncmp(phase_name, "l", 1) == 0)
     *phase =  LOCK;
+  else if (strncmp(phase_name, "m", 1) == 0)
+    *phase =  MEMORY;
   else
     return 1;
   return 0;

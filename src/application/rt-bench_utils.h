@@ -86,6 +86,7 @@ pid_t gettid(void);
 void sleep_for (int ind, ...);
 void compute (int ind, ...);
 void lock (int ind, ...);
+void memory (int ind, ...);
 
 #define exec_phase(data, pn) \
 do { \
