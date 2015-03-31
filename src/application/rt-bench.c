@@ -36,8 +36,8 @@ void memory (int ind, ...) {
   loops = timespec_to_usec(t_spec);
   accumulator = malloc(memory_used*sizeof(double));
   for (i = 0; i < loops; i++) {
-    accumulator[i%loops] += 0.5;
-    accumulator[i%loops] -= floor(accumulator[i%loops]);
+    accumulator[i%memory_used] += 0.5;
+    accumulator[i%memory_used] -= floor(accumulator[i%memory_used]);
   }
   free(accumulator);
 }
