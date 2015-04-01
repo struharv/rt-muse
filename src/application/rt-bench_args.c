@@ -167,13 +167,8 @@ static void parse_thread_phases(struct json_object *task_phases, thread_data_t *
     }
 
     phase = get_in_object(task_phases, key, FALSE);
-    if (ph == MEMORY) {
-      duration = get_in_object(phase, "loops", FALSE);
-      data->phases[idx].usage = usec_to_timespec(get_int_value_from(phase, "loops", FALSE, 0));
-      resource_id = get_in_object(phase, "memory", FALSE);
-      data->phases[idx].resource_id = get_int_value_from(phase, "memory", FALSE, 0);
-    }
-    else if (ph == SLEEP) {
+    // Set loops/duration
+    if (ph == SLEEP) {
       duration = get_in_object(phase, "duration", FALSE);
       data->phases[idx].usage = usec_to_timespec(get_int_value_from(phase, "duration", FALSE, 0));
     }
@@ -181,12 +176,18 @@ static void parse_thread_phases(struct json_object *task_phases, thread_data_t *
       duration = get_in_object(phase, "loops", FALSE);
       data->phases[idx].usage = usec_to_timespec(get_int_value_from(phase, "loops", FALSE, 0));
     }
+
+    // Set resource id or memory 
     if (ph == LOCK) { /* if lock, find resource id */
       resource_id = get_in_object(phase, "res", FALSE);
       data->phases[idx].resource_id = get_int_value_from(phase, "res", FALSE, 0);
     }
+    else if (ph == MEMORY) {
+    	resource_id = get_in_object(phase, "memory", FALSE);
+      data->phases[idx].resource_id = get_int_value_from(phase, "memory", FALSE, 0);
+    }
     else
-      data->phases[idx].resource_id = -1; /* Set to -1 if not lock phase */
+      data->phases[idx].resource_id = -1; /* Set to -1 if not lock or memory phase */
   }
 }
 
