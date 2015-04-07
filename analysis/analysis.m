@@ -33,7 +33,7 @@ for i=1:length(thread_run),
     %    job index where min occurs,
     %    max separation of k consecutive job starts,
     %    job index where max occurs
-    sim_infile = strcat(experiment_name,'.',num2str(thread_id),'.csv');
+    sim_infile = strcat(experiment_name,'.',num2str(thread_id),'.minmax.csv');
     sim_data = csvread(sim_infile);
 
     %% Computing the supply lower bound delivered to a thread
@@ -96,7 +96,7 @@ for i=1:length(thread_run),
 end
 
 %% Overall analysis
-sim_infile = strcat(experiment_name,'.all.csv');
+sim_infile = strcat(experiment_name,'.all.minmax.csv');
 sim_data = csvread(sim_infile);
 
 %% Computing the supply lower bound of the entire platform

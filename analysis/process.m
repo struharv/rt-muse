@@ -151,24 +151,38 @@ function process(experiment_name)
 
     %% Computing min/max separation of consecutive job starts of each thread
     [seq_min, seq_idx_min, seq_max, seq_idx_max] = minmaxseq(thread_marks);
-    output_file = strcat(experiment_name,'.',num2str(thread_id,'%d'),'.csv');
+    output_file = strcat(experiment_name,'.',num2str(thread_id,'%d'),'.minmax.csv');
     fid = fopen(output_file,'w+');
     fprintf(fid,'%11.6f, %7u, %11.6f, %7u\n', ...
       [seq_min, seq_idx_min, seq_max, seq_idx_max]');
     fclose(fid);
 
+    %% Computing average/variance/covariances of each thread
+    [mean_vec,var_vec] = mean_var(thread_marks);
+    output_file = strcat(experiment_name,'.',num2str(thread_id,'%d'),'.stats.csv');
+    fid = fopen(output_file,'w+');
+    fprintf(fid,'%13.9f, %13.9f\n', [mean_vec, var_vec]');
+    fclose(fid);
+
   end
 
-  % computing min/max separation of consecutive job starts of any thread
+  %% Computing min/max separation of consecutive job starts of any thread
   fprintf('[PROCESS] Processing data of all threads\n');
   all_marks = sort(all_marks);
   [seq_min, seq_idx_min, seq_max, seq_idx_max] = minmaxseq(all_marks);
-  output_file = strcat(experiment_name,'.all.csv');
+  output_file = strcat(experiment_name,'.all.minmax.csv');
   fid = fopen(output_file,'w+');
   fprintf(fid,'%11.6f, %7u, %11.6f, %7u\n', [seq_min, seq_idx_min, seq_max, seq_idx_max]');
   fclose(fid);
 
-  % creating the file to perform the analysis
+  %% Computing average/variance/covariances of all threads
+  [mean_vec,var_vec] = mean_var(all_marks);
+  output_file = strcat(experiment_name,'.all.stats.csv');
+  fid = fopen(output_file,'w+');
+  fprintf(fid,'%13.9f, %13.9f\n', [mean_vec, var_vec]');
+  fclose(fid);
+
+  %% Creating the file to perform the analysis
   analysis_file = 'experiment_data.m';
   fid_analysis = fopen(analysis_file,'w');
   fprintf(fid_analysis,'%% -------- WARNING -------- \n');
@@ -229,8 +243,8 @@ function process(experiment_name)
   fprintf(fid_analysis,'%%   (2) the reference thread runs as uninterrupted as possible, for example\n');
   fprintf(fid_analysis,'%%       with high priority (SCHED_FIFO) and no migration\n');
   fprintf(fid_analysis,'%% ''ref_infile'' is the file name of such a processed trace\n');
-  fprintf(fid_analysis,'ref_infile = ''%s.1.csv'';\n',experiment_name);
-  fprintf(fid_analysis,'%% ref_infile = ''../results/sched_fifo/sched_fifo.1.csv'';\n');
+  fprintf(fid_analysis,'ref_infile = ''%s.1.minmax.csv'';\n',experiment_name);
+  fprintf(fid_analysis,'%% ref_infile = ''../results/sched_fifo/sched_fifo.1.minmax.csv'';\n');
   fprintf(fid_analysis,'ref_data = csvread(ref_infile);\n');
   fprintf(fid_analysis,'tol_ref = 0;      %% tolerance to compute nominal job length\n');
   fprintf(fid_analysis,'[ref_seq, ind_last] = uniformYvalues(ref_data(:,1), tol_ref, sum(thread_nJobs)+thread_num);\n')
