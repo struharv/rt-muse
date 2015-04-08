@@ -32,12 +32,14 @@ void shared (int ind, ...) {
   t_spec = va_arg(argp, struct timespec*);
   va_end(argp); 
   loops = timespec_to_usec(t_spec);
-  pthread_mutex_lock(&opts.buffermtx);
-  for (i = 0; i < loops; i++) {
-    opts.shared[i%opts.nshared] += 0.5;
-    opts.shared[i%opts.nshared] -= floor(opts.shared[i%opts.nshared]);
+  if (opts.nshared != 0) {
+	  pthread_mutex_lock(&opts.buffermtx);
+	  for (i = 0; i < loops; i++) {
+	    opts.shared[i%opts.nshared] += 0.5;
+	    opts.shared[i%opts.nshared] -= floor(opts.shared[i%opts.nshared]);
+	  }
+	  pthread_mutex_unlock(&opts.buffermtx);
   }
-  pthread_mutex_unlock(&opts.buffermtx);
 }
 
 void memory (int ind, ...) {
