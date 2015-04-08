@@ -1,5 +1,6 @@
 {
   "resources": 1,
+  "shared": 0,
   "tasks": {
     "t1": {
       "budget" : 750,

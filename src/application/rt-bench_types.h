@@ -38,7 +38,8 @@ typedef enum phase_t {
   COMPUTE,
   LOCK,
   SLEEP,
-  MEMORY
+  MEMORY,
+  SHARED
 } phase_t;
 
 typedef struct _rtbench_tasks_phase_list_t {
@@ -79,6 +80,10 @@ typedef struct _rtbench_options_t {
   char *logbasename;  
   rtbench_resource_t *resources;
   int nresources;
+  double *shared;
+  int nshared;
+  pthread_mutex_t buffermtx;
+  pthread_mutexattr_t buffermtx_attr;
   int ftrace;
 } rtbench_options_t;
 

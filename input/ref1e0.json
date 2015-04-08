@@ -1,5 +1,6 @@
 {
   "resources": 0,
+  "shared": 0,
   "tasks": {
     "t1": {
       "policy": "SCHED_FIFO",

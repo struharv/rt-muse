@@ -103,11 +103,12 @@ trace-cmd report trace.dat | grep tracing_mark_write
 
 ### Input file
 
-rt-bench expects to receive a json file with the configuration to be tested. An example of configuration file is contained in the folder input/taskset.json. The json file contains three entries: _resources_, _global_ and _tasks_.
+rt-bench expects to receive a json file with the configuration to be tested. An example of configuration file is contained in the folder input/taskset.json. The json file contains four entries: _resources_, _shared_, _global_ and _tasks_.
 
 ``` 
 {
   "resources": 3,
+  "shared": 10,
   "global": { ... },
   "tasks": { ... }
 }
@@ -123,6 +124,7 @@ The global options contain details about the entire experiment:
   "ftrace": false
 }
 ``` 
+The resources option decides how many resources can be locked. The shared option decides the size of the memory shared among the threads (the number indicates the number of doubles shared among the threads).
 
 The duration is expressed in seconds and represents the total duration of the experiment, the threads are going to be shutdown when the duration is expired, despite what they might be doing. The scheduling policy is one of the available one. 
 The tasks section contains an array of tasks, an example follows:
@@ -139,15 +141,15 @@ The tasks section contains an array of tasks, an example follows:
       "phases" : {
         "c0" : { "loops" : 1000 },
         "l0" : { "loops" : 2000, "resource_id" : 0 },
-        "s1" : { "duration" : 1000, },
+        "s0" : { "loops" : 1000, },
+        "m0" : { "loops" : 1000, "memory": 100 },
         "l1" : { "loops" : 3000, "resource_id" : 1 },
         "c1" : { "loops" : 5000 },
         "l2" : { "loops" : 1000, "resource_id" : 0 },
+        "z0" : { "duration" : 10, },
       }
     }
 }
 ``` 
 
-The example defines one task named "thread1". The name of a task should contain only literals and numbers and should start with a literal. Spaces and special characters are not supported. The task repeats in loop a certain number of phases. There are three types of implemented phases. The **compute** phase executes mathematical operations for a certain number of loops (indicated by the loops option).  The **sleep_for** phase sleeps for a certian number of microseconds (indicated by the duration option). The **lock** phase locks a resource (indicated by the resource_id option) and computes for a certian number of iterations (indicated by the loops option).
-
-
+The example defines one task named "thread1". The name of a task should contain only literals and numbers and should start with a literal. Spaces and special characters are not supported. The task repeats in loop a certain number of phases. There are five types of implemented phases. The **compute** phase (name starting with literal c) executes mathematical operations for a certain number of loops (indicated by the loops option).  The **sleep_for** phase (name starting with literal z) sleeps for a certain number of microseconds (indicated by the duration option). The **lock** phase (name starting with literal l) locks a resource (indicated by the resource_id option) and computes for a certain number of iterations (indicated by the loops option). The **memory** phase (name starting with literal m) allocates some memory (an amount of double values indicated by the memory option) and computes mathematical operations writing the results in the vector of doubles allocated, freeing the memory after a some operations (indicated by the loops option). The **shared** phase behaves as the memory phase, but saves the result in the shared buffer of size given by the shared option at the top level.

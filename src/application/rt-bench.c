@@ -24,6 +24,22 @@ static inline busywait(struct timespec *to) {
   }
 }
 
+void shared (int ind, ...) {
+  int memory_used, loops, i;
+  struct timespec *t_spec;
+  va_list argp;
+  va_start(argp, ind);
+  t_spec = va_arg(argp, struct timespec*);
+  va_end(argp); 
+  loops = timespec_to_usec(t_spec);
+  pthread_mutex_lock(&opts.buffermtx);
+  for (i = 0; i < loops; i++) {
+    opts.shared[i%opts.nshared] += 0.5;
+    opts.shared[i%opts.nshared] -= floor(opts.shared[i%opts.nshared]);
+  }
+  pthread_mutex_unlock(&opts.buffermtx);
+}
+
 void memory (int ind, ...) {
   int memory_used, loops, i;
   double *accumulator;
@@ -122,6 +138,7 @@ static void shutdown(int sig) {
   	free(opts.threads_data[i].phases);
   }
   free(opts.resources);
+  free(opts.shared);
   free(opts.threads_data);
   free(threads);
   exit(EXIT_SUCCESS);

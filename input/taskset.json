@@ -1,18 +1,19 @@
 {
   "resources": 3,
+  "shared": 10,
   "tasks": {
     "thread1": {
       "budget": 50000,
       "period": 100000,
-      "policy": "SCHED_DEADLINE",
+      "policya": "SCHED_DEADLINE",
       "priority": 10,
       "cpus": [1],
       "phases": {
         "c0": { "loops": 1000 },
         "l0": { "loops": 2000, "res": 0 },
-        "l1": { "loops": 1000, "res": 2 },
-        "l2": { "loops": 3000, "res": 1 },
-        "l3": { "loops": 1000, "res": 0 },
+        "s0": { "loops": 1000 },
+        "l1": { "loops": 3000, "res": 1 },
+        "m0": { "loops": 1000, "memory": 10 },
         "c1": { "loops": 5000 }
       }
     },
@@ -23,13 +24,15 @@
       "cpus": [0,1],
       "phases": {
         "c0": { "loops": 5000 },
+        "m0": { "loops": 1000, "memory": 10 },
+        "s0": { "loops": 5000 },
         "l0": { "loops": 10000, "res": 2 }
       }
     }
   },
   "global": {
     "default_policy": "SCHED_FIFO",
-    "duration": 10,
+    "duration": 30,
     "logdir": "./",
     "logbasename": "rtbench",
     "lock_pages": true,

@@ -116,6 +116,15 @@ static inline int get_int_value_from(struct json_object *where,
   return i_value;
 }
 
+static void parse_shared(struct json_object *shared, rtbench_options_t *opts) {
+  int i;
+  int res = json_object_get_int(shared);
+  opts->shared = malloc(sizeof(double) * res);
+  pthread_mutexattr_init(&opts->buffermtx_attr);
+  pthread_mutex_init(&opts->buffermtx, &opts->buffermtx_attr);
+  opts->nshared = res;
+}
+
 static void parse_resources(struct json_object *resources, rtbench_options_t *opts) {
   int i;
   int res = json_object_get_int(resources);
@@ -164,6 +173,9 @@ static void parse_thread_phases(struct json_object *task_phases, thread_data_t *
     case MEMORY:
       data->phases[idx].do_phase = memory;
       break;
+    case SHARED:
+      data->phases[idx].do_phase = shared;
+      break;
     }
 
     phase = get_in_object(task_phases, key, FALSE);
@@ -188,6 +200,7 @@ static void parse_thread_phases(struct json_object *task_phases, thread_data_t *
     }
     else
       data->phases[idx].resource_id = -1; /* Set to -1 if not lock or memory phase */
+
   }
 }
 
@@ -314,7 +327,7 @@ static void parse_global(struct json_object *global, rtbench_options_t *opts) {
 }
 
 static void get_opts_from_json_object(struct json_object *root, rtbench_options_t *opts) {
-  struct json_object *global, *tasks, *resources;
+  struct json_object *global, *tasks, *resources, *shared;
 
   if (is_error(root)) {
     log_error(PFX "Error while parsing input JSON: %s",
@@ -325,10 +338,12 @@ static void get_opts_from_json_object(struct json_object *root, rtbench_options_
   global = get_in_object(root, "global", FALSE);  
   tasks = get_in_object(root, "tasks", FALSE);  
   resources = get_in_object(root, "resources", FALSE);
+  shared = get_in_object(root, "shared", FALSE);
 
   parse_global(global, opts);
   parse_tasks(tasks, opts); 
   parse_resources(resources, opts);
+  parse_shared(shared, opts);
 }
 
 void parse_config(const char *filename, rtbench_options_t *opts) {

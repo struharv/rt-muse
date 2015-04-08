@@ -65,7 +65,7 @@ int policy_to_string(policy_t policy, char *policy_name) {
 }
 
 int string_to_phase(const char *phase_name, phase_t *phase) {
-  if (strncmp(phase_name, "s", 1) == 0)
+  if (strncmp(phase_name, "z", 1) == 0)
     *phase =  SLEEP;
   else if (strncmp(phase_name, "c", 1) == 0)
     *phase =  COMPUTE;
@@ -73,6 +73,8 @@ int string_to_phase(const char *phase_name, phase_t *phase) {
     *phase =  LOCK;
   else if (strncmp(phase_name, "m", 1) == 0)
     *phase =  MEMORY;
+  else if (strncmp(phase_name, "s", 1) == 0)
+    *phase =  SHARED;
   else
     return 1;
   return 0;
