@@ -1,6 +1,6 @@
 rt-muse
 ========
-
+ 
 `rt-muse` is a fork of [rt-app](https://github.com/gbagnoli/rt-app) developed by [Juri Lelli](https://github.com/jlelli) and [Giacomo Bagnoli](https://github.com/gbagnoli). It aims to be a scheduler benchmarking tool. The main idea behind `rt-muse` is to close the gap between theory and implementation in Linux scheduling by exposing the real-time characteristics of existing scheduling policies.
 
 ### Dependencies, configuration and execution
