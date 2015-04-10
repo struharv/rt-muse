@@ -23,7 +23,7 @@ intervals_tmp = zeros(num_intervals+1,1);
 % initializations
 mean_vec = zeros(num_intervals,1);
 var_vec  = zeros(num_intervals,1);
-cov_mat  = zeros(num_intervals,num_intervals);
+%cov_mat  = zeros(num_intervals,num_intervals);
 
 % computation of average and variance
 for i = 1:num_intervals,
