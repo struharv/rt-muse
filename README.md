@@ -1,16 +1,16 @@
-rt-bench
+rt-muse
 ========
 
-`rt-bench` is a fork of [rt-app](https://github.com/gbagnoli/rt-app) developed by [Juri Lelli](https://github.com/jlelli) and [Giacomo Bagnoli](https://github.com/gbagnoli). It aims to be a scheduler benchmarking tool. The main idea behind `rt-bench` is to close the gap between theory and implementation in Linux scheduling by exposing the real-time characteristics of existing scheduling policies.
+`rt-muse` is a fork of [rt-app](https://github.com/gbagnoli/rt-app) developed by [Juri Lelli](https://github.com/jlelli) and [Giacomo Bagnoli](https://github.com/gbagnoli). It aims to be a scheduler benchmarking tool. The main idea behind `rt-muse` is to close the gap between theory and implementation in Linux scheduling by exposing the real-time characteristics of existing scheduling policies.
 
 ### Dependencies, configuration and execution
 
-We suggest to execute `rt-bench` with UDP sockets communication. To do so, one needs two machines, **launcher** and **target**. A test is then launched from the launcher machine and executed on the target machine.
+We suggest to execute `rt-muse` with UDP sockets communication. To do so, one needs two machines, **launcher** and **target**. A test is then launched from the launcher machine and executed on the target machine.
 
 The **launcher** machine needs to be equipped with:
 * [trace-cmd](http://lwn.net/Articles/410200/)
 * [octave](https://www.gnu.org/software/octave/)
-* the `rt-bench` code that can be cloned from the github repository
+* the `rt-muse` code that can be cloned from the github repository
 * an IP-address that is reachable from the target machine
 
 The **target** machine needs to be equipped with:
@@ -37,15 +37,15 @@ where the parameters are:
 
 To use [SCHED_DEADLINE](http://en.wikipedia.org/wiki/SCHED_DEADLINE), it is necessary to have a kernel that supports it. SCHED_DEADLINE is available by default from Linux [3.14](http://kernelnewbies.org/Linux_3.14#head-651929cdcf19cc2e2cfc7feb16b78ef963d195fe). To enable ftrace follow the instructions available [here](http://lwn.net/Articles/425583/).
 
-After the experiment is executed on the remote machine, `rt-bench` performs data analysis using octave. The result of the analysis is saved in the result directory on the local machine, in the form of csv files. The analysis uses [jsonlab](http://iso2mesh.sourceforge.net/cgi-bin/index.cgi?jsonlab) to read and extract information from the JSON experiment file. The necessary files have been added to the repository and there is no need of installation, but we would like to thank the authors of `jsonlab` for their contribution.
+After the experiment is executed on the remote machine, `rt-muse` performs data analysis using octave. The result of the analysis is saved in the result directory on the local machine, in the form of csv files. The analysis uses [jsonlab](http://iso2mesh.sourceforge.net/cgi-bin/index.cgi?jsonlab) to read and extract information from the JSON experiment file. The necessary files have been added to the repository and there is no need of installation, but we would like to thank the authors of `jsonlab` for their contribution.
 
 ##### Execution example
 
-This example shows the output of a test. When a test is executed, the shell ouput indicates the different stages of execution. Results are saved in the directory `results/experiment-name` that is created as a subdirectory of the `rt-bench` one.
+This example shows the output of a test. When a test is executed, the shell ouput indicates the different stages of execution. Results are saved in the directory `results/experiment-name` that is created as a subdirectory of the `rt-muse` one.
 ```
-~/rt-bench [>] ./launch.sh 127.0.0.1 22 martina input/taskset.json experiment-name
-[LAUNCH] Checking rt-bench presence on remote host ... done
-[LAUNCH] Checking rt-bench compilation on remote host ... done
+~/rt-muse [>] ./launch.sh 127.0.0.1 22 martina input/taskset.json experiment-name
+[LAUNCH] Checking rt-muse presence on remote host ... done
+[LAUNCH] Checking rt-muse compilation on remote host ... done
 [LAUNCH] Sending json file ... done
 [LAUNCH] Creating results directories ... done
 [LAUNCH] Starting listener ... done

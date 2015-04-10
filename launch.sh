@@ -39,18 +39,18 @@ fi
 # ------------------------------------------------------------
 
 # ------------------------------------------------------------
-# Making sure that it is possible to execute rt-bench on the
+# Making sure that it is possible to execute rt-muse on the
 # remote host, via eventually git pull and compilation of
 # benchmark.
 # ------------------------------------------------------------
-printf "[LAUNCH] Checking rt-bench presence on remote host ..."
+printf "[LAUNCH] Checking rt-muse presence on remote host ..."
 ssh -p ${REMOTE_port} ${REMOTE_username}@${REMOTE_ip} \
-  'if [ ! -d "rt-bench" ]; then git clone https://github.com/martinamaggio/rt-bench.git &>/dev/null; fi'
+  'if [ ! -d "rt-muse" ]; then git clone https://github.com/martinamaggio/rt-muse.git &>/dev/null; fi'
 printf " done\n"
 
-printf "[LAUNCH] Checking rt-bench compilation on remote host ..."
+printf "[LAUNCH] Checking rt-muse compilation on remote host ..."
 ssh -p ${REMOTE_port} ${REMOTE_username}@${REMOTE_ip} \
-  "cd rt-bench; if [ ! -f $APP_binary ]; then \
+  "cd rt-muse; if [ ! -f $APP_binary ]; then \
   make &> /dev/null; \
   fi"
 printf " done\n"
@@ -65,7 +65,7 @@ printf " done\n"
 # ------------------------------------------------------------
 printf "[LAUNCH] Sending json file ..."
 scp -P ${REMOTE_port} ${REFERENCE_run} \
-  ${REMOTE_username}@${REMOTE_ip}:~/rt-bench/input/${REFERENCE_trace}.json \
+  ${REMOTE_username}@${REMOTE_ip}:~/rt-muse/input/${REFERENCE_trace}.json \
   &> /dev/null
 printf " done\n"
 
@@ -73,9 +73,9 @@ printf "[LAUNCH] Creating results directories ..."
 mkdir -p ${RESULT_dir}
 mkdir -p ${RESULT_dir}/${REFERENCE_trace}
 ssh -p ${REMOTE_port} ${REMOTE_username}@${REMOTE_ip} \
-  "mkdir -p rt-bench/${RESULT_dir}"
+  "mkdir -p rt-muse/${RESULT_dir}"
 ssh -p ${REMOTE_port} ${REMOTE_username}@${REMOTE_ip} \
-  "mkdir -p rt-bench/${RESULT_dir}/${REFERENCE_trace}"
+  "mkdir -p rt-muse/${RESULT_dir}/${REFERENCE_trace}"
 printf " done\n"
 
 printf "[LAUNCH] Starting listener ..."
@@ -89,10 +89,10 @@ echo "[LAUNCH] Connecting to remote machine and executing ..."
   # -e 'sched_wakeup*' # monitor scheduling wakeups
   # -e sched_switch # monitoring switch 
 ssh -t -p ${REMOTE_port} ${REMOTE_username}@${REMOTE_ip} \
-  "cd rt-bench && \
+  "cd rt-muse && \
   sudo $TRACE_CMD_COMMAND record -N ${LISTENER_IP}:${LISTENING_PORT} \
   -e 'sched_migrate*' \
-	~/rt-bench/$APP_binary ~/rt-bench/input/${REFERENCE_trace}.json \
+	~/rt-muse/$APP_binary ~/rt-muse/input/${REFERENCE_trace}.json \
 	&> ${RESULT_dir}/${REFERENCE_trace}/output_${REFERENCE_trace}.txt"
 kill -2 $LISTENER_PID
 wait $LISTENER_PID
@@ -112,7 +112,7 @@ printf ' done\n'
 
 printf "[LAUNCH] Removing unnecessary files ..."
 ssh -p ${REMOTE_port} ${REMOTE_username}@${REMOTE_ip} \
-  "rm -f rt-bench/*.log"
+  "rm -f rt-muse/*.log"
 printf " done\n"
 
 ANALYSIS_DIR="../../analysis/" 
