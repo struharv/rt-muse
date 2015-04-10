@@ -19,6 +19,7 @@ The **target** machine needs to be equipped with:
 * [libjson0-dev](https://packages.debian.org/search?keywords=libjson0-dev)
 * the `pthread` library
 * super user priviledges
+* automake and gcc
 * `ssh` connection to and from the launcher machine
 
 We strongly recommend using `ssh-copy-id` in order to not be prompted for password during every step of the execution process. Generate an ssh-key on the launcher machine and copy it to the target one. Instructions can be found [here](http://www.thegeekstuff.com/2008/11/3-steps-to-perform-ssh-login-without-password-using-ssh-keygen-ssh-copy-id/). The test needs to be run with super user priviledges on the target machine, so we also recommend to set up the machine so that no password is asked to execute commands with root priviledges on the target. For that, use `visudo` on the target machine and add `username ALL = NOPASSWD : ALL` to the sudoers list, where `username` is the name of your user.
@@ -152,4 +153,9 @@ The tasks section contains an array of tasks, an example follows:
 }
 ``` 
 
-The example defines one task named "thread1". The name of a task should contain only literals and numbers and should start with a literal. Spaces and special characters are not supported. The task repeats in loop a certain number of phases. There are five types of implemented phases. The **compute** phase (name starting with literal c) executes mathematical operations for a certain number of loops (indicated by the loops option).  The **sleep_for** phase (name starting with literal z) sleeps for a certain number of microseconds (indicated by the duration option). The **lock** phase (name starting with literal l) locks a resource (indicated by the resource_id option) and computes for a certain number of iterations (indicated by the loops option). The **memory** phase (name starting with literal m) allocates some memory (an amount of double values indicated by the memory option) and computes mathematical operations writing the results in the vector of doubles allocated, freeing the memory after a some operations (indicated by the loops option). The **shared** phase behaves as the memory phase, but saves the result in the shared buffer of size given by the shared option at the top level.
+The example defines one task named "thread1". The name of a task should contain only literals and numbers and should start with a literal. Spaces and special characters are not supported. The task repeats in loop a certain number of phases. There are five types of implemented phases:
+* The **compute** phase (name starting with literal c) executes mathematical operations for a certain number of loops (indicated by the loops option).
+* The **sleep_for** phase (name starting with literal z) sleeps for a certain number of microseconds (indicated by the duration option).
+* The **lock** phase (name starting with literal l) locks a resource (indicated by the resource_id option) and computes for a certain number of iterations (indicated by the loops option).
+* The **memory** phase (name starting with literal m) allocates some memory (an amount of double values indicated by the memory option) and computes mathematical operations writing the results in the vector of doubles allocated, freeing the memory after a some operations (indicated by the loops option).
+* The **shared** phase behaves as the memory phase, but saves the result in the shared buffer of size given by the shared option at the top level. The operations are lock protected.
