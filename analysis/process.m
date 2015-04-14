@@ -44,7 +44,7 @@ function process(experiment_name)
   end
   cpu_num = length(cpu_set);
   
-  % building a 0/1 map from affinities
+  %% Building a 0/1 map from affinities
   %   affinity_map(i,k) = 1   <==> thread i may execute over CPU k
   affinity_map = zeros(thread_num,cpu_num);
   for i=1:thread_num,
@@ -97,6 +97,7 @@ function process(experiment_name)
   % pending job 
   win_a = max(thread_window(thread_run,1));
   win_b = min(thread_window(thread_run,2));
+  ref_job = +inf;       % init ref_job with big value
   
   % loop on threads to process each trace
   for k = 1:length(thread_run),
@@ -151,6 +152,10 @@ function process(experiment_name)
 
     %% Computing min/max separation of consecutive job starts of each thread
     [seq_min, seq_idx_min, seq_max, seq_idx_max] = minmaxseq(thread_marks);
+    if (seq_min(2) < ref_job)
+        % update shortest job
+        ref_job = seq_min(2);
+    end
     output_file = strcat(experiment_name,'.',num2str(thread_id,'%d'),'.minmax.csv');
     fid = fopen(output_file,'w+');
     fprintf(fid,'%11.6f, %7u, %11.6f, %7u\n', ...
@@ -242,12 +247,15 @@ function process(experiment_name)
   fprintf(fid_analysis,'%%   (1) the job body is the same as in the simulation\n');
   fprintf(fid_analysis,'%%   (2) the reference thread runs as uninterrupted as possible, for example\n');
   fprintf(fid_analysis,'%%       with high priority (SCHED_FIFO) and no migration\n');
-  fprintf(fid_analysis,'%% ''ref_infile'' is the file name of such a processed trace\n');
-  fprintf(fid_analysis,'ref_infile = ''%s.1.minmax.csv'';\n',experiment_name);
-  fprintf(fid_analysis,'%% ref_infile = ''../results/sched_fifo/sched_fifo.1.minmax.csv'';\n');
-  fprintf(fid_analysis,'ref_data = csvread(ref_infile);\n');
-  fprintf(fid_analysis,'tol_ref = 0;      %% tolerance to compute nominal job length\n');
-  fprintf(fid_analysis,'[ref_seq, ind_last] = uniformYvalues(ref_data(:,1), tol_ref, sum(thread_nJobs)+thread_num);\n')
+  fprintf(fid_analysis,'%%   ''ref_job'' is the duration of such a body\n');
+  fprintf(fid_analysis,'%%     by default it is computed as the minimum job length among all threads\n');
+  fprintf(fid_analysis,'ref_job = %12.9f;\n',ref_job);
+%  fprintf(fid_analysis,'%% ''ref_infile'' is the file name of such a processed trace\n');
+%  fprintf(fid_analysis,'ref_infile = ''%s.1.minmax.csv'';\n',experiment_name);
+%  fprintf(fid_analysis,'%% ref_infile = ''../results/sched_fifo/sched_fifo.1.minmax.csv'';\n');
+%  fprintf(fid_analysis,'ref_data = csvread(ref_infile);\n');
+%  fprintf(fid_analysis,'tol_ref = 0;      %% tolerance to compute nominal job length\n');
+%  fprintf(fid_analysis,'[ref_seq, ind_last] = uniformYvalues(ref_data(:,1), tol_ref, sum(thread_nJobs)+thread_num);\n')
   fprintf(fid_analysis,'\n');
   fclose(fid_analysis);
   fprintf('[PROCESS] Octave/Matlab file ''%s'' written\n',analysis_file);

@@ -25,7 +25,7 @@ for i=1:length(thread_run),
     fprintf(fid,'%s,%s,MIGR_IN_WIN,%d\n', experiment_name, thread_names{thread_id}, migr_nJobs(thread_id));
     fprintf(fid,'%s,%s,CPU_SHARE,%s\n', experiment_name, thread_names{thread_id}, mat2str(run_map(thread_id,:)));
     
-    thread_ref = ref_seq;
+%    thread_ref = ref_seq;
     % reading thread data
     %   the format of the k-th row (k starting from 1) is the following
     %
@@ -39,8 +39,9 @@ for i=1:length(thread_run),
     %% Computing the supply lower bound delivered to a thread
     % Original data
     lowb_x = sim_data(:,3); % max separations
-    lowb_y = ref_seq(1:length(lowb_x));
-
+%    lowb_y = ref_seq(1:length(lowb_x));
+    lowb_y = ref_job*(0:length(lowb_x)-1)';
+    
     % Clean up redundant points. Tolerance used to trade accuracy
     %   (tol_cut=0) vs. efficiency (larger tol_cut). Set it to zero, unless
     %   (lowb_x_clean, lowb_y_clean) are too big
@@ -63,7 +64,8 @@ for i=1:length(thread_run),
     %% Computing the supply upper bound delivered to a thread
     % Original data
     uppb_x = sim_data(:,1); % min separations
-    uppb_y = ref_seq(1:length(uppb_x));
+ %   uppb_y = ref_seq(1:length(uppb_x));
+    uppb_y = ref_job*(0:length(uppb_x)-1)';
 
     % Clean up redundant points. Tolerance used to trade accuracy
     %   (tol_cut=0) vs. efficiency (larger tol_cut). Set it to zero, unless
@@ -102,7 +104,8 @@ sim_data = csvread(sim_infile);
 %% Computing the supply lower bound of the entire platform
 % Original data
 lowb_x = sim_data(:,3); % max separations
-lowb_y = ref_seq(1:length(lowb_x));
+%lowb_y = ref_seq(1:length(lowb_x));
+lowb_y = ref_job*(0:length(lowb_x)-1)';
 
 % Clean up redundant points. Tolerance used to trade accuracy
 %   (tol_cut=0) vs. efficiency (larger tol_cut). Set it to zero, unless
@@ -123,7 +126,8 @@ fprintf(fid,'%s,all,SLBF_ALPHADELTA,%f,%f\n', experiment_name, lowb_alpha, lowb_
 %% Computing the supply upper bound  of the entire platform
 % Original data
 uppb_x = sim_data(:,1); % min separations
-uppb_y = ref_seq(1:length(uppb_x));
+%uppb_y = ref_seq(1:length(uppb_x));
+uppb_y = ref_job*(0:length(uppb_x)-1)';
 
 % Clean up redundant points. Tolerance used to trade accuracy
 %   (tol_cut=0) vs. efficiency (larger tol_cut). Set it to zero, unless
