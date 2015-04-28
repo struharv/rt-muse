@@ -117,9 +117,6 @@ printf " done\n"
 
 ANALYSIS_DIR="../../analysis/" 
 cd ${RESULT_dir}/${REFERENCE_trace}
-cp ${ANALYSIS_DIR}/analysis.m .
-cp ${ANALYSIS_DIR}/plotSupply.m .
-
 GENERATED_OCTAVE_SCRIPT="${REFERENCE_trace}.m"
 
 echo "% ----------------------------------------" > $GENERATED_OCTAVE_SCRIPT
@@ -128,8 +125,7 @@ echo "experiment_name     = '$REFERENCE_trace';" >> $GENERATED_OCTAVE_SCRIPT
 echo "% ----------------------------------------" >> $GENERATED_OCTAVE_SCRIPT
 echo "addpath('$ANALYSIS_DIR');" >> $GENERATED_OCTAVE_SCRIPT
 echo "addpath('${ANALYSIS_DIR}jsonlab/');" >> $GENERATED_OCTAVE_SCRIPT
-echo "process(experiment_name);" >> $GENERATED_OCTAVE_SCRIPT
-echo "analysis;" >> $GENERATED_OCTAVE_SCRIPT
+echo "analysis(experiment_name);" >> $GENERATED_OCTAVE_SCRIPT
 
 octave -q --no-window-system $GENERATED_OCTAVE_SCRIPT
 # Removing the generated script file, as running it again may only
