@@ -32,5 +32,20 @@
     "logbasename": "rtbench",
     "lock_pages": true,
     "ftrace": true
+  },
+  "analysis": {
+  	"select": "thread1, thread2",
+    "window": {"method": "first-timestamp", "parameter": 0},
+    "reconstruct": true,
+    "refjob": {"method": "fixed", "parameter": 0.010},
+    "runmap": "thread1, thread2",
+    "plot_runmap": "",
+    "statistical": "thread1",
+    "plot_statistical": "",
+    "supply": "thread1, all",
+    "plot_supply": "thread1",
+    "maxblock": "thread1",
+    "convexhull": "thread1",
+    "alphadelta": "thread1, all"
   }
 }
