@@ -34,7 +34,7 @@
     "ftrace": true
   },
   "analysis": {
-  	"select": "thread1, thread2",
+    "select": "thread1, thread2",
     "window": {"method": "first-timestamp", "parameter": 0},
     "reconstruct": true,
     "refjob": {"method": "fixed", "parameter": 0.010},
