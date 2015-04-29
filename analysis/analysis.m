@@ -33,17 +33,17 @@ function analysis(experiment_name)
 
         % if analysis is not specified for the task, then you should run all
         % the analysis that we can do, if some are false we can skip them
-        runall = false;
+        runall = true;
         if ~isfield(experim_json.tasks.(tasks{i}), 'analysis')
-            runall = true;
+            runall = false;
         else
             options = experim_json.tasks.(tasks{i}).analysis;
         end
 
         % find out what analysis should be run
-        torun_runmap = runall || ~isfield(options, 'runmap') ||  options.runmap == 1;
-        torun_supply = runall || ~isfield(options, 'supply') ||  options.supply == 1;
-        torun_statistical = runall || ~isfield(options, 'statistical') ||  options.statistical == 1;
+        torun_runmap = runall && isfield(options, 'runmap') &&  options.runmap == 1;
+        torun_supply = runall && isfield(options, 'supply') &&  options.supply == 1;
+        torun_statistical = runall && isfield(options, 'statistical') &&  options.statistical == 1;
 
         if (torun_runmap || torun_supply || torun_statistical)
             % if at least one of the analysis should be run, we should
@@ -78,15 +78,15 @@ function analysis(experiment_name)
     end
 
     % launching the global analysis parsing the global options
-    runall = false;
+    runall = true;
     if ~isfield(experim_json.global, 'analysis')
-        runall = true;
+        runall = false;
     else
         options = experim_json.global.analysis;
     end
 
-    torun_runmap = runall || ~isfield(options, 'runmap') ||  options.runmap == 1;
-    torun_supply = runall || ~isfield(options, 'supply') ||  options.supply == 1;
+    torun_runmap = runall && isfield(options, 'runmap') &&  options.runmap == 1;
+    torun_supply = runall && isfield(options, 'supply') &&  options.supply == 1;
 
     % running the runmap analysis for the global platform
     if torun_runmap
