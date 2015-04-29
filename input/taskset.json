@@ -12,6 +12,11 @@
         "l1": { "loops": 3000, "res": 1 },
         "m0": { "loops": 1000, "memory": 10 },
         "c1": { "loops": 5000 }
+      },
+      "analysis": {
+        "runmap": true,
+        "supply": true,
+        "statistical": true
       }
     },
     "thread2": {
@@ -22,30 +27,20 @@
         "m0": { "loops": 1000, "memory": 10 },
         "s0": { "loops": 5000 },
         "l0": { "loops": 10000, "res": 1 }
+      },
+      "analysis": {
+        "runmap": true,
+        "supply": true,
+        "statistical": true
       }
     }
   },
   "global": {
     "default_policy": "SCHED_RR",
     "duration": 10,
-    "logdir": "./",
-    "logbasename": "rtbench",
-    "lock_pages": true,
-    "ftrace": true
-  },
-  "analysis": {
-    "select": "thread1, thread2",
-    "window": {"method": "first-timestamp", "parameter": 0},
-    "reconstruct": true,
-    "refjob": {"method": "fixed", "parameter": 0.010},
-    "runmap": "thread1, thread2",
-    "plot_runmap": "",
-    "statistical": "thread1",
-    "plot_statistical": "",
-    "supply": "thread1, all",
-    "plot_supply": "thread1",
-    "maxblock": "thread1",
-    "convexhull": "thread1",
-    "alphadelta": "thread1, all"
+    "analysis": {
+      "runmap": true,
+      "supply": true
+    }
   }
 }

@@ -1,182 +1,105 @@
 function analysis(experiment_name)
 
-  % importing JSON file with experiment description
-  json_file = strcat(experiment_name,'.json');
-  experim_json = loadjson(json_file);
+    % -----------------------------------------------------------------------
+    % this section contains the parameters of the analysis that can be
+    % eventually modified by the user, for example the window method
+    % -----------------------------------------------------------------------
+    % window_method: window cut method, currently the alternatives are
+    %   1. 'all-running'
+    %   2. 'fixed' (uses the parameters 'window_start' and 'window_end')
+    window_method = 'all-running'; %
+    window_start = 0;
+    window_end = 0;
+    % reconstruct lost markers: default is true
+    reconstruct = true;
+    % refjob_method: reference job, currently the alternatives are
+    %   1. 'minimum'
+    %   2. 'explicit' (uses the parameter 'refjob_value')
+    %   3. 'ref-to-exp' (uses the parameter 'refjob_path')
+    refjob_method = 'minimum';
+    refjob_value = 0;
+    refjob_path = '';
+    % -----------------------------------------------------------------------
 
-  % loading analysis options from json file
-  select_string = experim_json.analysis.select;
-  select_vector = strsplit(select_string,', ');
-  select_vector = setdiff(select_vector, '');
-  window_method = experim_json.analysis.window.method;
-  window_parameter = experim_json.analysis.window.parameter;
-  refjob_method = experim_json.analysis.refjob.method;
-  refjob_parameter = experim_json.analysis.refjob.parameter;
-  runmap_string = experim_json.analysis.runmap;
-  runmap_vector = strsplit(runmap_string,', ');
-  runmap_vector = setdiff(runmap_vector, '');
-  plotrunmap_string = experim_json.analysis.plot_runmap;
-  plotrunmap_vector = strsplit(plotrunmap_string,', ');
-  plotrunmap_vector = setdiff(plotrunmap_vector, '');
-  statistical_string = experim_json.analysis.statistical;
-  statistical_vector = strsplit(statistical_string,', ');
-  statistical_vector = setdiff(statistical_vector, '');
-  plotstatistical_string = experim_json.analysis.plot_statistical;
-  plotstatistical_vector = strsplit(plotstatistical_string,', ');
-  plotstatistical_vector = setdiff(plotstatistical_vector, '');
-  supply_string = experim_json.analysis.supply;
-  supply_vector = strsplit(supply_string,', ');
-  supply_vector = setdiff(supply_vector, '');
-  plotsupply_string = experim_json.analysis.plot_supply;
-  plotsupply_vector = strsplit(plotsupply_string,', ');
-  plotsupply_vector = setdiff(plotsupply_vector, '');
-  maxblock_string = experim_json.analysis.maxblock;
-  maxblock_vector = strsplit(maxblock_string,', ');
-  maxblock_vector = setdiff(maxblock_vector, '');
-  convexhull_string = experim_json.analysis.convexhull;
-  convexhull_vector = strsplit(convexhull_string,', ');
-  convexhull_vector = setdiff(convexhull_vector, '');
-  alphadelta_string = experim_json.analysis.alphadelta;
-  alphadelta_vector = strsplit(alphadelta_string,', ');
-  alphadelta_vector = setdiff(alphadelta_vector, '');
+    % importing JSON file with experiment description
+    json_file = strcat(experiment_name,'.json');
+    experim_json = loadjson(json_file);
+    % loading analysis options from json file
+    tasks = fieldnames(experim_json.tasks);
+    thread_num = size(tasks, 1);
 
-  % checking options for running the analysis on the entire platform
-  run_supply_all = ismember(['all'], supply_vector);
-  supply_vector = setdiff(supply_vector, 'all');
-  run_plotsupply_all = ismember(['all'], plotsupply_vector);
-  plotsupply_vector = setdiff(plotsupply_vector, 'all');
-  run_convexhull_all = ismember(['all'], convexhull_vector);
-  convexhull_vector = setdiff(convexhull_vector, 'all');
-  run_alphadelta_all = ismember(['all'], alphadelta_vector);
-  alphadelta_vector = setdiff(alphadelta_vector, 'all');
+    % analysis for the single thread
+    for i = 1:thread_num
 
-  % we have to apply select to the selected ones but also to the ones that
-  % depend on select (like runmap and supply)
-  select_vector_augmented = [];
-  select_vector_augmented = union(select_vector_augmented, select_vector);
-  select_vector_augmented = union(select_vector_augmented, runmap_vector);
-  select_vector_augmented = union(select_vector_augmented, supply_vector);
-  select_vector_augmented = union(select_vector_augmented, statistical_vector);
-  select_vector_augmented = union(select_vector_augmented, plotrunmap_vector);
-  select_vector_augmented = union(select_vector_augmented, plotsupply_vector);
-  select_vector_augmented = union(select_vector_augmented, plotstatistical_vector);
-  select_vector_augmented = union(select_vector_augmented, convexhull_vector);
-  select_vector_augmented = union(select_vector_augmented, alphadelta_vector);
+        % if analysis is not specified for the task, then you should run all
+        % the analysis that we can do, if some are false we can skip them
+        runall = false;
+        if ~isfield(experim_json.tasks.(tasks{i}), 'analysis')
+            runall = true;
+        else
+            options = experim_json.tasks.(tasks{i}).analysis;
+        end
 
-  % apply select, window, cut and reconstruct for the selected threads
-  for i = 1 : length(select_vector_augmented)
-    thread_name = char(select_vector_augmented{i});
-    fprintf('Applying SELECT for thread %s\n', thread_name)
-    % TODO: call to select function
-    
-    fprintf('Applying WINDOW for selected thread %s\n', thread_name)
-    % TODO: call to window function with window_method and window_parameter
+        % find out what analysis should be run
+        torun_runmap = runall || ~isfield(options, 'runmap') ||  options.runmap == 1;
+        torun_supply = runall || ~isfield(options, 'supply') ||  options.supply == 1;
+        torun_statistical = runall || ~isfield(options, 'statistical') ||  options.statistical == 1;
 
-    fprintf('Applying CUT for selected thread %s\n', thread_name)
-    % TODO: call to cut function
+        if (torun_runmap || torun_supply || torun_statistical)
+            % if at least one of the analysis should be run, we should
+            % process the data for the thread, which means selecting the
+            % values of the events linked to the specific thread, cutting
+            % them to the window and eventually reconstructing them if
+            % some parkers are lost
+            fprintf('[ANALYSIS] Processing data for thread %d\n', i);
+            % TODO: call the process function
+            % parameters used: window_method, window_start, window_end, reconstruct
+        end
 
-    if (experim_json.analysis.reconstruct)
-      fprintf('Applying RECONSTRUCT for selected thread %s\n', thread_name)
-      % TODO: call to reconstruct function
+        % running the runmap analysis for the single thread
+        if torun_runmap
+            fprintf('[ANALYSIS] Running runmap for thread %d\n', i);
+            % TODO: call the runmap function
+        end
+
+        % running the supply function analysis for the single thread
+        if torun_supply
+            fprintf('[ANALYSIS] Running supply for thread %d\n', i);
+            % TODO: call the supply function
+            % parameters used: refjob_method, refjob_value, refjob_path
+        end
+
+        % running the statistical analysis for single thread
+        if torun_statistical
+            fprintf('[ANALYSIS] Running statistical for thread %d\n', i);
+            % TODO: call the statistical function
+        end
+
     end
-  end
 
-  % get data about the reference job
-  % TODO: call the refjob function with refjob_method and refjob_parameter
-
-  % applying runmap
-  if ~isempty(runmap_vector)
-    for i = 1 : length(runmap_vector)
-      thread_name = char(runmap_vector{i});
-      fprintf('Applying RUNMAP for thread %s\n', thread_name)
-      % TODO: call to runmap function
+    % launching the global analysis parsing the global options
+    runall = false;
+    if ~isfield(experim_json.global, 'analysis')
+        runall = true;
+    else
+        options = experim_json.global.analysis;
     end
-  end
 
-  % applying plotrunmap
-  if ~isempty(plotrunmap_vector)
-    for i = 1 : length(plotrunmap_vector)
-      thread_name = char(plotrunmap_vector{i});
-      fprintf('Applying PLOTRUNMAP for thread %s\n', thread_name)
-      % TODO: call to plotrunmap function
-    end
-  end
+    torun_runmap = runall || ~isfield(options, 'runmap') ||  options.runmap == 1;
+    torun_supply = runall || ~isfield(options, 'supply') ||  options.supply == 1;
 
-  % applying statistical
-  if ~isempty(statistical_vector)
-    for i = 1 : length(statistical_vector)
-      thread_name = char(statistical_vector{i});
-      fprintf('Applying STATISTICAL for thread %s\n', thread_name)
-      % TODO: call to statistical function
+    % running the runmap analysis for the global platform
+    if torun_runmap
+        fprintf('[ANALYSIS] Running runmap for global\n');
+        % TODO: call the runmap function
     end
-  end
 
-  % applying plotstatistical
-  if ~isempty(plotstatistical_vector)
-    for i = 1 : length(plotstatistical_vector)
-      thread_name = char(plotstatistical_vector{i});
-      fprintf('Applying PLOTSTATISTICAL for thread %s\n', thread_name)
-      % TODO: call to plotstatistical function
+    % running the supply function analysis for the global platform
+    if torun_supply
+        fprintf('[ANALYSIS] Running supply for global\n');
+        % TODO: call the supply function
+        % parameters used: refjob_method, refjob_value, refjob_path
     end
-  end
 
-  % applying supply
-  if ~isempty(supply_vector)
-    for i = 1 : length(supply_vector)
-      thread_name = char(supply_vector{i});
-      fprintf('Applying SUPPLY for thread %s\n', thread_name)
-      % TODO: call to supply function
-    end
-  end
-  if run_supply_all
-    fprintf('Applying SUPPLY for ALL\n')
-    % TODO: call to supply function
-  end
 
-  % applying plotsupply
-  if ~isempty(plotsupply_vector)
-    for i = 1 : length(plotsupply_vector)
-      thread_name = char(plotsupply_vector{i});
-      fprintf('Applying PLOTSUPPLY for thread %s\n', thread_name)
-      % TODO: call to plotsupply function
-    end
-  end
-  if run_plotsupply_all
-    fprintf('Applying PLOTSUPPLY for ALL\n')
-    % TODO: call to plotsupply function
-  end
 
-  % applying maxblock
-  if ~isempty(maxblock_vector)
-    for i = 1 : length(maxblock_vector)
-      thread_name = char(maxblock_vector{i});
-      fprintf('Applying MAXBLOCK for thread %s\n', thread_name)
-      % TODO: call to maxblock function
-    end
-  end
-
-  % applying convexhull
-  if ~isempty(convexhull_vector)
-    for i = 1 : length(convexhull_vector)
-      thread_name = char(convexhull_vector{i});
-      fprintf('Applying CONVEXHULL for thread %s\n', thread_name)
-      % TODO: call to convexhull function
-    end
-  end
-  if run_convexhull_all
-    fprintf('Applying CONVEXHULL for ALL\n')
-    % TODO: call to convexhull function
-  end
-
-  % applying alphadelta
-  if ~isempty(alphadelta_vector)
-    for i = 1 : length(alphadelta_vector)
-      thread_name = char(alphadelta_vector{i});
-      fprintf('Applying ALPHADELTA for thread %s\n', thread_name)
-      % TODO: call to alphadelta function
-    end
-  end
-  if run_alphadelta_all
-    fprintf('Applying ALPHADELTA for ALL\n')
-    % TODO: call to alphadelta function
-  end
