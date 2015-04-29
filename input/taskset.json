@@ -12,11 +12,6 @@
         "l1": { "loops": 3000, "res": 1 },
         "m0": { "loops": 1000, "memory": 10 },
         "c1": { "loops": 5000 }
-      },
-      "analysis": {
-        "runmap": true,
-        "supply": true,
-        "statistical": true
       }
     },
     "thread2": {
@@ -29,9 +24,8 @@
         "l0": { "loops": 10000, "res": 1 }
       },
       "analysis": {
-        "runmap": true,
-        "supply": true,
-        "statistical": true
+        "supply": false,
+        "statistical": false
       }
     }
   },
@@ -39,8 +33,7 @@
     "default_policy": "SCHED_RR",
     "duration": 10,
     "analysis": {
-      "runmap": true,
-      "supply": true
+      "runmap": false
     }
   }
 }
