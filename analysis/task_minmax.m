@@ -15,7 +15,7 @@ function experim_json = task_minmax(experiment_name,experim_json,task_id)
     cur_task = experim_json.tasks.(tasks_names{task_id});
     
     %% Loading marks
-    infile = cur_task.results.marks;
+    infile = [tasks_names{task_id},'/',cur_task.results.marks];
     timestamps = csvread(infile);
     
     %% Initializations
