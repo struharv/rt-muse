@@ -133,11 +133,8 @@ octave -q --no-window-system $GENERATED_OCTAVE_SCRIPT
 #rm $GENERATED_OCTAVE_SCRIPT
 
 printf "[LAUNCH] Default analysis completed!\n"
-printf "[LAUNCH] To perform the analysis just run the Octave/Matlab script\n"
-printf "[LAUNCH]   analysis.m in the directory ${RESULT_dir}/${REFERENCE_trace}/\n"
-printf "[LAUNCH] Costumized analysis can be performed by modifying\n"
-printf "[LAUNCH]     experiment_data.m, with experiment dependent data, and\n"
-printf "[LAUNCH]     analysis.m, which performs the actual analysis.\n"
-printf "[LAUNCH]   These files are located in ${RESULT_dir}/${REFERENCE_trace}/\n"
+printf "[LAUNCH] Output written in ${RESULT_dir}/${REFERENCE_trace}/${REFERENCE_trace}.output.json!\n"
+printf "[LAUNCH] To re-run the analysis just run the Octave/Matlab script\n"
+printf "[LAUNCH]   ${REFERENCE_trace}.m in the directory ${RESULT_dir}/${REFERENCE_trace}/\n"
 
 cd ../..
