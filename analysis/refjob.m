@@ -27,10 +27,8 @@ function experim_json = refjob(experiment_name,experim_json)
                 % only tasks with at least two marks can be considered
                 if (experim_json.tasks.(tasks_names{task_id}).results.num_marks >= 2)
                     % import minmax file of task task_id
-                    infile = experim_json.tasks.(tasks_names{task_id}).results.minmax;
-                    cd(tasks_names{task_id});
+                    infile = [tasks_names{task_id}, '/', experim_json.tasks.(tasks_names{task_id}).results.minmax];
                     task_data = csvread(infile);
-                    cd ..;
                     % task_data(2,1) is the shortest task job
                     if (task_data(2,1) < ref_job)
                         % update shortest job
