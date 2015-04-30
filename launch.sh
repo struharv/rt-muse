@@ -130,7 +130,7 @@ echo "analysis(experiment_name);" >> $GENERATED_OCTAVE_SCRIPT
 octave -q --no-window-system $GENERATED_OCTAVE_SCRIPT
 # Removing the generated script file, as running it again may only
 #   erase data
-rm $GENERATED_OCTAVE_SCRIPT
+#rm $GENERATED_OCTAVE_SCRIPT
 
 printf "[LAUNCH] Default analysis completed!\n"
 printf "[LAUNCH] To perform the analysis just run the Octave/Matlab script\n"
