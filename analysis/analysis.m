@@ -21,85 +21,44 @@ function analysis(experiment_name)
     refjob_path = '';
     % -----------------------------------------------------------------------
 
-    % importing JSON file with experiment description
+    %% Importing JSON file with experiment description
     json_file = strcat(experiment_name,'.json');
     experim_json = loadjson(json_file);
     % loading analysis options from json file
-    tasks = fieldnames(experim_json.tasks);
-    thread_num = size(tasks, 1);
+    tasks_names = fieldnames(experim_json.tasks);
+    tasks_num = size(tasks_names, 1);
 
-    % analysis for the single thread
-    for i = 1:thread_num
+    %% Computing analysis window
+    experim_json = window(experiment_name,experim_json);
+    
+    % init analysis vectors
+%    torun_analysis = boolean(zeros(tasks_num,1));
+%    torun_runmap = boolean(zeros(tasks_num,1));
+%    torun_supply = boolean(zeros(tasks_num,1));
+%    torun_statistical = boolean(zeros(tasks_num,1));
 
-        % if analysis is not specified for the task, then you should run all
-        % the analysis that we can do, if some are false we can skip them
-        runall = true;
-        if ~isfield(experim_json.tasks.(tasks{i}), 'analysis')
-            runall = false;
-        else
-            options = experim_json.tasks.(tasks{i}).analysis;
+    %% Creating directory for task results
+    for i = 1:tasks_num,
+        mkdir(tasks_names{i});
+    end
+    
+    %% Analysis for the single task
+    for i = 1:tasks_num
+        
+        %% Checking whether the task needs to be analyzed
+        if ismember('analysis',fieldnames(experim_json.tasks.(tasks_names{i})))
+
+            %% Invoking all analysis per task
+            all_analysis = fieldnames(experim_json.tasks.(tasks_names{i}).analysis);
+            for j=1:length(all_analysis)
+                task_analysis_fun = str2func(strcat('task_',all_analysis{j}));
+                experim_json = task_analysis_fun(experiment_name,experim_json,i);
+            end
         end
-
-        % find out what analysis should be run
-        torun_runmap = runall && isfield(options, 'runmap') &&  options.runmap == 1;
-        torun_supply = runall && isfield(options, 'supply') &&  options.supply == 1;
-        torun_statistical = runall && isfield(options, 'statistical') &&  options.statistical == 1;
-
-        if (torun_runmap || torun_supply || torun_statistical)
-            % if at least one of the analysis should be run, we should
-            % process the data for the thread, which means selecting the
-            % values of the events linked to the specific thread, cutting
-            % them to the window and eventually reconstructing them if
-            % some parkers are lost
-            fprintf('[ANALYSIS] Processing data for thread %d\n', i);
-            % TODO: call the process function
-            % parameters used: window_method, window_start, window_end, reconstruct
-        end
-
-        % running the runmap analysis for the single thread
-        if torun_runmap
-            fprintf('[ANALYSIS] Running runmap for thread %d\n', i);
-            % TODO: call the runmap function
-        end
-
-        % running the supply function analysis for the single thread
-        if torun_supply
-            fprintf('[ANALYSIS] Running supply for thread %d\n', i);
-            % TODO: call the supply function
-            % parameters used: refjob_method, refjob_value, refjob_path
-        end
-
-        % running the statistical analysis for single thread
-        if torun_statistical
-            fprintf('[ANALYSIS] Running statistical for thread %d\n', i);
-            % TODO: call the statistical function
-        end
-
     end
 
-    % launching the global analysis parsing the global options
-    runall = true;
-    if ~isfield(experim_json.global, 'analysis')
-        runall = false;
-    else
-        options = experim_json.global.analysis;
-    end
-
-    torun_runmap = runall && isfield(options, 'runmap') &&  options.runmap == 1;
-    torun_supply = runall && isfield(options, 'supply') &&  options.supply == 1;
-
-    % running the runmap analysis for the global platform
-    if torun_runmap
-        fprintf('[ANALYSIS] Running runmap for global\n');
-        % TODO: call the runmap function
-    end
-
-    % running the supply function analysis for the global platform
-    if torun_supply
-        fprintf('[ANALYSIS] Running supply for global\n');
-        % TODO: call the supply function
-        % parameters used: refjob_method, refjob_value, refjob_path
-    end
-
+    %% Global analysis
+    % TODO
+end
 
 
