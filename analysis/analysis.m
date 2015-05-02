@@ -37,10 +37,11 @@ function analysis(experiment_name)
 %    torun_supply = boolean(zeros(tasks_num,1));
 %    torun_statistical = boolean(zeros(tasks_num,1));
 
-    %% Creating directory for task results
+    %% Creating directory for results
     for i = 1:tasks_num,
-        mkdir(tasks_names{i});
+        mkdir(tasks_names{i});  % task's results
     end
+    mkdir('global');            % global results
     
     %% Analysis for the single task
     for i = 1:tasks_num
@@ -57,8 +58,16 @@ function analysis(experiment_name)
         end
     end
 
-    %% Global analysis
-    % TODO
+    %% Checking whether some global analysis is needed
+    if ismember('analysis',fieldnames(experim_json.global))
+        
+        %% Invoking all analysis per task
+        all_analysis = fieldnames(experim_json.global.analysis);
+        for j=1:length(all_analysis)
+            task_analysis_fun = str2func(all_analysis{j});
+            experim_json = task_analysis_fun(experiment_name,experim_json);
+        end
+    end
 end
 
 

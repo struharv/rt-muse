@@ -29,7 +29,7 @@ function experim_json = task_supply(experiment_name,experim_json,task_id)
     %   (tol_cut=0) vs. efficiency (larger tol_cut). Set it to zero, unless
     %   (lowb_x_clean, lowb_y_clean) are too big
     tol_cut = 0;     % in future, this may become an option in analysis.supply
-    % Invoking curve cleanup, seq_slope set to 1 fir single task
+    % Invoking curve cleanup, seq_slope set to 1 for single task
     [lowb_x_clean, lowb_y_clean, lowb_sel_conv] = cleanlowb(lowb_x,lowb_y,1, tol_cut);
 %    [lowb_x_clean, lowb_y_clean, lowb_sel_conv] = cleanlowb(lowb_x,lowb_y,seq_slope, tol_cut);
     slbf_file = 'supply.slbf.csv';
@@ -58,7 +58,7 @@ function experim_json = task_supply(experiment_name,experim_json,task_id)
     %   (tol_cut=0) vs. efficiency (larger tol_cut). Set it to zero, unless
     %   (lowb_x_clean, lowb_y_clean) are too big
     tol_cut = 0;     % in future, this may become an option in analysis.supply
-    % Invoking curve cleanup, seq_slope set to 1 fir single task
+    % Invoking curve cleanup, seq_slope set to 1 for single task
     [uppb_x_clean, uppb_y_clean, uppb_sel_conv] = cleanuppb(uppb_x,uppb_y,1, tol_cut);
 %    [uppb_x_clean, uppb_y_clean, uppb_sel_conv] = cleanuppb(uppb_x,uppb_y,seq_slope, tol_cut);
     subf_file = 'supply.subf.csv';
