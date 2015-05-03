@@ -13,7 +13,7 @@
         "m0": { "loops": 1000, "memory": 10 },
         "c1": { "loops": 5000 }
       },
-      "analysis": { "supply": true, "statistical": true }
+      "analysis": { "supply": true, "statistical": true, "runmap": true }
     },
     "thread2": {
       "priority": 10,
@@ -29,6 +29,6 @@
   "global": {
     "default_policy": "SCHED_RR",
     "duration": 10,
-    "analysis": { "runmap": true, "statistical": true }
+    "analysis": { "runmap": true, "supply": true }
   }
 }
