@@ -16,7 +16,7 @@ function experim_json = task_supply(experiment_name,experim_json,task_id)
   cur_task = experim_json.tasks.(tasks_names{task_id});
 
   %% Getting minmax separations
-  sim_infile = [tasks_names{task_id}, '/minmax.csv'] ;
+  sim_infile = [tasks_names{task_id}, '/minmax.csv'];
   sim_data = csvread(sim_infile);
 
   %% Computing the supply lower bound delivered to a thread

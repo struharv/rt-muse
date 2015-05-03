@@ -32,6 +32,15 @@ function analysis(experiment_name)
   experim_json = window(experiment_name, experim_json);
 
   %% ----------------------------------------------------------------------
+  % creating output directories
+  for i = 1:tasks_num 
+    % creating output directory with task name - needed before for refjob
+    name = tasks_names{i};
+    mkdir(name);
+  end
+  mkdir('global');
+  
+  %% ----------------------------------------------------------------------
   % Analysis: task analysis
   % This part of the analysis checkes if something is defined in the
   % analysis part of the json for each task. If so, it creates a directory
@@ -39,11 +48,6 @@ function analysis(experiment_name)
   % invoking functions called 'task_' followed by the name of the analysis
   % specified in the json file.
   % -----------------------------------------------------------------------
-  for i = 1:tasks_num 
-    % creating output directory with task name - needed before for refjob
-    name = tasks_names{i};
-    mkdir(name);
-  end
   
   for i = 1:tasks_num
     % checking whether the task needs to be analyzed
@@ -64,7 +68,6 @@ function analysis(experiment_name)
       
     end
   end
-  % -----------------------------------------------------------------------
 
   %% ----------------------------------------------------------------------
   % Analysis: global analysis
@@ -80,8 +83,7 @@ function analysis(experiment_name)
     
     % checking the type of analysis to be performed
     all_analysis = fieldnames(global_data.analysis);
-    mkdir('global')
-
+    
     % invoking global analysis
     for j=1:length(all_analysis)
       function_name = all_analysis{j};
