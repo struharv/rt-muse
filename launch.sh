@@ -123,6 +123,9 @@ echo "% ----------------------------------------" > $GENERATED_OCTAVE_SCRIPT
 echo "clear;" >> $GENERATED_OCTAVE_SCRIPT
 echo "experiment_name     = '$REFERENCE_trace';" >> $GENERATED_OCTAVE_SCRIPT
 echo "% ----------------------------------------" >> $GENERATED_OCTAVE_SCRIPT
+echo "if exist('OCTAVE_VERSION', 'builtin') ~= 0" >> $GENERATED_OCTAVE_SCRIPT
+echo "  warning('off','all');" >> $GENERATED_OCTAVE_SCRIPT
+echo "end" >> $GENERATED_OCTAVE_SCRIPT
 echo "addpath('$ANALYSIS_DIR');" >> $GENERATED_OCTAVE_SCRIPT
 echo "addpath('${ANALYSIS_DIR}jsonlab/');" >> $GENERATED_OCTAVE_SCRIPT
 echo "addpath('${ANALYSIS_DIR}common/');" >> $GENERATED_OCTAVE_SCRIPT
