@@ -13,7 +13,8 @@
         "m0": { "loops": 1000, "memory": 10 },
         "c1": { "loops": 5000 }
       },
-      "analysis": { "supply": true, "statistical": true, "runmap": true }
+      "analysis": { "supply": true, "statistical": true, 
+                    "runmap": true, "migrations": true }
     },
     "thread2": {
       "priority": 10,
