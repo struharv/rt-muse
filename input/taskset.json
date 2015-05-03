@@ -29,6 +29,6 @@
   "global": {
     "default_policy": "SCHED_RR",
     "duration": 10,
-    "analysis": { "runmap": true, "supply": true }
+    "analysis": { "supply": true }
   }
 }
