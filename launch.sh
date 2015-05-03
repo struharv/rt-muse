@@ -125,6 +125,7 @@ echo "experiment_name     = '$REFERENCE_trace';" >> $GENERATED_OCTAVE_SCRIPT
 echo "% ----------------------------------------" >> $GENERATED_OCTAVE_SCRIPT
 echo "addpath('$ANALYSIS_DIR');" >> $GENERATED_OCTAVE_SCRIPT
 echo "addpath('${ANALYSIS_DIR}jsonlab/');" >> $GENERATED_OCTAVE_SCRIPT
+echo "addpath('${ANALYSIS_DIR}common/');" >> $GENERATED_OCTAVE_SCRIPT
 echo "analysis(experiment_name);" >> $GENERATED_OCTAVE_SCRIPT
 
 octave -q --no-window-system $GENERATED_OCTAVE_SCRIPT
