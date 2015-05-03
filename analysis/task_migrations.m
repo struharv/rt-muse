@@ -26,7 +26,7 @@ function experim_json = task_migrations(experiment_name, experim_json, task_id)
     (task_data(:,1) <= experim_json.global.results.window(2)),:);
   
   % computing migrations
-  migrations = sum(thread_data(1:end-1, 2) ~= thread_data(2:end, 2));
+  migrations = sum(task_data(1:end-1, 2) ~= task_data(2:end, 2));
 
   % writing migrations on json
   cur_task.results.migrations = migrations;
