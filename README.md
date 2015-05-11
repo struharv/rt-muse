@@ -93,7 +93,7 @@ trace-cmd report trace.dat | grep tracing_mark_write
 
 ### Input file
 
-rt-bench expects to receive a json file with the configuration to be tested. An example of configuration file is contained in the folder input/taskset.json. The json file contains four entries: _resources_, _shared_, _global_ and _tasks_.
+rt-bench expects to receive a json file with the configuration to be tested. An example of configuration file is contained in the folder input/taskset.json. The json file contains four entries: _resources_, _shared_, _global_ and _threads_.
 
 ``` 
 {
