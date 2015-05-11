@@ -9,16 +9,16 @@ if (ismember('results',fieldnames(experim_json.global)))
 end
 
 %% Loading timestamps of all tasks with 'analysis' section
-tasks_names = fieldnames(experim_json.tasks);
+tasks_names = fieldnames(experim_json.threads);
 tasks_num = size(tasks_names, 1);
 
 all_timestamps = [];
 for task_id=1:tasks_num,
   % only tasks with 'analysis' section are considered in the set
-  if ismember('analysis',fieldnames(experim_json.tasks.(tasks_names{task_id})))
+  if ismember('analysis',fieldnames(experim_json.threads.(tasks_names{task_id})))
     % Get the marks of a single task
     experim_json = task_marks(experiment_name,experim_json,task_id);
-    infile = [experim_json.tasks.(tasks_names{task_id}).results.marks];
+    infile = [experim_json.threads.(tasks_names{task_id}).results.marks];
     timestamps = csvread(infile);
     % append the read timestamps to all_timestamps
     all_timestamps = [all_timestamps; timestamps];

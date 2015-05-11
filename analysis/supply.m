@@ -13,24 +13,24 @@ function experim_json = supply(experiment_name, experim_json)
   experim_json = minmax(experiment_name,experim_json);
 
   %% Computing number of CPUs on which tasks are running
-  thread_names = fieldnames(experim_json.tasks);
+  thread_names = fieldnames(experim_json.threads);
   thread_num = size(thread_names, 1);
   cpu_set = []; % init with empty set, then add other CPUs
   affinities = cell(thread_num, 1);
   for i=1:thread_num,
-    cpu_cur = sort(experim_json.tasks.(thread_names{i}).cpus);
+    cpu_cur = sort(experim_json.threads.(thread_names{i}).cpus);
     affinities{i,1} = cpu_cur;
     cpu_set = union(cpu_set, cpu_cur);
   end
   cpu_num = length(cpu_set);
 
   %% Counting tasks in the set
-  tasks_names = fieldnames(experim_json.tasks);
+  tasks_names = fieldnames(experim_json.threads);
   tasks_num = size(tasks_names, 1);
   tasks_in_set = 0;
   for task_id=1:tasks_num,
     % only tasks with 'analysis' section are considered in the set
-    if ismember('analysis',fieldnames(experim_json.tasks.(tasks_names{task_id})))
+    if ismember('analysis',fieldnames(experim_json.threads.(tasks_names{task_id})))
       tasks_in_set = tasks_in_set +1;
     end
   end

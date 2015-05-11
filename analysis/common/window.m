@@ -13,14 +13,14 @@ input_file = strcat(experiment_name,'.csv');
 full_data = csvread(input_file);
 
 %% Checking if task did ever run
-tasks_names = fieldnames(experim_json.tasks);
+tasks_names = fieldnames(experim_json.threads);
 tasks_num = size(tasks_names, 1);
 tasks_run = unique(full_data(:,2));
 for i=1:tasks_num,
   if ismember(i,tasks_run)
-    experim_json.tasks.(tasks_names{i}).results.run = true;
+    experim_json.threads.(tasks_names{i}).results.run = true;
   else
-    experim_json.tasks.(tasks_names{i}).results.run = false;
+    experim_json.threads.(tasks_names{i}).results.run = false;
   end
 end
 
@@ -38,9 +38,9 @@ tasks_short_exec = (1:tasks_num)';     % init
 tasks_short_exec = tasks_short_exec((tasks_window(:,2)-tasks_window(:,1)) <= experim_json.global.duration/10);
 for i=1:tasks_num,
   if ismember(i,tasks_short_exec)
-    experim_json.tasks.(tasks_names{i}).results.short_run = true;
+    experim_json.threads.(tasks_names{i}).results.short_run = true;
   else
-    experim_json.tasks.(tasks_names{i}).results.short_run = false;
+    experim_json.threads.(tasks_names{i}).results.short_run = false;
   end
 end
 tasks_run = setdiff(tasks_run,tasks_short_exec);

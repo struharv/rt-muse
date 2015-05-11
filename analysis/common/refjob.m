@@ -9,7 +9,7 @@ if (ismember('results',fieldnames(experim_json.global)))
 end
 
 %% Checking dependecies
-tasks_names = fieldnames(experim_json.tasks);
+tasks_names = fieldnames(experim_json.threads);
 tasks_num = size(tasks_names, 1);
 % refjob depends:
 %   - on minmax for all tasks with an analysis section
@@ -20,14 +20,14 @@ ref_job = +inf;       % init ref_job with big value
 for task_id=1:tasks_num,
   % only tasks with analysis section are considered to contribute to
   %    the refjob
-  if ismember('analysis',fieldnames(experim_json.tasks.(tasks_names{task_id})))
+  if ismember('analysis',fieldnames(experim_json.threads.(tasks_names{task_id})))
     % only tasks which run at least once can be considered
-    if experim_json.tasks.(tasks_names{task_id}).results.run
+    if experim_json.threads.(tasks_names{task_id}).results.run
       experim_json = task_minmax(experiment_name,experim_json,task_id);
       % only tasks with at least two marks can be considered
-      if (experim_json.tasks.(tasks_names{task_id}).results.num_marks >= 2)
+      if (experim_json.threads.(tasks_names{task_id}).results.num_marks >= 2)
         % import minmax file of task task_id
-        infile = experim_json.tasks.(tasks_names{task_id}).results.minmax;
+        infile = experim_json.threads.(tasks_names{task_id}).results.minmax;
         task_data = csvread(infile);
         % task_data(2,1) is the shortest task job
         if (task_data(2,1) < ref_job)

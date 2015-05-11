@@ -1,8 +1,8 @@
 function experim_json = task_supply(experiment_name,experim_json,task_id)
 
   %% If already executed, do not run
-  tasks_names = fieldnames(experim_json.tasks);
-  cur_task = experim_json.tasks.(tasks_names{task_id});
+  tasks_names = fieldnames(experim_json.threads);
+  cur_task = experim_json.threads.(tasks_names{task_id});
   if (ismember('results',fieldnames(cur_task)))
     if (ismember('supply',fieldnames(cur_task.results)))
       return
@@ -13,7 +13,7 @@ function experim_json = task_supply(experiment_name,experim_json,task_id)
   experim_json = refjob(experiment_name,experim_json);
   ref_job = experim_json.global.results.refjob;
   experim_json = task_minmax(experiment_name,experim_json,task_id);
-  cur_task = experim_json.tasks.(tasks_names{task_id});
+  cur_task = experim_json.threads.(tasks_names{task_id});
 
   %% Getting minmax separations
   sim_infile = [tasks_names{task_id}, '/minmax.csv'];
@@ -79,7 +79,7 @@ function experim_json = task_supply(experiment_name,experim_json,task_id)
   cur_task.results.supply.linbounds.deltauppb = best_delta_upp;
 
   %% Conclusion
-  experim_json.tasks.(tasks_names{task_id}) = cur_task;
+  experim_json.threads.(tasks_names{task_id}) = cur_task;
   savejson('',experim_json,strcat(experiment_name,'.output.json'));
 
 end

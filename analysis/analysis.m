@@ -26,7 +26,7 @@ function analysis(experiment_name)
   json_file = strcat(experiment_name, '.json');
   experim_json = loadjson(json_file);
   % loading analysis options from json file
-  tasks_names = fieldnames(experim_json.tasks);
+  tasks_names = fieldnames(experim_json.threads);
   tasks_num = size(tasks_names, 1);
   % computing analysis window
   experim_json = window(experiment_name, experim_json);
@@ -52,7 +52,7 @@ function analysis(experiment_name)
   for i = 1:tasks_num
     % checking whether the task needs to be analyzed
     name = tasks_names{i};
-    task_data = experim_json.tasks.(name);
+    task_data = experim_json.threads.(name);
     
     if ismember('analysis', fieldnames(task_data)),
       

@@ -1,8 +1,8 @@
 function experim_json = task_marks(experiment_name,experim_json,task_id)
 
   %% If already executed, do not run
-  tasks_names = fieldnames(experim_json.tasks);
-  cur_task = experim_json.tasks.(tasks_names{task_id});
+  tasks_names = fieldnames(experim_json.threads);
+  cur_task = experim_json.threads.(tasks_names{task_id});
   if (ismember('results', fieldnames(cur_task)))
     if (ismember('marks', fieldnames(cur_task.results)))
       return
@@ -57,7 +57,7 @@ function experim_json = task_marks(experiment_name,experim_json,task_id)
   cur_task.results.num_marks = length(timestamps);
 
   %% Update json file
-  experim_json.tasks.(tasks_names{task_id}) = cur_task;
+  experim_json.threads.(tasks_names{task_id}) = cur_task;
   savejson('',experim_json,strcat(experiment_name,'.output.json'));
 
 end
