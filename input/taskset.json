@@ -1,7 +1,7 @@
 {
   "resources": 2,
   "shared": 50,
-  "tasks": {
+  "threads": {
     "thread1": {
       "priority": 10,
       "cpus": [0,1,2],

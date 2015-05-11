@@ -336,7 +336,7 @@ static void get_opts_from_json_object(struct json_object *root, rtbench_options_
   }
 
   global = get_in_object(root, "global", FALSE);  
-  tasks = get_in_object(root, "tasks", FALSE);  
+  tasks = get_in_object(root, "threads", FALSE);  
   resources = get_in_object(root, "resources", FALSE);
   shared = get_in_object(root, "shared", FALSE);
 
