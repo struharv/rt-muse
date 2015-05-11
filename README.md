@@ -41,48 +41,37 @@ After the experiment is executed on the remote machine, `rt-muse` performs data 
 
 ##### Execution example
 
-This example shows the output of a test. When a test is executed, the shell ouput indicates the different stages of execution. Results are saved in the directory `results/experiment-name` that is created as a subdirectory of the `rt-muse` one.
+This example shows the output of a test. When a test is executed, the shell ouput indicates the different stages of execution. Results are saved in the directory `results/experiment-name` (in this case `results/tasket`) that is created as a subdirectory of the `rt-muse` one. The taskset file asks for the analysis of thread1 and of the global platform. Therefore, after it is executed, the corresponding directories contain the results of the analysis, summarized in `results/taskset/taskset.output.json`. The directory `thread2` is empty because no analysis has been required for the thread.
 ```
-~/rt-muse [>] ./launch.sh 127.0.0.1 22 martina input/taskset.json experiment-name
+~/rt-muse [>] ./launch.sh 127.0.0.1 22 martina input/taskset.json taskset
 [LAUNCH] Checking rt-muse presence on remote host ... done
 [LAUNCH] Checking rt-muse compilation on remote host ... done
 [LAUNCH] Sending json file ... done
 [LAUNCH] Creating results directories ... done
 [LAUNCH] Starting listener ... done
 [LAUNCH] Connecting to remote machine and executing ...
-Connection to 127.0.0.1 closed.
+Connection to 193.205.82.6 closed.
 [LAUNCH] Extracting data for input/taskset.json ... done
 [LAUNCH] Removing unnecessary files ... done
-[PROCESS] Processing data of thread 'thread1'
-[PROCESS] Processing data of thread 'thread2'
-[PROCESS] Processing data of all threads
-[PROCESS] Octave/Matlab file 'experiment_data.m' written
-[PROCESS]   it contains the experiment data, to be used by
-[PROCESS]   'results/experiment-name/analysis.m'
 [BESTALPHADELTA_LOW] Found one local max of line through TWO points
 [BESTALPHABURST_UPP] Found one local max of line through TWO points
-[ANALYSIS] Analysis of thread 'thread1' ... Done
 [BESTALPHADELTA_LOW] Found one local max of line through TWO points
 [BESTALPHABURST_UPP] Found one local max of line through TWO points
-[ANALYSIS] Analysis of thread 'thread2' ... Done
-[BESTALPHADELTA_LOW] Found one local max of line through TWO points
-[BESTALPHABURST_UPP] Found one local max of line through TWO points
-[ANALYSIS] Analysis of all threads ... Done
-[ANALYSIS] All output data written to experiment-name.output.txt
 [LAUNCH] Default analysis completed!
-[LAUNCH] To perform the analysis just run the Octave/Matlab script
-[LAUNCH]   analysis.m in the directory ./results/experiment-name/
-[LAUNCH] Costumized analysis can be performed by modifying
-[LAUNCH]     experiment_data.m, with experiment dependent data, and
-[LAUNCH]     analysis.m, which performs the actual analysis.
-[LAUNCH]   These files are located in ./results/experiment-name/
-~/rt-bench [>] ls results/experiment-name/
-analysis.m                  experiment-name.2.slbf.csv    experiment-name.dat
-experiment_data.m           experiment-name.2.subf.csv    experiment-name.json
-experiment-name.1.csv       experiment-name.all.csv       experiment-name.output.txt
-experiment-name.1.slbf.csv  experiment-name.all.slbf.csv  experiment-name.txt
-experiment-name.1.subf.csv  experiment-name.all.subf.csv  plotSupply.m
-experiment-name.2.csv       experiment-name.csv
+[LAUNCH] Output written in ./results/taskset/taskset.output.json!
+[LAUNCH] To re-run the analysis just run the Octave/Matlab script
+[LAUNCH]   taskset.m in the directory ./results/taskset/
+
+~/rt-bench [>] ls results/taskset/
+global       taskset.dat   taskset.m            taskset.txt  thread2
+taskset.csv  taskset.json  taskset.output.json  thread1
+
+~/rt-bench [>] ls results/taskset/thread1
+marks.csv  minmax.csv  statistical.csv  supply.slbf.csv  supply.subf.csv
+
+~/rt-bench [>] ls results/taskset/global
+minmax.csv  supply.slbf.csv  supply.subf.csv
+
 ```
 
 ##### Running on a local machine
@@ -111,27 +100,24 @@ rt-bench expects to receive a json file with the configuration to be tested. An 
   "resources": 3,
   "shared": 10,
   "global": { ... },
-  "tasks": { ... }
+  "theads": { ... }
 }
 ``` 
-The global options contain details about the entire experiment:
+The global options contain details about the entire experiment and about the analysis to be performed at the global level (supply or none:
 ``` 
 "global" : {
   "duration" : 10,
   "default_policy": "SCHED_OTHER" | "SCHED_RR" | "SCHED_FIFO" | "SCHED_DEADLINE",
-  "logdir": "./",
-  "logbasename": "rt-bench.log",
-  "lock_pages": true,
-  "ftrace": false
+  "analysis": { "supply": true }
 }
 ``` 
 The resources option decides how many resources can be locked. The shared option decides the size of the memory shared among the threads (the number indicates the number of doubles shared among the threads).
 
 The duration is expressed in seconds and represents the total duration of the experiment, the threads are going to be shutdown when the duration is expired, despite what they might be doing. The scheduling policy is one of the available one. 
-The tasks section contains an array of tasks, an example follows:
+The threads section contains an array of threads, an example follows:
 
 ``` 
-"tasks" : {
+"threads" : {
     "thread1" : {
       "exec" : 50000,
       "period" : 100000,
@@ -148,7 +134,9 @@ The tasks section contains an array of tasks, an example follows:
         "c1" : { "loops" : 5000 },
         "l2" : { "loops" : 1000, "resource_id" : 0 },
         "z0" : { "duration" : 10, },
-      }
+      },
+      "analysis": { "supply": true, "statistical": true,
+                    "runmap": true, "migrations": true }
     }
 }
 ``` 
@@ -159,3 +147,5 @@ The example defines one task named "thread1". The name of a task should contain 
 * The **lock** phase (name starting with literal l) locks a resource (indicated by the resource_id option) and computes for a certain number of iterations (indicated by the loops option).
 * The **memory** phase (name starting with literal m) allocates some memory (an amount of double values indicated by the memory option) and computes mathematical operations writing the results in the vector of doubles allocated, freeing the memory after a some operations (indicated by the loops option).
 * The **shared** phase behaves as the memory phase, but saves the result in the shared buffer of size given by the shared option at the top level. The operations are lock protected.
+
+If present, the analysis part of the thread specification defines the analysis modules to be executed on the thread. There are four analysis modules available per thread. Supply computes the upper and lower bound for the supply function. Statistical computes the distribution of the response times. Runmap computes where the jobs have been executed and migrations provides a lower bound on the number of migrations that occurred for the thread during the experiment.
