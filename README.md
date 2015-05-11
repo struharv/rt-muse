@@ -100,10 +100,10 @@ rt-bench expects to receive a json file with the configuration to be tested. An 
   "resources": 3,
   "shared": 10,
   "global": { ... },
-  "theads": { ... }
+  "threads": { ... }
 }
 ``` 
-The global options contain details about the entire experiment and about the analysis to be performed at the global level (supply or none:
+The global options contain details about the entire experiment and about the analysis to be performed at the global level (supply or none):
 ``` 
 "global" : {
   "duration" : 10,
