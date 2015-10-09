@@ -176,11 +176,15 @@ static void parse_thread_phases(struct json_object *task_phases, thread_data_t *
     case SHARED:
       data->phases[idx].do_phase = shared;
       break;
+    case USER:
+      data->phases[idx].do_phase = user;
+      break;
     }
 
     phase = get_in_object(task_phases, key, FALSE);
     // Set loops/duration
-    if (ph == SLEEP) {
+    if (ph == USER) ; // do nothing
+    else if (ph == SLEEP) {
       duration = get_in_object(phase, "duration", FALSE);
       data->phases[idx].usage = usec_to_timespec(get_int_value_from(phase, "duration", FALSE, 0));
     }

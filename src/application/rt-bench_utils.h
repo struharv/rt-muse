@@ -88,6 +88,7 @@ void compute (int ind, ...);
 void lock (int ind, ...);
 void memory (int ind, ...);
 void shared (int ind, ...);
+void user (int ind, ...);
 
 #define exec_phase(data, pn) \
 do { \

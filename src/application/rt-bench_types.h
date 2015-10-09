@@ -39,7 +39,8 @@ typedef enum phase_t {
   LOCK,
   SLEEP,
   MEMORY,
-  SHARED
+  SHARED,
+  USER
 } phase_t;
 
 typedef struct _rtbench_tasks_phase_list_t {

@@ -1,5 +1,6 @@
 #include "rt-bench.h"
 #include "rt-bench_utils.h"
+#include "user.h"
 #include "math.h"
 
 rtbench_options_t opts;

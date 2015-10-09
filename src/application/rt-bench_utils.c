@@ -75,6 +75,8 @@ int string_to_phase(const char *phase_name, phase_t *phase) {
     *phase =  MEMORY;
   else if (strncmp(phase_name, "s", 1) == 0)
     *phase =  SHARED;
+  else if (strncmp(phase_name, "u", 1) == 0)
+    *phase =  USER;
   else
     return 1;
   return 0;
