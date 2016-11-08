@@ -26,14 +26,14 @@ We strongly recommend using `ssh-copy-id` in order to not be prompted for passwo
 
 Once configured the machines as described above, a test can be lauched typing the following command in the launcher machine
 ```
-./launch.sh 127.0.0.1 22 username input/taskset.json experiment-name
+./launch.sh 127.0.0.1 22 username input/taskset.json experimentname
 ```
 where the parameters are:
 * the IP of the target machine
 * the ssh port (usually 22, might be differently configured)
 * the username on the remote machine
 * the configuration file that determines the test behavior
-* a unique name for the experiment
+* a unique name for the experiment (NOTE: it does not support hyphens, so do not include any '-' in the epxeriment name)
 
 To use [SCHED_DEADLINE](http://en.wikipedia.org/wiki/SCHED_DEADLINE), it is necessary to have a kernel that supports it. SCHED_DEADLINE is available by default from Linux [3.14](http://kernelnewbies.org/Linux_3.14#head-651929cdcf19cc2e2cfc7feb16b78ef963d195fe). To enable ftrace follow the instructions available [here](http://lwn.net/Articles/425583/).
 
@@ -43,7 +43,7 @@ After the experiment is executed on the remote machine, `rt-muse` performs data 
 
 This example shows the output of a test. When a test is executed, the shell ouput indicates the different stages of execution. Results are saved in the directory `results/experiment-name` (in this case `results/tasket`) that is created as a subdirectory of the `rt-muse` one. The taskset file asks for the analysis of thread1 and of the global platform. Therefore, after it is executed, the corresponding directories contain the results of the analysis, summarized in `results/taskset/taskset.output.json`. The directory `thread2` is empty because no analysis has been required for the thread.
 ```
-~/rt-muse [>] ./launch.sh 127.0.0.1 22 martina input/taskset.json taskset
+~/rt-muse [>] ./launch.sh 193.205.82.6 22068 martina input/taskset.json taskset
 [LAUNCH] Checking rt-muse presence on remote host ... done
 [LAUNCH] Checking rt-muse compilation on remote host ... done
 [LAUNCH] Sending json file ... done
@@ -62,21 +62,21 @@ Connection to 193.205.82.6 closed.
 [LAUNCH] To re-run the analysis just run the Octave/Matlab script
 [LAUNCH]   taskset.m in the directory ./results/taskset/
 
-~/rt-bench [>] ls results/taskset/
+~/rt-muse [>] ls results/taskset/
 global       taskset.dat   taskset.m            taskset.txt  thread2
 taskset.csv  taskset.json  taskset.output.json  thread1
 
-~/rt-bench [>] ls results/taskset/thread1
+~/rt-muse [>] ls results/taskset/thread1
 marks.csv  minmax.csv  statistical.csv  supply.slbf.csv  supply.subf.csv
 
-~/rt-bench [>] ls results/taskset/global
+~/rt-muse [>] ls results/taskset/global
 minmax.csv  supply.slbf.csv  supply.subf.csv
 
 ```
 
 ##### Running on a local machine
 
-It is also possible to run an experiment only on a local machine and record execution traces. To do so, one must download the code for `rt-bench` on the machine and type `make` to compile the application (depends on [trace-cmd](http://lwn.net/Articles/410200/), [libdl](https://github.com/gbagnoli/rt-app/tree/master/libdl) and [libjson0-dev](https://packages.debian.org/search?keywords=libjson0-dev)). Once compiled, it is recommended to execute the application with:
+It is also possible to run an experiment only on a local machine and record execution traces. To do so, one must download the code for `rt-muse` on the machine and type `make` to compile the application (depends on [trace-cmd](http://lwn.net/Articles/410200/), [libdl](https://github.com/gbagnoli/rt-app/tree/master/libdl) and [libjson0-dev](https://packages.debian.org/search?keywords=libjson0-dev)). Once compiled, it is recommended to execute the application with:
 ```
 sudo trace-cmd record -e 'sched_wakeup*' -e sched_switch -e 'sched_migrate*'
   ./bin/application ./input/taskset.json
