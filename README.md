@@ -22,6 +22,10 @@ The **target** machine needs to be equipped with:
 * automake and gcc
 * `ssh` connection to and from the launcher machine
 
+Additional assumptions - as pointed out by [Meng Xu](https://github.com/PennPanda), in this [issue](https://github.com/martinamaggio/rt-muse/issues/2):
+* the launcher script downloads, compiles and execute rt-muse in the home directory in the target machine, which means you need writing permissions for the home folder,
+* the code assumes that host machine only has one network card, the LISTENER_IP is automatically parsed the ifconfig output; on a machine with two network cards, the parser for the LISTENER_IP may not work.
+
 We strongly recommend using `ssh-copy-id` in order to not be prompted for password during every step of the execution process. Generate an ssh-key on the launcher machine and copy it to the target one. Instructions can be found [here](http://www.thegeekstuff.com/2008/11/3-steps-to-perform-ssh-login-without-password-using-ssh-keygen-ssh-copy-id/). The test needs to be run with super user priviledges on the target machine, so we also recommend to set up the machine so that no password is asked to execute commands with root priviledges on the target. For that, use `visudo` on the target machine and add `username ALL = NOPASSWD : ALL` to the sudoers list, where `username` is the name of your user.
 
 Once configured the machines as described above, a test can be lauched typing the following command in the launcher machine
