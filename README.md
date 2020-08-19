@@ -16,7 +16,7 @@ The **launcher** machine needs to be equipped with:
 The **target** machine needs to be equipped with:
 * [trace-cmd](http://lwn.net/Articles/410200/)
 * [libdl](https://github.com/gbagnoli/rt-app/tree/master/libdl)
-* [libjson0-dev](https://packages.debian.org/search?keywords=libjson0-dev)
+* [libjson-c-dev](https://packages.debian.org/search?keywords=libjson-c-dev)
 * the `pthread` library
 * super user priviledges
 * automake and gcc
