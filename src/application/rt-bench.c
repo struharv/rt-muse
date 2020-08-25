@@ -363,11 +363,12 @@ int main(int argc, char* argv[]) {
   struct timespec t_start;
   thread_data_t *tdata;
   char tmp[PATH_LENGTH];
-
+  printf("hello there\n");
   parse_command_line(argc, argv, &opts);
   nthreads = opts.nthreads;
   threads = malloc(nthreads * sizeof(pthread_t));
   pthread_barrier_init(&threads_barrier, NULL, nthreads);
+  printf("\tthreads = %d\n", nthreads);
 
   /* install signal handlers for proper shutdown */
   signal(SIGQUIT, shutdown);
@@ -402,6 +403,7 @@ int main(int argc, char* argv[]) {
   clock_gettime(CLOCK_MONOTONIC, &t_start);
 
   /* start threads */
+  printf("starting threads\n");
   for (i = 0; i < nthreads; i++) {
     tdata = &opts.threads_data[i];
     tdata->duration = opts.duration;
