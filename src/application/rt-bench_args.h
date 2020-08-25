@@ -11,7 +11,7 @@
 #include <getopt.h>
 #include <sys/stat.h>
 #include <string.h>
-#include <json/json.h>
+#include <json-c/json.h>
 #include <sys/types.h>
 #include <fcntl.h>
 #include <dl_syscalls.h>
