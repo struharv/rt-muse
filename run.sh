@@ -1,1 +1,1 @@
-sudo docker run -it struharv:rt-muse ./input/taskset.json
+sudo docker run -it --cpu-rt-runtime=50000 --ulimit rtprio=99 --cap-add=sys_nice struharv:rt-muse 
