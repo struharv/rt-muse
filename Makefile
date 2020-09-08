@@ -5,6 +5,9 @@ compile: clean
 	./autogen.sh
 	rm autogen.sh
 
+docker:
+	docker build -f Dockerfile -t struharv:rt-muse .
+
 clean:
 	rm -rf bin
 
