@@ -67,6 +67,7 @@ void sleep_for (int ind, ...) {
   va_start(argp, ind);
   t_sleep = va_arg(argp, struct timespec*);
   va_end(argp);
+	
   clock_gettime(CLOCK_MONOTONIC, &t_now);
   t_now = timespec_add(&t_now, t_sleep);
 #ifdef TRACE_BEGINS_SLEEP
@@ -76,6 +77,7 @@ void sleep_for (int ind, ...) {
 }
 
 void compute (int ind, ...) {
+
   //  unsigned int loops, i, counter = 0;
   unsigned int loops, i;
   double accumulator=0.25;
@@ -83,8 +85,8 @@ void compute (int ind, ...) {
   va_list argp;
   va_start(argp, ind);
   t_spec = va_arg(argp, struct timespec*);
-  va_end(argp);
-  loops = timespec_to_usec(t_spec);
+  va_end(argp); 
+	loops = timespec_to_usec(t_spec);
 #ifdef TRACE_BEGINS_COMPUTE
   log_ftrace(ft_data.marker_fd, "[%d] begins compute", ind+1);
 #endif
@@ -104,7 +106,8 @@ void lock(int ind, ...) {
   va_start(argp, ind);
   t_spec = va_arg(argp, struct timespec*);
   resource_id = va_arg(argp, int);
-  va_end(argp);
+  //printf("lock 1\n");  
+	va_end(argp);
   //clock_gettime(CLOCK_THREAD_CPUTIME_ID, &t_start);
   loops = timespec_to_usec(t_spec);
 #ifdef TRACE_BEGINS_LOCK
@@ -161,27 +164,29 @@ void *thread_body(void *arg) {
   timing_point_t *curr_timing;
   unsigned long t_start_usec;
   int i = 0;
+  printf("thread_body\n");
 
   thread_data_t *data = (thread_data_t*) arg;
 
   /* set thread affinity */
   if (data->cpuset != NULL) {
-    log_notice("[%d] setting cpu affinity to CPU(s) %s",
+    printf("[%d] setting cpu affinity to CPU(s) %s\n",
       data->ind, data->cpuset_str);
     ret = pthread_setaffinity_np(pthread_self(),
       sizeof(cpu_set_t), data->cpuset);
     if (ret < 0) {
       errno = ret;
-      perror("pthread_setaffinity_np");
+      printf("pthread_setaffinity_np");
       exit(EXIT_FAILURE);
     }
   }
-
+	printf("thread_body 1\n");
   /* set scheduling policy and print pretty info on stdout */
-  log_notice("[%d] Using %s policy:", data->ind, data->sched_policy_descr);
+  //printf("[%d] Using %s policy:\n", data->ind, data->sched_policy_descr);
   switch (data->sched_policy) {
     case rr:
     case fifo:
+	
       fprintf(data->log_handler, "# Policy : %s\n",
         (data->sched_policy == rr ? "SCHED_RR" : "SCHED_FIFO"));
       param.sched_priority = data->sched_prio;
@@ -189,7 +194,7 @@ void *thread_body(void *arg) {
         data->sched_policy, &param);
       if (ret != 0) {
         errno = ret; 
-        perror("pthread_setschedparam"); 
+        printf("pthread_setschedparam"); 
         exit(EXIT_FAILURE);
       }
 
@@ -229,21 +234,21 @@ void *thread_body(void *arg) {
       attr.sched_period = timespec_to_nsec(&data->period);  
       break;
     default:
-      log_error("Unknown scheduling policy %d",
-        data->sched_policy);
+      //printf("Unknown scheduling policy %d",
+      //  data->sched_policy);
       exit(EXIT_FAILURE);
   }
-
+   //printf("thread_body 2\n");
   if (data->lock_pages == 1) {
     log_notice("[%d] Locking pages in memory", data->ind);
     ret = mlockall(MCL_CURRENT | MCL_FUTURE);
     if (ret < 0) {
       errno = ret;
-      perror("mlockall");
+      printf("mlockall");
       exit(EXIT_FAILURE);
     }
   }
-
+ //printf("thread_body 3\n");
   /* if we know the duration we can calculate how many periods we will
    * do at most, and the log to memory, instead of logging to file.
    */
@@ -253,12 +258,12 @@ void *thread_body(void *arg) {
               (double) timespec_to_usec(&data->period));
     timings = malloc ( nperiods * sizeof(timing_point_t));
   }
-
+  //printf("thread_body 4\n");
   fprintf(data->log_handler, "#idx\tperiod\tmin_et\tmax_et\trel_st\tstart"
            "\t\tend\t\tdeadline\tdur.\tslack\tresp_t"
            "\tBudget\tUsed Budget\n");
 
-  if (data->ind == 0) {
+  /*if (data->ind == 0) {
     clock_gettime(CLOCK_MONOTONIC, &t_zero);
 #ifdef TRACE_SETS_ZERO_TIME
     if (opts.ftrace)
@@ -266,8 +271,8 @@ void *thread_body(void *arg) {
            "[%d] sets zero time",
            data->ind);
 #endif
-  }
-
+  }*/
+ // printf("thread_body 4.1\n");	
   pthread_barrier_wait(&threads_barrier);
 
   /*
@@ -280,10 +285,11 @@ void *thread_body(void *arg) {
       log_critical("[%d] sched_setattr "
         "returned %d", data->ind, ret);
       errno = ret;
-      perror("sched_setattr");
+      printf("sched_setattr");
       exit(EXIT_FAILURE);
     }
   }
+  //printf("thread_body 5\n");
 
   t = t_zero;
   t_next = msec_to_timespec(1000LL);
@@ -296,6 +302,7 @@ void *thread_body(void *arg) {
   data->deadline = timespec_add(&t_next, &data->deadline);
 
   while (continue_running) {
+	// printf("body while (continue_running) data->nphases = %d\n", data->nphases);
     int pn;
     struct timespec t_start, t_end, t_diff, t_slack, t_resp;
 
@@ -363,8 +370,9 @@ int main(int argc, char* argv[]) {
   struct timespec t_start;
   thread_data_t *tdata;
   char tmp[PATH_LENGTH];
-  printf("hello there\n");
+  printf("HI!!");
   parse_command_line(argc, argv, &opts);
+  printf("args\n");	
   nthreads = opts.nthreads;
   threads = malloc(nthreads * sizeof(pthread_t));
   pthread_barrier_init(&threads_barrier, NULL, nthreads);
@@ -377,20 +385,22 @@ int main(int argc, char* argv[]) {
   signal(SIGINT, shutdown);
 
   /* if using ftrace open trace and marker fds */
+  
   if (opts.ftrace) {
+	printf("opts.ftrace\n");
     log_notice("configuring ftrace");
     strcpy(tmp, ft_data.debugfs);
     strcat(tmp, "/tracing/tracing_on");
     ft_data.trace_fd = open(tmp, O_WRONLY);
     if (ft_data.trace_fd < 0) {
-      log_error("Cannot open trace_fd file %s", tmp);
+      printf("Cannot open trace_fd file %s", tmp);
       exit(EXIT_FAILURE);
     }
     strcpy(tmp, ft_data.debugfs);
     strcat(tmp, "/tracing/trace_marker");
     ft_data.marker_fd = open(tmp, O_WRONLY);
     if (ft_data.trace_fd < 0) {
-      log_error("Cannot open trace_marker file %s", tmp);
+      printf("Cannot open trace_marker file %s", tmp);
       exit(EXIT_FAILURE);
     }
     log_ftrace(ft_data.trace_fd, "1");
@@ -407,6 +417,7 @@ int main(int argc, char* argv[]) {
   for (i = 0; i < nthreads; i++) {
     tdata = &opts.threads_data[i];
     tdata->duration = opts.duration;
+	
     tdata->main_app_start = t_start;
     tdata->lock_pages = opts.lock_pages;
     if (opts.logdir) {
@@ -416,13 +427,14 @@ int main(int argc, char* argv[]) {
          tdata->name);
       tdata->log_handler = fopen(tmp, "w");
       if (!tdata->log_handler){
-        log_error("Cannot open logfile %s", tmp);
+        
+		printf("Cannot open logfile %s", tmp);
         exit(EXIT_FAILURE);
       }
     } else {
       tdata->log_handler = stdout;
     }
-
+	
     if (pthread_create(&threads[i],
           NULL, 
           thread_body, 

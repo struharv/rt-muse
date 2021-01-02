@@ -225,7 +225,7 @@ static void parse_thread_data(char *name, struct json_object *obj,
   data->cpuset = NULL;
   data->cpuset_str = NULL;
   data->sched_flags = 0;
-
+  printf("parse_thread_data\n");
   /* period */
   period = get_int_value_from(obj, "period", TRUE, 10000);
   if (period <= 0) {
@@ -321,13 +321,19 @@ static void parse_global(struct json_object *global, rtbench_options_t *opts) {
   opts->duration = get_int_value_from(global, "duration", TRUE, 1);
   policy = get_string_value_from(global, "default_policy", TRUE, "SCHED_OTHER");
   if (string_to_policy(policy, &opts->policy) != 0) {
+	printf("Invalid policy");
     log_critical(PFX "Invalid policy %s", policy);
     exit(EXIT_FAILURE);
   }
+  printf("y1\n");
   opts->logdir = get_string_value_from(global, "logdir", TRUE, "./");
+ printf("y2\n");
   opts->logbasename = get_string_value_from(global, "logbasename", TRUE, "rt-bench.log");
+  printf("y3\n");
   opts->lock_pages = get_bool_value_from(global, "lock_pages", TRUE, 1);
+  printf("y4\n");
   opts->ftrace = get_bool_value_from(global, "ftrace", TRUE, 1);
+ printf("y5\n");
 }
 
 static void get_opts_from_json_object(struct json_object *root, rtbench_options_t *opts) {
@@ -343,10 +349,14 @@ static void get_opts_from_json_object(struct json_object *root, rtbench_options_
   tasks = get_in_object(root, "threads", FALSE);  
   resources = get_in_object(root, "resources", FALSE);
   shared = get_in_object(root, "shared", FALSE);
-
+  
+  printf("x0\n");
   parse_global(global, opts);
+  printf("x1\n");
   parse_tasks(tasks, opts); 
+  printf("x2\n");
   parse_resources(resources, opts);
+  printf("x3\n");
   parse_shared(shared, opts);
 }
 

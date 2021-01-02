@@ -2,34 +2,22 @@
   "resources": 2,
   "shared": 50,
   "threads": {
-    "thread1": {
-      "priority": 10,
-      "cpus": [0,1,2],
-      "phases": {
-        "c0": { "loops": 1000 },
-        "l0": { "loops": 2000, "res": 0 },
-        "s0": { "loops": 1000 },
-        "l1": { "loops": 3000, "res": 1 },
-        "m0": { "loops": 1000, "memory": 10 },
-        "c1": { "loops": 5000 }
-      },
-      "analysis": { "supply": true, "statistical": true, 
-                    "runmap": true, "migrations": true }
-    },
     "thread2": {
       "priority": 10,
-      "cpus": [0,1],
+	  "policy": "SCHED_FIFO",
+      "cpus": [0],
       "phases": {
         "c0": { "loops": 5000 },
         "m0": { "loops": 1000, "memory": 10 },
         "s0": { "loops": 5000 },
-        "l0": { "loops": 10000, "res": 1 }
+        "l0": { "loops": 10000, "res": 1 },
+		"c0": { "loops": 5000 }
       }
     }
   },
   "global": {
-    "default_policy": "SCHED_RR",
     "duration": 10,
-    "analysis": { "supply": true }
+    "analysis": { "supply": true },
+    "ftrace": false
   }
 }
