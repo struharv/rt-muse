@@ -1,11 +1,11 @@
-all: clean compile startup
+all: clean compile startup.c
 
 compile: clean
 	cp build/autogen.sh .
 	./autogen.sh
 	rm autogen.sh
 
-startup:
+startup.c:
 	gcc -Wall startup.c -o startup
 
 docker:
