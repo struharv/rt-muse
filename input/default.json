@@ -1,0 +1,23 @@
+{
+  "resources": 2,
+  "shared": 50,
+  "threads": {
+    "thread2": {
+      "priority": 10,
+	  "policy": "SCHED_FIFO",
+      "cpus": [0],
+      "phases": {
+        "c0": { "loops": 5000 },
+        "m0": { "loops": 1000, "memory": 10 },
+        "s0": { "loops": 5000 },
+        "l0": { "loops": 10000, "res": 1 },
+		"c0": { "loops": 5000 }
+      }
+    }
+  },
+  "global": {
+    "duration": 10,
+    "analysis": { "supply": true },
+    "ftrace": false
+  }
+}

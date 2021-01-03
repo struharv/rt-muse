@@ -165,7 +165,7 @@ void *thread_body(void *arg) {
   unsigned long t_start_usec;
   int i = 0;
   printf("thread_body\n");
-
+	
   thread_data_t *data = (thread_data_t*) arg;
 
   /* set thread affinity */
@@ -174,6 +174,10 @@ void *thread_body(void *arg) {
       data->ind, data->cpuset_str);
     ret = pthread_setaffinity_np(pthread_self(),
       sizeof(cpu_set_t), data->cpuset);
+	
+	pthread_setname_np(pthread_self(), "yyyyy"); 
+
+
     if (ret < 0) {
       errno = ret;
       printf("pthread_setaffinity_np");
@@ -377,6 +381,7 @@ int main(int argc, char* argv[]) {
   threads = malloc(nthreads * sizeof(pthread_t));
   pthread_barrier_init(&threads_barrier, NULL, nthreads);
   printf("\tthreads = %d\n", nthreads);
+  printf("argv[0] %s\n", argv[0]);
 
   /* install signal handlers for proper shutdown */
   signal(SIGQUIT, shutdown);
@@ -449,8 +454,8 @@ int main(int argc, char* argv[]) {
     shutdown(SIGTERM);
   }
 
-  for (i = 0; i < nthreads; i++)  {
-    pthread_join(threads[i], NULL);
+  for (i = 0; i < nthreads; i++)  {   
+	pthread_join(threads[i], NULL);
   }
 
   if (opts.ftrace) {
