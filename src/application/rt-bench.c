@@ -381,7 +381,11 @@ int main(int argc, char* argv[]) {
   threads = malloc(nthreads * sizeof(pthread_t));
   pthread_barrier_init(&threads_barrier, NULL, nthreads);
   printf("\tthreads = %d\n", nthreads);
-  printf("argv[0] %s\n", argv[0]);
+  
+  for(int y = 0; y < argc; y++)
+  	printf("argv[%d] %s\n", y, argv[y]);
+  
+
 
   /* install signal handlers for proper shutdown */
   signal(SIGQUIT, shutdown);

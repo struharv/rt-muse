@@ -17,14 +17,15 @@ int main(int argc, char *argv[]) {
 	if (rename("/bin/application", argv[1]) == 0){
         	printf("File renamed successfully.\n");
 		
-		char *args[2];
-		args[0] = (char *)malloc(20);
-		args[1] = (char *)malloc(20);
+		char *args[3];
+		args[0] = (char *)malloc(40);
+		args[1] = (char *)malloc(40);
+		args[2] = NULL;
 
 		strcpy(args[0], argv[1]);
 		strcpy(args[1], "/input/default.json");		
 		
-		char runme[50];
+		char runme[40];
 		sprintf(runme, "./%s", argv[1]);
 		printf("executing %s\n", runme);
 		execvp(runme, args);
